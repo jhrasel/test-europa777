@@ -1,0 +1,18 @@
+blinkcard-in-browser::part(mb-component) {
+  background: rgb(203 213 225);
+  color: rgb(51 65 85);
+  border-radius: 50px;
+  --mb-component-image-box-cta-color: red;
+  --mb-component-action-label-font-size: 16px;
+}
+
+blinkcard-in-browser::part(mb-screen-action) {
+  /* padding: 8px 16px; */
+}
+
+blinkcard-in-browser::part(mb-button) {
+  --mb-component-button-size: 50px;
+  --mb-component-button-border-radius: 100px;
+  /* --mb-component-button-background: #ae0707;
+  --mb-component-button-border-color: #401aaf; */
+}

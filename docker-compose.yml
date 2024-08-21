@@ -1,0 +1,7 @@
+version: '3.8'
+
+services:
+  europa777-app:
+    build: .
+    ports:
+      - "3003:3000"
