@@ -1,6 +1,7 @@
 "use client";
 
 import { useLoading } from "@/context/LoadingContext";
+import CustomSkeleton from "@/helpers/CustomSkeleton";
 import useAuth from "@/helpers/useAuth";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -83,7 +84,7 @@ const Layout = ({ children, showFooter = true, remainingTime }) => {
             className={`transition-all ease-in-out duration-500 pt-[65px] laptop:pr-6 pb-16 w-full`}
           >
             <main>
-              {/* {loading && <CustomSkeleton hasImage={true} hasText={true} />} */}
+              {loading && <CustomSkeleton hasImage={true} hasText={true} />}
               {/* {loading && <LoadingPage />} */}
 
               {!loading && (
@@ -112,7 +113,7 @@ const Layout = ({ children, showFooter = true, remainingTime }) => {
             }`}
           >
             <main>
-              {/* {loading && <CustomSkeleton hasImage={true} hasText={true} />} */}
+              {loading && <CustomSkeleton hasImage={true} hasText={true} />}
               {/* {loading && <LoadingPage />} */}
 
               {!loading && (
