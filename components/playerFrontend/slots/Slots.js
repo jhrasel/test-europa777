@@ -10,7 +10,6 @@ import { Empty } from "antd";
 import { useLocale } from "next-intl";
 import { useCallback, useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
-import { FadeLoader } from "react-spinners";
 
 export const Slots = () => {
   const { fetchData, isLoading } = useApi();
@@ -98,14 +97,14 @@ export const Slots = () => {
     getLockData();
   }, [isLoggedIn]);
 
-  if (isLoading)
-    return (
-      <Container>
-        <div className="mt-2 m-auto text-center flex items-center justify-center">
-          <FadeLoader color="#FFF" />
-        </div>
-      </Container>
-    );
+  // if (isLoading)
+  //   return (
+  //     <Container>
+  //       <div className="mt-2 m-auto text-center flex items-center justify-center">
+  //         <FadeLoader color="#FFF" />
+  //       </div>
+  //     </Container>
+  //   );
 
   const renderLink = (gameData) => {
     const isNoDepositBonus = lockByBonus?.promotion_type === "noDepositBonus";

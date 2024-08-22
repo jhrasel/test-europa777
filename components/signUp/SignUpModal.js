@@ -49,6 +49,7 @@ const SignUpModal = () => {
             <div className="img rounded-l-lg h-full">
               <UIImage
                 src="/images/Signup.png"
+                alt="Signup"
                 className=" !h-full object-contain m-auto rounded-l-lg"
               />
             </div>

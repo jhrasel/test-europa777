@@ -19,6 +19,7 @@ export const Cashback = () => {
           <div className="w-full desktop:w-[80%] m-auto">
             <UIImage
               src="/images/cashback.jpg"
+              alt="cashback"
               className="w-full h-auto rounded-3xl"
             />
             <H4

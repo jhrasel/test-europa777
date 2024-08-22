@@ -132,6 +132,7 @@ export const VisaQuv = ({ country }) => {
         <div className="flex items-center gap-2">
           <UIImage
             src="/images/bank-img/visa_quv.png"
+            alt='deposit'
             className="!w-16 tab:!w-32 !h-auto object-cover"
           />
           <H4

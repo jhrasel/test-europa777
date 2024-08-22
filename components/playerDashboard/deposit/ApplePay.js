@@ -8,8 +8,8 @@ import { useFormik } from "formik";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 import toast from "react-hot-toast";
-import PromoCodeInput from "./PromoCodeInput";
 import { ProfileUpdateModal } from "../profile/ProfileUpdateModal";
+import PromoCodeInput from "./PromoCodeInput";
 
 export const ApplePay = ({ country }) => {
   const [depositAmount, setDepositAmount] = useState(25);
@@ -106,6 +106,7 @@ export const ApplePay = ({ country }) => {
         <div className="flex items-center gap-2">
           <UIImage
             src="/images/bank-img/a-pay.png"
+            alt="a-pay"
             className="!w-16 tab:!w-32 !h-auto object-cover"
           />
           <H4

@@ -136,6 +136,7 @@ const WheelBonusInfo = ({
             />
             <UIImage
               src={wheelImg}
+              alt="wheel"
               className=" !h-[90%] tab:!h-[445px] !w-[90%] tab:!w-[450px] rounded-full m-auto"
             />
             <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center">
@@ -161,6 +162,7 @@ const WheelBonusInfo = ({
           <div className="relative">
             <UIImage
               src={wheelImg}
+              alt="wheel"
               className=" !h-[90%] tab:!h-[445px] !w-[90%] tab:!w-[450px] rounded-full m-auto"
             />
             <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center">

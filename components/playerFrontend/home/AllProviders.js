@@ -31,7 +31,7 @@ export const AllProviders = ({ gethHomePageGames }) => {
                         <UIImage
                           src={gameProvider.logo || "/images/default-cart.jpg"}
                           alt={gameProvider.name}
-                          className="!w-full !h-20 object-contain rounded-lg transition duration-150 hover:-translate-y-1 mb-2 border-b border-bg-color3"
+                          className="!w-full !h-14 tab:!h-20 object-contain rounded-lg transition duration-150 hover:-translate-y-1 mb-2 border-b border-bg-color3"
                         />
                       }
                       name={gameProvider.name}

@@ -159,6 +159,7 @@ export default function GiftBox() {
             <div className="relative h-full hidden tab:block tab:h-auto">
               <UIImage
                 src="/images/scratchImg.png"
+                alt="scratchImg"
                 className="!w-full tab:!w-[330px] !h-full tab:!h-[570px] rounded-xl"
               />
               <div className="absolute tab:bottom-2 left-1/2 -translate-x-1/2">
@@ -172,6 +173,7 @@ export default function GiftBox() {
             >
               <UIImage
                 src="/images/scratchImg.png"
+                alt="scratchImg"
                 className="!w-full tab:!w-[330px] !h-full tab:!h-[570px] rounded-xl"
               />
               <div className="absolute top-1/2 tab:bottom-2 left-1/2 -translate-x-1/2">

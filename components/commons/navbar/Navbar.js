@@ -1,6 +1,6 @@
 "use client";
 
-import { UIImage, UILink } from "@/components/UI";
+import { UILink } from "@/components/UI";
 import LocalSwitcher from "@/components/local-switcher";
 import { DuplicateAccountModal } from "@/components/signIn/DuplicateAccountModal";
 import { default as SignIn } from "@/components/signIn/SignIn";
@@ -9,6 +9,7 @@ import SignUp from "@/components/signUp/SignUp";
 import SignUpModal from "@/components/signUp/SignUpModal";
 import useAuth from "@/helpers/useAuth";
 import { useLocale, useTranslations } from "next-intl";
+import Image from "next/image";
 import { FaArrowLeft, FaBars } from "react-icons/fa";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { MdClose } from "react-icons/md";
@@ -53,10 +54,13 @@ const Navbar = ({ showSidebar, handleSidebarToggle, showSidebarMobile }) => {
                 <UILink
                   href={`/${locale}/`}
                   name={
-                    <UIImage
+                    <Image
+                      width={100}
+                      height={100}
                       src="/images/logo.png"
                       alt="logo"
-                      className="w-auto !h-[30px] laptop:!h-10"
+                      className="w-auto h-[30px] laptop:!h-10"
+                      quality={70}
                     />
                   }
                 />

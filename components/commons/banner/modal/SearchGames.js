@@ -103,6 +103,7 @@ export const SearchGames = ({ closeModal }) => {
                         icon={
                           <UIImage
                             src={game.thumbnail || "/images/default-cart.jpg"}
+                            alt={game.game_name}
                             className="!h-16 !w-16 rounded-lg object-cover"
                           />
                         }

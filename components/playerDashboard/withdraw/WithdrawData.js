@@ -11,6 +11,7 @@ export const WithdrawData = [
     label: (
       <UIImage
         src="/images/bank-img/interac.png"
+        alt="withdraw"
         className="!w-full !h-full !object-contain"
       />
     ),
@@ -21,6 +22,7 @@ export const WithdrawData = [
     label: (
       <UIImage
         src="/images/bank-img/usdt.png"
+        alt="withdraw"
         className="!w-full !h-full !object-contain"
       />
     ),
@@ -31,6 +33,7 @@ export const WithdrawData = [
     label: (
       <UIImage
         src="/images/bank-img/ltc.png"
+        alt="withdraw"
         className="!w-full !h-full !object-contain"
       />
     ),
@@ -41,6 +44,7 @@ export const WithdrawData = [
     label: (
       <UIImage
         src="/images/bank-img/bch.png"
+        alt="withdraw"
         className="!w-full !h-full !object-contain"
       />
     ),
@@ -51,6 +55,7 @@ export const WithdrawData = [
     label: (
       <UIImage
         src="/images/bank-img/bank.png"
+        alt="withdraw"
         className="!w-full !h-full !object-contain"
       />
     ),
@@ -63,6 +68,7 @@ export const WithdrawData = [
   //       <div className="flex items-center gap-2">
   //         <UIImage
   //           src="/images/bank-img/bitcoin.png"
+  //  alt='withdraw'
   //           className="!w-full !h-full !object-contain"
   //         />
   //       </div>

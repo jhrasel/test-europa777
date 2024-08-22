@@ -8,6 +8,7 @@ export const ImageCard = ({ image, className }) => {
       >
         <UIImage
           src={image}
+          alt="img-card"
           className={`rounded-lg w-full !h-44 object-cover group-hover:blur-sm ${className}`}
         />
       </div>

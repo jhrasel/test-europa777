@@ -62,6 +62,7 @@ export const Shortsidebar = ({ closeMobileSidebar }) => {
             icon={
               <UIImage
                 src="/images/sidebar-btn/side-wheel.png"
+                alt="side-wheel"
                 className="!h-8 !w-8 rounded-full animate-spin-slow"
               />
             }
@@ -75,6 +76,7 @@ export const Shortsidebar = ({ closeMobileSidebar }) => {
             icon={
               <UIImage
                 src="/images/sidebar-btn/cashback.svg"
+                alt="cashback"
                 className="!h-8"
               />
             }
@@ -86,7 +88,11 @@ export const Shortsidebar = ({ closeMobileSidebar }) => {
               "w-full flex-col justify-between py-0.5 px-2 rounded-md !bg-gradient-to-r from-[#161421] to-[#cc0000] !font-bold !leading-[18px] !gap-0.5"
             }
             icon={
-              <UIImage src="/images/sidebar-btn/vip.svg" className="!h-8" />
+              <UIImage
+                src="/images/sidebar-btn/vip.svg"
+                alt="vip"
+                className="!h-8"
+              />
             }
             // name={menubar("VIP")}
           />
@@ -96,7 +102,11 @@ export const Shortsidebar = ({ closeMobileSidebar }) => {
               "w-full flex-col justify-between py-0.5 px-2 rounded-md !bg-gradient-to-r from-[#161421] to-[#70c600] !font-bold !leading-[18px] !gap-0.5"
             }
             icon={
-              <UIImage src="/images/sidebar-btn/bonus.svg" className="!h-8" />
+              <UIImage
+                src="/images/sidebar-btn/bonus.svg"
+                alt="bonus"
+                className="!h-8"
+              />
             }
             // name={menubar("Bonus")}
           />
