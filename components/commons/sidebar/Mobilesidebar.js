@@ -83,7 +83,6 @@ export const Mobilesidebar = ({ closeMobileSidebar }) => {
             icon={
               <UIImage
                 src="/images/sidebar-btn/side-wheel.png"
-                alt="side-wheel"
                 className="!h-12 !w-12 rounded-full animate-spin-slow"
               />
             }
@@ -98,7 +97,6 @@ export const Mobilesidebar = ({ closeMobileSidebar }) => {
             icon={
               <UIImage
                 src="/images/sidebar-btn/cashback.svg"
-                alt="cashback"
                 className="!h-12"
               />
             }
@@ -111,7 +109,7 @@ export const Mobilesidebar = ({ closeMobileSidebar }) => {
               "w-[48%] flex-row-reverse justify-between py-0 px-2 rounded-md !bg-gradient-to-r from-[#161421] to-[#cc0000] !font-bold !leading-[18px] !gap-1"
             }
             icon={
-              <UIImage src="/images/sidebar-btn/vip.svg" alt="vip" className="!h-12" />
+              <UIImage src="/images/sidebar-btn/vip.svg" className="!h-12" />
             }
             name={menubar("VIP")}
             onClick={handleMenuItemClick}
@@ -122,7 +120,7 @@ export const Mobilesidebar = ({ closeMobileSidebar }) => {
               "w-[48%] flex-row-reverse justify-between py-0 px-2 rounded-md !bg-gradient-to-r from-[#161421] to-[#70c600] !font-bold !leading-[18px] !gap-1"
             }
             icon={
-              <UIImage src="/images/sidebar-btn/bonus.svg" alt="bonus" className="!h-12" />
+              <UIImage src="/images/sidebar-btn/bonus.svg" className="!h-12" />
             }
             name={menubar("Bonus")}
             onClick={handleMenuItemClick}

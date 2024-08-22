@@ -2,9 +2,9 @@
 
 import { Select } from "antd";
 import { useLocale } from "next-intl";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useTransition } from "react";
+import { UIImage } from "./UI";
 
 const { Option } = Select;
 
@@ -29,53 +29,25 @@ function LocalSwitcher() {
       >
         <Option value="en">
           <div className="flex items-center gap-2">
-            <Image
-              src="/images/flags/english.png"
-              width="35"
-              height="35"
-              alt="english"
-              className="w-8 h-8"
-              quality={60}
-            />
+            <UIImage src="/images/flags/english.png" className="!w-auto !h-8" />
             Eng
           </div>
         </Option>
         <Option value="de">
           <div className="flex items-center gap-2">
-            <Image
-              src="/images/flags/german.png"
-              width="35"
-              height="35"
-              alt="english"
-              className="w-8 h-8"
-              quality={60}
-            />
+            <UIImage src="/images/flags/german.png" className="!w-auto !h-8" />
             Ger
           </div>
         </Option>
         <Option value="es">
           <div className="flex items-center gap-2">
-            <Image
-              src="/images/flags/spanish.png"
-              width="35"
-              height="35"
-              alt="english"
-              className="w-8 h-8"
-              quality={60}
-            />
+            <UIImage src="/images/flags/spanish.png" className="!w-auto !h-8" />
             Spa
           </div>
         </Option>
         <Option value="fr">
           <div className="flex items-center gap-2">
-            <Image
-              src="/images/flags/french.png"
-              width="35"
-              height="35"
-              alt="french"
-              className="w-8 h-8"
-              quality={60}
-            />
+            <UIImage src="/images/flags/french.png" className="!w-auto !h-8" />
             Fra
           </div>
         </Option>

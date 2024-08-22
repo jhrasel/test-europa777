@@ -17,7 +17,6 @@ export const MyFavorite = () => {
             <div className="text-center w-full laptop:!w-[25%] !h-auto m-auto relative">
               <UIImage
                 src="/images/favorite-login.png"
-                alt="favorite"
                 className="w-full h-auto object-cover"
               />
               <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center">

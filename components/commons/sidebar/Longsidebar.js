@@ -1,6 +1,8 @@
 import { H3, List, ListItem, UIImage, UILink, UILinkBG } from "@/components/UI";
 import SignIn from "@/components/signIn/SignIn";
+import SignInModal from "@/components/signIn/SignInModal";
 import SignUp from "@/components/signUp/SignUp";
+import SignUpModal from "@/components/signUp/SignUpModal";
 import { SidebarMenuData } from "@/data/SidebarMenu";
 import useAuth from "@/helpers/useAuth";
 import useBalance from "@/hook/useBalance";
@@ -80,7 +82,6 @@ export const Longsidebar = () => {
               icon={
                 <UIImage
                   src="/images/sidebar-btn/side-wheel.png"
-                  alt="side-wheel"
                   className="!h-10 !w-10 !rounded-full animate-spin-slow object-contain"
                 />
               }
@@ -94,7 +95,6 @@ export const Longsidebar = () => {
               icon={
                 <UIImage
                   src="/images/sidebar-btn/cashback.svg"
-                  alt="cashback"
                   className="!h-10"
                 />
               }
@@ -106,11 +106,7 @@ export const Longsidebar = () => {
                 "w-[48%] flex-row-reverse justify-between py-0.5 px-3 rounded-md !bg-gradient-to-r from-[#161421] to-[#cc0000] !font-bold !leading-[18px] !gap-1"
               }
               icon={
-                <UIImage
-                  src="/images/sidebar-btn/vip.svg"
-                  alt="vip"
-                  className="!h-10"
-                />
+                <UIImage src="/images/sidebar-btn/vip.svg" className="!h-10" />
               }
               name={menubar("VIP")}
             />
@@ -122,7 +118,6 @@ export const Longsidebar = () => {
               icon={
                 <UIImage
                   src="/images/sidebar-btn/bonus.svg"
-                  alt="bonus"
                   className="!h-10"
                 />
               }

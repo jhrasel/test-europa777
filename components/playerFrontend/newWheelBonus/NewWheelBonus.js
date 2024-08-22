@@ -14,7 +14,6 @@ export const NewWheelBonus = () => {
         <div className="text-center w-full laptop:!w-[30%] !h-auto m-auto relative">
           <UIImage
             src="/images/when-login.png"
-            alt="login"
             className="w-full h-auto object-cover"
           />
           <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center rounded-full">

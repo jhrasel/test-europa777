@@ -1,8 +1,7 @@
-import { List, ListItem, P, UIInput, UILink } from "@/components/UI";
+import { List, ListItem, P, UIImage, UIInput, UILink } from "@/components/UI";
 import { useLoading } from "@/context/LoadingContext";
 import useApi from "@/helpers/apiRequest";
 import { useLocale, useTranslations } from "next-intl";
-import Image from "next/image";
 import { useEffect, useState } from "react";
 
 export default function Favorites() {
@@ -57,13 +56,9 @@ export default function Favorites() {
                   href={`/${locale}/play-game/${game.slug}`}
                   className="w-full bg-bg-color3 p-5 hover:bg-bg-color2 rounded-lg !flex-col pb-2 capitalize"
                   icon={
-                    <Image
-                      width={400}
-                      height={100}
+                    <UIImage
                       src={game.thumbnail || "/images/default-cart.jpg"}
-                      className="w-full h-24 rounded-lg object-contain mb-2"
-                      alt={game.game_name}
-                      quality={50}
+                      className="!h-14 !w-full rounded-lg object-contain mb-2"
                     />
                   }
                   name={

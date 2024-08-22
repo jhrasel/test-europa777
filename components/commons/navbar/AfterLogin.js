@@ -176,13 +176,7 @@ export function AfterLogin() {
       {!isPlayGameRoute && <AmountDropdown />}
 
       <UILink
-        icon={
-          <UIImage
-            src="/images/deposit.svg"
-            alt="deposit"
-            className="!h-8 !w-auto"
-          />
-        }
+        icon={<UIImage src="/images/deposit.svg" className="!h-8 !w-auto" />}
         href={`/${locale}/player-dashboard/deposit`}
       />
 

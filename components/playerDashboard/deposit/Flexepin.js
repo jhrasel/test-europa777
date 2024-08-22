@@ -81,7 +81,6 @@ export const Flexepin = () => {
     <div className="bg-white p-2 tab:p-5 rounded-lg">
       <UIImage
         src="/images/bank-img/flexepin.png"
-        alt='deposit'
         className="!w-16 tab:!w-32 !h-auto object-cover"
       />
       <form onSubmit={formik.handleSubmit}>

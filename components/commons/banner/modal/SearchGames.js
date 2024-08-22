@@ -1,6 +1,15 @@
 "use client";
 
-import { H4, H6, List, ListItem, P, UIInput, UILink } from "@/components/UI";
+import {
+  H4,
+  H6,
+  List,
+  ListItem,
+  P,
+  UIImage,
+  UIInput,
+  UILink,
+} from "@/components/UI";
 import useApi from "@/helpers/apiRequest";
 import { useLocale, useTranslations } from "next-intl";
 
@@ -92,13 +101,9 @@ export const SearchGames = ({ closeModal }) => {
                         href={`/${locale}/play-game/${game.slug}`}
                         className="w-full hover:bg-[#e5eaf0] rounded-lg"
                         icon={
-                          <Image
-                            width={300}
-                            height={300}
+                          <UIImage
                             src={game.thumbnail || "/images/default-cart.jpg"}
-                            className="h-16 w-16 rounded-lg object-contain mb-2"
-                            alt={game.game_name}
-                            quality={60}
+                            className="!h-16 !w-16 rounded-lg object-cover"
                           />
                         }
                         name={
