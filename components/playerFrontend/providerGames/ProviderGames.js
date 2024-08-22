@@ -11,7 +11,7 @@ import toast from "react-hot-toast";
 import { FadeLoader } from "react-spinners";
 
 export default function ProviderGames({ slagId }) {
-  const { fetchData } = useApi();
+  const { fetchData, isLoading } = useApi();
   const { favoriteGames } = useFavoriteGames();
   const [gameDatas, setGameDatas] = useState([]);
   const locale = useLocale();
@@ -22,8 +22,7 @@ export default function ProviderGames({ slagId }) {
 
   const [lockByBonus, setLockByBonus] = useState(null);
 
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [activeCardId, setActiveCardId] = useState(null);
 
   const lastGameElementRef = useCallback(
     (node) => {
@@ -69,15 +68,12 @@ export default function ProviderGames({ slagId }) {
   useEffect(() => {
     const getLockData = async () => {
       if (isLoggedIn) {
-        setIsLoading(true);
         try {
           const data = await fetchLockByBonus();
           // console.log("fetchLockByBonus", data);
           setLockByBonus(data);
         } catch (err) {
-          setError(err.message || "Failed to fetch lock data");
-        } finally {
-          setIsLoading(false);
+          setError(err.message);
         }
       }
     };
@@ -91,12 +87,6 @@ export default function ProviderGames({ slagId }) {
         <div className="mt-2 m-auto text-center flex items-center justify-center">
           <FadeLoader color="#FFF" />
         </div>
-      </Container>
-    );
-  if (error)
-    return (
-      <Container>
-        <div className="mt-2 m-auto ">Error: {error}</div>
       </Container>
     );
 
@@ -159,6 +149,8 @@ export default function ProviderGames({ slagId }) {
                           ? `/${locale}/demo-game/${gameData.slug}`
                           : ""
                       }
+                      activeCardId={activeCardId}
+                      setActiveCardId={setActiveCardId}
                     />
                   </div>
                 );
@@ -179,6 +171,8 @@ export default function ProviderGames({ slagId }) {
                         ? `/${locale}/demo-game/${gameData.slug}`
                         : ""
                     }
+                    activeCardId={activeCardId}
+                    setActiveCardId={setActiveCardId}
                   />
                 );
               }

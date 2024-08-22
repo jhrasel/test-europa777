@@ -22,6 +22,8 @@ export const GameCard = ({
   gameId,
   initialIsFavorite,
   onFavoriteChange,
+  activeCardId,
+  setActiveCardId,
 }) => {
   const demoLinkCss = "demoLinkCss";
 
@@ -49,9 +51,25 @@ export const GameCard = ({
     }
   };
 
+  // const [showBtn, setShowBtn] = useState(false);
+
+  // handleShowBtn
+  // const handleShowBtn = () => {
+  //   setShowBtn(!showBtn);
+  // };
+
+  const handleShowBtn = () => {
+    setActiveCardId(gameId === activeCardId ? null : gameId);
+  };
+
+  const isActive = activeCardId === gameId;
+
   return (
     <>
-      <div className="rounded-lg bg-bg-color3 group transition duration-500 ease-out hover:translate-y-[-3px]">
+      <div
+        onClick={handleShowBtn}
+        className="rounded-lg bg-bg-color3 group transition duration-500 ease-out hover:translate-y-[-3px]"
+      >
         <div className="rounded-lg relative">
           {loading && <CustomSkeleton hasImage={true} hasText={true} />}
           {!loading && (
@@ -61,7 +79,12 @@ export const GameCard = ({
               alt="Game-img"
             />
           )}
-          <div className="rounded-lg absolute top-0 left-0 w-full h-full bg-[#00000080] flex flex-col items-center justify-center px-5 py-2 invisible group-hover:visible">
+
+          {/* button */}
+
+          {/* desktop button  */}
+
+          <div className="rounded-lg absolute top-0 left-0 w-full h-full bg-[#00000080] hidden tab:flex flex-col items-center justify-center px-5 py-2 invisible group-hover:visible">
             {isLoggedIn ? (
               depositLink ? (
                 <div className="text-center w-full">
@@ -105,6 +128,54 @@ export const GameCard = ({
               />
             )}
           </div>
+
+          {/* mobile button  */}
+          {isActive && (
+            <div className="rounded-lg absolute top-0 left-0 w-full h-full bg-[#00000080] flex tab:hidden flex-col items-center justify-center px-5 py-2">
+              {isLoggedIn ? (
+                depositLink ? (
+                  <div className="text-center w-full">
+                    <p className="border border-white text-white">
+                      {liveLinkText}
+                    </p>
+                    <UILinkBG
+                      href={depositLink}
+                      name="Deposit To Play"
+                      className="w-full justify-center mt-2 !text-base !px-3"
+                      scroll={true}
+                    />
+                  </div>
+                ) : (
+                  <UILinkBG
+                    href={liveLink}
+                    name={liveLinkText}
+                    className="w-full justify-center"
+                    scroll={true}
+                  />
+                )
+              ) : (
+                <SignIn name="Play" className="!bg-blue-color w-full" />
+              )}
+              {isLoggedIn ? (
+                <UILink
+                  scroll={true}
+                  href={demoLink}
+                  // target="_blank"
+                  name={demoLink ? "Demo" : ""}
+                  className={
+                    demoLink
+                      ? `${demoLinkCss} !border-2  !border-blue-color rounded-full justify-center`
+                      : ""
+                  }
+                />
+              ) : (
+                <SignIn
+                  name={demoLink ? "Demo" : ""}
+                  className={demoLink ? demoLinkCss : "!hidden"}
+                />
+              )}
+            </div>
+          )}
         </div>
 
         {isLoggedIn ? (

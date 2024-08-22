@@ -151,12 +151,12 @@ export const SignInForm = ({ onLoginSuccess }) => {
         </h2>
       </div>
       <div className="flex justify-center mt-2">
-        <a href={`${process.env.NEXT_PUBLIC_API_URL}/api/login/google`}>
+        {/* <a href={`${process.env.NEXT_PUBLIC_API_URL}/api/login/google`}>
           <img
             className="cursor-pointer"
             src="https://developers.google.com/static/identity/images/branding_guideline_sample_lt_rd_lg.svg"
           />
-        </a>
+        </a> */}
       </div>
       {isResendOpen && (
         <EmailVerifyCard

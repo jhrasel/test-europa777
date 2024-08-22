@@ -51,10 +51,10 @@ export const DepositData = (country) => {
       {
         key: 1,
         label: (
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 h-full">
             <UIImage
               src="/images/bank-img/interac.png"
-              className="!w-full !h-auto !object-contain"
+              className="!w-full !h-full !object-contain"
             />
             {/* <P name="Interac" className="!text-bg-color2" /> */}
           </div>

@@ -22,6 +22,8 @@ export const FreeSpinGames = () => {
   const { loading } = useLoading();
   const locale = useLocale();
 
+  const [activeCardId, setActiveCardId] = useState(null);
+
   const [freeSpin, setFreeSpin] = useState("0");
 
   const handleFavoriteChange = (gameId, isFavorite) => {
@@ -135,6 +137,8 @@ export const FreeSpinGames = () => {
                         ? `/${locale}/demo-game/${gameData.slug}`
                         : ""
                     }
+                    activeCardId={activeCardId}
+                    setActiveCardId={setActiveCardId}
                   />
                 );
               })

@@ -18,7 +18,7 @@ export const TopGames = ({ getTopGamesData }) => {
   const getData = getTopGamesData.data;
 
   const { isLoggedIn } = useAuth();
-  const { fetchData } = useApi();
+  const { fetchData, isLoading } = useApi();
   const { favoriteGames } = useFavoriteGames();
   const router = useRouter();
   const { loading } = useLoading();
@@ -27,8 +27,7 @@ export const TopGames = ({ getTopGamesData }) => {
   const locale = useLocale();
   const [lockByBonus, setLockByBonus] = useState(null);
 
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [activeCardId, setActiveCardId] = useState(null);
 
   // Define handleFavoriteChange
   const handleFavoriteChange = (gameId, isFavorite) => {
@@ -39,15 +38,12 @@ export const TopGames = ({ getTopGamesData }) => {
   useEffect(() => {
     const getLockData = async () => {
       if (isLoggedIn) {
-        setIsLoading(true);
         try {
           const data = await fetchLockByBonus();
           // console.log("fetchLockByBonus", data);
           setLockByBonus(data);
         } catch (err) {
-          setError(err.message || "Failed to fetch lock data");
-        } finally {
-          setIsLoading(false);
+          setError(err.message);
         }
       }
     };
@@ -61,12 +57,6 @@ export const TopGames = ({ getTopGamesData }) => {
         <div className="mt-2 m-auto text-center flex items-center justify-center">
           <FadeLoader color="#FFF" />
         </div>
-      </Container>
-    );
-  if (error)
-    return (
-      <Container>
-        <div className="mt-2 m-auto ">Error: {error}</div>
       </Container>
     );
 
@@ -135,6 +125,8 @@ export const TopGames = ({ getTopGamesData }) => {
                         ? `/${locale}/demo-game/${gameData.slug}`
                         : ""
                     }
+                    activeCardId={activeCardId}
+                    setActiveCardId={setActiveCardId}
                   />
                 );
               })

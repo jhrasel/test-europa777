@@ -22,6 +22,8 @@ export default function AfterLoginMyFavorite() {
   const locale = useLocale();
   const [lockByBonus, setLockByBonus] = useState(null);
 
+  const [activeCardId, setActiveCardId] = useState(null);
+
   // Define handleFavoriteChange
   const handleFavoriteChange = (gameId, isFavorite) => {
     // Handle favorite change logic if needed
@@ -124,6 +126,8 @@ export default function AfterLoginMyFavorite() {
                     ? `/${locale}/demo-game/${gameData.slug}`
                     : ""
                 }
+                activeCardId={activeCardId}
+                setActiveCardId={setActiveCardId}
               />
             );
           })

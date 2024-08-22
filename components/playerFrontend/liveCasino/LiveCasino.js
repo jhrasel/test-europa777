@@ -15,18 +15,17 @@ import { FadeLoader } from "react-spinners";
 export const LiveCasinoHomePage = ({ getLiveCasinoData }) => {
   const getData = getLiveCasinoData.data;
 
-  const { fetchData } = useApi();
+  const { fetchData, isLoading } = useApi();
   const { favoriteGames } = useFavoriteGames();
   // const [gameDatas, setGameDatas] = useState([]);
   const { loading } = useLoading();
   const t = useTranslations("HomePage");
   const com = useTranslations("Common");
   const locale = useLocale();
-  const { isLoggedIn, logout } = useAuth();
+  const { isLoggedIn } = useAuth();
   const [lockByBonus, setLockByBonus] = useState(null);
 
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [activeCardId, setActiveCardId] = useState(null);
 
   // Define handleFavoriteChange
   const handleFavoriteChange = (gameId, isFavorite) => {
@@ -40,15 +39,12 @@ export const LiveCasinoHomePage = ({ getLiveCasinoData }) => {
   useEffect(() => {
     const getLockData = async () => {
       if (isLoggedIn) {
-        setIsLoading(true);
         try {
           const data = await fetchLockByBonus();
           // console.log("fetchLockByBonus", data);
           setLockByBonus(data);
         } catch (err) {
-          setError(err.message || "Failed to fetch lock data");
-        } finally {
-          setIsLoading(false);
+          setError(err.message);
         }
       }
     };
@@ -59,15 +55,9 @@ export const LiveCasinoHomePage = ({ getLiveCasinoData }) => {
   if (isLoading)
     return (
       <Container>
-        <div className="mt-2 m-auto text-center">
+        <div className="mt-2 m-auto text-center flex items-center justify-center">
           <FadeLoader color="#FFF" />
         </div>
-      </Container>
-    );
-  if (error)
-    return (
-      <Container>
-        <div className="mt-2 m-auto ">Error: {error}</div>
       </Container>
     );
 
@@ -136,6 +126,8 @@ export const LiveCasinoHomePage = ({ getLiveCasinoData }) => {
                         ? `/${locale}/demo-game/${gameData.slug}`
                         : ""
                     }
+                    activeCardId={activeCardId}
+                    setActiveCardId={setActiveCardId}
                   />
                 );
               })
@@ -152,7 +144,7 @@ export const LiveCasinoHomePage = ({ getLiveCasinoData }) => {
 };
 
 export const LiveCasino = () => {
-  const { fetchData } = useApi();
+  const { fetchData, isLoading } = useApi();
   const { favoriteGames } = useFavoriteGames();
   const [gameDatas, setGameDatas] = useState([]);
   const { loading } = useLoading();
@@ -163,8 +155,7 @@ export const LiveCasino = () => {
   const { isLoggedIn, logout } = useAuth();
   const [lockByBonus, setLockByBonus] = useState(null);
 
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [activeCardId, setActiveCardId] = useState(null);
 
   const lastGameElementRef = useCallback(
     (node) => {
@@ -207,15 +198,12 @@ export const LiveCasino = () => {
   useEffect(() => {
     const getLockData = async () => {
       if (isLoggedIn) {
-        setIsLoading(true);
         try {
           const data = await fetchLockByBonus();
           // console.log("fetchLockByBonus", data);
           setLockByBonus(data);
         } catch (err) {
-          setError(err.message || "Failed to fetch lock data");
-        } finally {
-          setIsLoading(false);
+          setError(err.message);
         }
       }
     };
@@ -229,12 +217,6 @@ export const LiveCasino = () => {
         <div className="mt-2 m-auto text-center flex items-center justify-center">
           <FadeLoader color="#FFF" />
         </div>
-      </Container>
-    );
-  if (error)
-    return (
-      <Container>
-        <div className="mt-2 m-auto ">Error: {error}</div>
       </Container>
     );
 
@@ -292,6 +274,8 @@ export const LiveCasino = () => {
                           ? `/${locale}/demo-game/${gameData.slug}`
                           : ""
                       }
+                      activeCardId={activeCardId}
+                      setActiveCardId={setActiveCardId}
                     />
                   </div>
                 );
@@ -312,6 +296,8 @@ export const LiveCasino = () => {
                         ? `/${locale}/demo-game/${gameData.slug}`
                         : ""
                     }
+                    activeCardId={activeCardId}
+                    setActiveCardId={setActiveCardId}
                   />
                 );
               }

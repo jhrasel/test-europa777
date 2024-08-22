@@ -8,7 +8,7 @@ import toast from "react-hot-toast";
 import { ClockLoader } from "react-spinners";
 
 export const UserInfo = () => {
-  const { fetchData, error, isLoading } = useApi();
+  const { fetchData, error, isLoading, setIsLoading } = useApi();
   const [userData, setUserData] = useState("");
 
   // const [loading, setLoading] = useState(false);
@@ -28,36 +28,29 @@ export const UserInfo = () => {
 
   useEffect(() => {
     const fetchUserData = async () => {
-      try {
-        // Fetch user data from the API
-        const { data, error } = await fetchData("/player/getProfile", "GET");
+      const { data, error } = await fetchData("/player/getProfile", "GET");
 
-        if (data) {
-          formik.setValues({
-            first_name: data.Player.first_name,
-            last_name: data.Player.last_name,
-            email: data.Player.email,
-            phone: data.Player.phone,
-            country: data.Player.country,
-            street_address_1: data.Player.street_address_1,
-            city: data.Player.city,
-            zip: data.Player.zip,
-            gender: data.Player.gender,
-          });
-          setUserData(data.Player);
-          toast.success(data.message);
-          console.log("data messgae", data);
-        } else if (error) {
-          console.error("Error fetching user data:", error);
-          toast.error(
-            error.message || "An error occurred while fetching user data."
-          );
-        }
-      } catch (err) {
-        console.error("Unexpected Error:", err);
-        toast.error("An unexpected error occurred. Please try again.");
-      } finally {
-        // setLoading(false);
+      if (data) {
+        formik.setValues({
+          first_name: data.Player.first_name,
+          last_name: data.Player.last_name,
+          email: data.Player.email,
+          phone: data.Player.phone,
+          country: data.Player.country,
+          street_address_1: data.Player.street_address_1,
+          city: data.Player.city,
+          zip: data.Player.zip,
+          gender: data.Player.gender,
+        });
+        setUserData(data.Player);
+        // toast.success(data.message);
+        // console.log("data messgae", data);
+        setIsLoading(false);
+      } else if (error) {
+        // console.error("Error fetching user data:", error);
+        toast.error(
+          error.message || "An error occurred while fetching user data."
+        );
       }
     };
 
@@ -75,7 +68,6 @@ export const UserInfo = () => {
       // handlePassChange(data);
       toast.success(data.message);
     } else if (error) {
-      // console.error("API Request Error:", error);
       toast.error(
         error.message || "Failed to update profile. Please try again."
       );

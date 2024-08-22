@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { IoMdCopy } from "react-icons/io";
-import { Container, H2, H3, H4, H5, H6, P, UIImage } from "../../UI";
+import { Container, H2, H3, H4, H5, H6, P, UIImage, UILink } from "../../UI";
 import Modal from "./Modal";
 
 export const Bonus = ({ getBonusData }) => {
@@ -50,10 +50,18 @@ export const Bonus = ({ getBonusData }) => {
     <>
       <section>
         <Container>
-          <H2
-            name={pro("Promotions")}
-            className="text-center py-5 bg-bg-color2"
-          />
+          <div className="flex items-start gap-2 mb-5 mt-2 justify-center">
+            <H4 name=" Do you have promo code ?" className="!text-white" />
+            <UILink
+              href={`/${locale}/player-dashboard/deposit/`}
+              name="Yes"
+              className="!text-xl tab:!text-2xl !font-bold !text-blue-color"
+            />
+          </div>
+
+          <div className="text-center py-5 bg-bg-color2">
+            <H2 name={pro("Promotions")} className="" />
+          </div>
 
           <div className="mt-10 grid tab:grid-cols-2 gap-8">
             {getData.map((data) => (

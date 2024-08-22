@@ -16,7 +16,7 @@ export const HotGames = ({ getHotGamesData }) => {
   const getData = getHotGamesData.data;
 
   const { isLoggedIn } = useAuth();
-  const { fetchData } = useApi();
+  const { fetchData, isLoading } = useApi();
   const { favoriteGames } = useFavoriteGames();
   const [gameDatas, setGameData] = useState([]);
   const { loading } = useLoading();
@@ -25,8 +25,7 @@ export const HotGames = ({ getHotGamesData }) => {
   const locale = useLocale();
   const [lockByBonus, setLockByBonus] = useState(null);
 
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [activeCardId, setActiveCardId] = useState(null);
 
   // Define handleFavoriteChange
   const handleFavoriteChange = (gameId, isFavorite) => {
@@ -40,15 +39,12 @@ export const HotGames = ({ getHotGamesData }) => {
   useEffect(() => {
     const getLockData = async () => {
       if (isLoggedIn) {
-        setIsLoading(true);
         try {
           const data = await fetchLockByBonus();
           // console.log("fetchLockByBonus", data);
           setLockByBonus(data);
         } catch (err) {
-          setError(err.message || "Failed to fetch lock data");
-        } finally {
-          setIsLoading(false);
+          setError(err.message);
         }
       }
     };
@@ -59,15 +55,9 @@ export const HotGames = ({ getHotGamesData }) => {
   if (isLoading)
     return (
       <Container>
-       <div className="mt-2 m-auto text-center flex items-center justify-center">
+        <div className="mt-2 m-auto text-center flex items-center justify-center">
           <FadeLoader color="#FFF" />
         </div>
-      </Container>
-    );
-  if (error)
-    return (
-      <Container>
-        <div className="mt-2 m-auto ">Error: {error}</div>
       </Container>
     );
 
@@ -136,6 +126,8 @@ export const HotGames = ({ getHotGamesData }) => {
                         ? `/${locale}/demo-game/${gameData.slug}`
                         : ""
                     }
+                    activeCardId={activeCardId}
+                    setActiveCardId={setActiveCardId}
                   />
                 );
               })

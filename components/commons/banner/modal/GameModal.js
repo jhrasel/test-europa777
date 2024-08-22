@@ -1,9 +1,12 @@
+import SignIn from "@/components/signIn/SignIn";
+import useAuth from "@/helpers/useAuth";
 import { Button, Modal } from "antd";
 import { useState } from "react";
 import { SearchTabs } from "./Tabs";
 
 export const GameModal = ({ title, className, icon }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const { isLoggedIn } = useAuth();
   const showModal = () => {
     setIsModalOpen(true);
   };
@@ -18,15 +21,29 @@ export const GameModal = ({ title, className, icon }) => {
 
   return (
     <>
-      <Button
-        type="primary"
-        onClick={showModal}
-        className={`flex items-center justify-between gap-2 bg-[#13113A] w-full m-auto ${className}`}
-        onCancel={handleCancel}
-        footer={null}
-      >
-        {title} {icon}
-      </Button>
+      {isLoggedIn ? (
+        <Button
+          type="primary"
+          onClick={showModal}
+          className={`flex items-center justify-between gap-2 bg-[#13113A] w-full m-auto ${className}`}
+          onCancel={handleCancel}
+          footer={null}
+        >
+          {title} {icon}
+        </Button>
+      ) : (
+        <div
+          type="primary"
+          className={`flex items-center justify-between gap-2 bg-[#13113A] text-white w-full m-auto relative rounded-md py-1 px-2`}
+          footer={null}
+        >
+          {title} {icon}
+          <SignIn
+            name=""
+            className="w-full opacity-0 rounded absolute top-0 left-0 h-full"
+          />
+        </div>
+      )}
       <Modal
         open={isModalOpen}
         centered

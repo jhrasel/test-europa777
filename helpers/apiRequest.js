@@ -51,7 +51,6 @@
 
 // export default useApi;
 
-
 // export default useApi;
 
 import axios from "axios";
@@ -94,7 +93,7 @@ function useApi() {
     []
   );
 
-  return { fetchData, isLoading };
+  return { fetchData, isLoading, setIsLoading };
 }
 
 export default useApi;

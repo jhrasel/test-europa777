@@ -7,22 +7,22 @@ import { useLoading } from "@/context/LoadingContext";
 import CustomSkeleton from "@/helpers/CustomSkeleton";
 import useApi from "@/helpers/apiRequest";
 import useAuth from "@/helpers/useAuth";
+import { fetchRecentGameHistory } from "@/lib/fetchHomeAPI";
 import { fetchLockByBonus } from "@/lib/fetchLockByBonus";
 import { useLocale } from "next-intl";
 import { useEffect, useState } from "react";
 import { FadeLoader } from "react-spinners";
 
 export const RecentPalyGame = () => {
-  const { fetchData } = useApi();
+  const { fetchData, isLoading } = useApi();
   const { favoriteGames } = useFavoriteGames();
   const [gameDatas, setGameDatas] = useState([]);
   const { loading } = useLoading();
-  const { isLoggedIn, logout } = useAuth();
+  const { isLoggedIn } = useAuth();
   const locale = useLocale();
   const [lockByBonus, setLockByBonus] = useState(null);
 
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [activeCardId, setActiveCardId] = useState(null);
 
   // Define handleFavoriteChange
   const handleFavoriteChange = (gameId, isFavorite) => {
@@ -34,33 +34,15 @@ export const RecentPalyGame = () => {
   };
 
   useEffect(() => {
-    const fetchGameData = async () => {
-      const { data, error } = await fetchData(
-        "/player/getRecentGameHistory",
-        "GET"
-      );
-      if (data) {
-        // console.log("getRecentGameHistory", data.data);
-        setGameDatas(data.data.data);
-      } else if (error) {
-        console.error("Error fetching top games:", error);
-      }
-    };
-    fetchGameData();
-  }, [fetchData, favoriteGames]);
-
-  useEffect(() => {
     const getLockData = async () => {
       if (isLoggedIn) {
-        setIsLoading(true);
         try {
+          const getRecentHistory = await fetchRecentGameHistory();
+          setGameDatas(getRecentHistory.data.data);
           const data = await fetchLockByBonus();
-          // console.log("fetchLockByBonus", data);
           setLockByBonus(data);
         } catch (err) {
-          setError(err.message || "Failed to fetch lock data");
-        } finally {
-          setIsLoading(false);
+          setError(err.message);
         }
       }
     };
@@ -74,12 +56,6 @@ export const RecentPalyGame = () => {
         <div className="mt-2 m-auto text-center flex items-center justify-center">
           <FadeLoader color="#FFF" />
         </div>
-      </Container>
-    );
-  if (error)
-    return (
-      <Container>
-        <div className="mt-2 m-auto ">Error: {error}</div>
       </Container>
     );
 
@@ -150,6 +126,8 @@ export const RecentPalyGame = () => {
                             ? `/${locale}/demo-game/${gameData.slug}`
                             : ""
                         }
+                        activeCardId={activeCardId}
+                        setActiveCardId={setActiveCardId}
                       />
                     );
                   })}

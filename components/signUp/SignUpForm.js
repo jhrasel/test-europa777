@@ -13,7 +13,7 @@ import toast from "react-hot-toast";
 import PhoneInput from "react-phone-number-input";
 import "react-phone-number-input/style.css";
 import { ClockLoader } from "react-spinners";
-import { ErrorMessage, UIButton, UIInput, UILink } from "../UI";
+import { ErrorMessage, P, UIButton, UIInput, UILink } from "../UI";
 
 // Ant Select
 const onChange = (e) => {
@@ -159,6 +159,16 @@ export const SignUpForm = ({ onSignUpSuccess, defaultCountry }) => {
 
   return (
     <>
+      <div className="flex flex-col items-center justify-center gap-1 mb-1">
+        <a href={`${process.env.NEXT_PUBLIC_API_URL}/api/login/google`}>
+          <img
+            className="cursor-pointer"
+            src="https://developers.google.com/static/identity/images/branding_guideline_sample_lt_rd_lg.svg"
+          />
+        </a>
+        <P name="OR" cla />
+        {/* <span className="mt-2 font-semibold">Or</span> */}
+      </div>
       <form
         onSubmit={formik.handleSubmit}
         className="registration flex flex-col gap-2"
@@ -341,14 +351,6 @@ export const SignUpForm = ({ onSignUpSuccess, defaultCountry }) => {
             {t("Sign In")}
           </span>
         </h3>
-      </div>
-      <div className="flex justify-center mt-1">
-        <a href={`${process.env.NEXT_PUBLIC_API_URL}/api/login/google`}>
-          <img
-            className="cursor-pointer"
-            src="https://developers.google.com/static/identity/images/branding_guideline_sample_lt_rd_lg.svg"
-          />
-        </a>
       </div>
     </>
   );

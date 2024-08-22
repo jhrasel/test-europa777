@@ -72,29 +72,20 @@ export default function WeekPromotion() {
 
   useEffect(() => {
     const fetchUserData = async () => {
-      const { data, error } = await fetchData(
-        "/player/getDepositHistory",
-        "GET"
-      );
+      if (isLoggedIn) {
+        const { data, error } = await fetchData(
+          "/player/getDepositHistory",
+          "GET"
+        );
 
-      if (data && data.deposits && data.deposits.data) {
-        const count = data.deposits.data.filter(
-          (item) => item.status === "completed"
-        ).length;
-        setTotalDeposit(count);
-      } else if (error) {
-        console.error("Error fetching deposit history:", error);
-
-        // Display error notification
-        // if (error.message) {
-        //   toast.error(error.message);
-        // } else {
-        //   toast.error("An unexpected error occurred. Please try again.");
-        // }
-      } else {
-        // Handle case where response structure is not as expected
-        console.error("Invalid response structure:", data);
-        setTotalDeposit(0);
+        if (data && data?.deposits?.data) {
+          const count = data?.deposits?.data.filter(
+            (item) => item.status === "completed"
+          ).length;
+          setTotalDeposit(count);
+        } else if (error) {
+          console.error(error.message);
+        }
       }
     };
 
