@@ -66,6 +66,7 @@ export const Bonus = ({ getBonusData }) => {
               <div className="bg-bg-color2 rounded-3xl" key={data?.name}>
                 <UIImage
                   src={data.image || "/images/default-cart.jpg"}
+                  alt={data.name}
                   className="rounded-3xl !w-full object-cover"
                 />
                 <div className="p-5 flex flex-col gap-1.5">

@@ -82,6 +82,7 @@ export const Bank = () => {
           <div className="flex flex-col items-center gap-1 ">
             <UIImage
               src="/images/bank-img/bank.png"
+              alt='deposit'
               className="!w-auto !h-10 tab:!h-16 object-cover"
             />
             <div className="">

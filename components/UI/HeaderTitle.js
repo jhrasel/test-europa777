@@ -13,6 +13,7 @@ export const HeaderTitle = ({ image, title, href }) => {
           {image && (
             <UIImage
               src={image}
+              alt="header"
               className="!w-[30px] laptop:!w-[35px] h-[30px] laptop:h-[35px]"
             />
           )}

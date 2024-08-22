@@ -54,6 +54,7 @@ export const DepositData = (country) => {
           <div className="flex items-center gap-2 h-full">
             <UIImage
               src="/images/bank-img/interac.png"
+              alt="deposit"
               className="!w-full !h-full !object-contain"
             />
             {/* <P name="Interac" className="!text-bg-color2" /> */}
@@ -66,6 +67,7 @@ export const DepositData = (country) => {
         label: (
           <UIImage
             src="/images/bank-img/mastercard.png"
+            alt="deposit"
             className="!w-full !h-full !object-contain"
           />
         ),
@@ -76,6 +78,7 @@ export const DepositData = (country) => {
         label: (
           <UIImage
             src="/images/bank-img/visa.png"
+            alt="deposit"
             className="!w-full !h-full !object-contain"
           />
         ),
@@ -86,6 +89,7 @@ export const DepositData = (country) => {
         label: (
           <UIImage
             src="/images/bank-img/g-pay.png"
+            alt="deposit"
             className="!w-full !h-full !object-contain"
           />
         ),
@@ -96,6 +100,7 @@ export const DepositData = (country) => {
         label: (
           <UIImage
             src="/images/bank-img/a-pay.png"
+            alt="deposit"
             className="!w-full !h-full !object-contain"
           />
         ),
@@ -106,6 +111,7 @@ export const DepositData = (country) => {
         label: (
           <UIImage
             src="/images/bank-img/bitcoin.png"
+            alt="deposit"
             className="!w-full !h-full !object-contain"
           />
         ),
@@ -126,6 +132,7 @@ export const DepositData = (country) => {
         label: (
           <UIImage
             src="/images/bank-img/ltc.png"
+            alt="deposit"
             className="!w-full !h-full !object-contain"
           />
         ),
@@ -136,6 +143,7 @@ export const DepositData = (country) => {
         label: (
           <UIImage
             src="/images/bank-img/bch.png"
+            alt="deposit"
             className="!w-full !h-full !object-contain"
           />
         ),
@@ -146,6 +154,7 @@ export const DepositData = (country) => {
         label: (
           <UIImage
             src="/images/bank-img/flexepin.png"
+            alt="deposit"
             className="!w-full !h-full !object-contain"
           />
         ),
@@ -160,6 +169,7 @@ export const DepositData = (country) => {
         label: (
           <UIImage
             src="/images/bank-img/mastercard.png"
+            alt="deposit"
             className="!w-full !h-full !object-contain"
           />
         ),
@@ -170,6 +180,7 @@ export const DepositData = (country) => {
         label: (
           <UIImage
             src="/images/bank-img/visa.png"
+            alt="deposit"
             className="!w-full !h-full !object-contain"
           />
         ),
@@ -180,6 +191,7 @@ export const DepositData = (country) => {
         label: (
           <UIImage
             src="/images/bank-img/g-pay.png"
+            alt="deposit"
             className="!w-full !h-full !object-contain"
           />
         ),
@@ -190,6 +202,7 @@ export const DepositData = (country) => {
         label: (
           <UIImage
             src="/images/bank-img/a-pay.png"
+            alt="deposit"
             className="!w-full !h-full !object-contain"
           />
         ),
@@ -200,6 +213,7 @@ export const DepositData = (country) => {
         label: (
           <UIImage
             src="/images/bank-img/bitcoin.png"
+            alt="deposit"
             className="!w-full !h-full !object-contain"
           />
         ),
@@ -220,6 +234,7 @@ export const DepositData = (country) => {
         label: (
           <UIImage
             src="/images/bank-img/ltc.png"
+            alt="deposit"
             className="!w-full !h-full !object-contain"
           />
         ),
@@ -230,6 +245,7 @@ export const DepositData = (country) => {
         label: (
           <UIImage
             src="/images/bank-img/bch.png"
+            alt="deposit"
             className="!w-full !h-full !object-contain"
           />
         ),
@@ -240,6 +256,7 @@ export const DepositData = (country) => {
         label: (
           <UIImage
             src="/images/bank-img/flexepin.png"
+            alt="deposit"
             className="!w-full !h-full !object-contain"
           />
         ),
@@ -253,6 +270,7 @@ export const DepositData = (country) => {
         label: (
           <UIImage
             src="/images/bank-img/bitcoin.png"
+            alt="deposit"
             className="!w-full !h-full !object-contain"
           />
         ),
@@ -273,6 +291,7 @@ export const DepositData = (country) => {
         label: (
           <UIImage
             src="/images/bank-img/ltc.png"
+            alt="deposit"
             className="!w-full !h-full !object-contain"
           />
         ),
@@ -283,6 +302,7 @@ export const DepositData = (country) => {
         label: (
           <UIImage
             src="/images/bank-img/bch.png"
+            alt="deposit"
             className="!w-full !h-full !object-contain"
           />
         ),
@@ -293,6 +313,7 @@ export const DepositData = (country) => {
         label: (
           <UIImage
             src="/images/bank-img/flexepin.png"
+            alt="deposit"
             className="!w-full !h-full !object-contain"
           />
         ),

@@ -32,6 +32,8 @@ const Banner = () => {
                       <>
                         <UIImage
                           src={data.images}
+                          width="1920"
+                          height="500"
                           alt="banner"
                           className="w-full tab:h-full object-cover rounded-3xl"
                         />
@@ -49,6 +51,7 @@ const Banner = () => {
                   <>
                     <UIImage
                       src="/images/banner/join-now.png"
+                      alt="join"
                       className="!w-[250px] !h-auto"
                     />
                   </>
@@ -84,6 +87,7 @@ const Banner = () => {
                   <>
                     <UIImage
                       src="/images/banner/join-now.png"
+                      alt="join"
                       className=" !w-[180px] tab:!w-[250px] !h-auto"
                     />
                   </>

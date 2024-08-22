@@ -211,6 +211,7 @@ gap-1 tab:gap-3"
                 <UIImage
                   src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' +
                   qr_prefix + ':' + response.data.data.pay_address + '&amp;choe=UTF-8`}
+                  alt="qr"
                   className="!w-28 !h-28 rounded-md"
                 />
                 <div className="flex gap-2 mt-2">

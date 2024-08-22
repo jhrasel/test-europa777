@@ -52,6 +52,7 @@ export default function GameWinner({ getGameWinnerData }) {
                           <div className="">
                             <UIImage
                               src={winner.thumbnail}
+                              alt={winner.username}
                               className="!w-16 !h-16 rounded-lg"
                             />
                           </div>

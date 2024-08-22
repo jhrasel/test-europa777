@@ -71,6 +71,7 @@ export default function AfterLoginVIP() {
                     <div className="tab:w-[25%] py-6">
                       <UIImage
                         src={data.image}
+                        alt="img"
                         className="!w-[50%] m-auto tab:!w-full !h-auto"
                       />
                     </div>

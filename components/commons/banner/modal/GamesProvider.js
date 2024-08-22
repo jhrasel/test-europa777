@@ -1,9 +1,10 @@
 "use client";
 
-import { List, ListItem, P, UIImage, UIInput, UILink } from "@/components/UI";
+import { List, ListItem, P, UIInput, UILink } from "@/components/UI";
 import { useLoading } from "@/context/LoadingContext";
 import useApi from "@/helpers/apiRequest";
 import { useLocale, useTranslations } from "next-intl";
+import Image from "next/image";
 import { useEffect, useState } from "react";
 
 export const GamesProvider = ({ closeModal }) => {
@@ -58,9 +59,13 @@ export const GamesProvider = ({ closeModal }) => {
                   href={`/${locale}/provider-games/${game.name}`}
                   className="w-full bg-bg-color3 p-5 hover:bg-bg-color2 rounded-lg !flex-col pb-2 capitalize"
                   icon={
-                    <UIImage
+                    <Image
+                      width={300}
+                      height={300}
                       src={game.logo || "/images/default-cart.jpg"}
-                      className="!h-14 !w-full rounded-lg object-contain mb-2"
+                      className="w-full h-14 rounded-lg object-contain mb-2"
+                      alt={game.name}
+                      quality={60}
                     />
                   }
                   name={

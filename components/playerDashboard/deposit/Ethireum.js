@@ -120,6 +120,7 @@ export const Ethireum = () => {
           <UIImage
             src="/images/bank-img/ethereum.png"
             className="!w-16 tab:!w-32 !h-auto object-cover"
+            alt='deposit'
           />
           <H4
             name={`Min: 10 ${balance.currency}`}
