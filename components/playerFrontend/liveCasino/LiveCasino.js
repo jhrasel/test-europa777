@@ -12,8 +12,8 @@ import { useLocale, useTranslations } from "next-intl";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { FadeLoader } from "react-spinners";
 
-export const LiveCasinoHomePage = ({ getLiveCasinoData }) => {
-  const getData = getLiveCasinoData.data;
+export const LiveCasinoHomePage = ({ gethHomePageGames }) => {
+  const getData = gethHomePageGames.data.liveGames;
 
   const { fetchData, isLoading } = useApi();
   const { favoriteGames } = useFavoriteGames();

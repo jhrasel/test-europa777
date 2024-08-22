@@ -2,31 +2,20 @@
 
 import Banner from "@/components/commons/banner/Banner";
 import { Home } from "@/components/playerFrontend";
-import {
-  fetchAllGameProviders,
-  fetchGameWinner,
-  fetchHotGames,
-  fetchLiveCasinoGames,
-  fetchTopGames,
-} from "@/lib/fetchHomeAPI";
+import { fetchGameWinner, fetchHomePageGames } from "@/lib/fetchHomeAPI";
 
 const Page = async () => {
-  const getTopGamesData = await fetchTopGames();
-  const getHotGamesData = await fetchHotGames();
-  const getLiveCasinoData = await fetchLiveCasinoGames();
+  const gethHomePageGames = await fetchHomePageGames();
+
   const getGameWinnerData = await fetchGameWinner();
-  const getAllGameProvidersData = await fetchAllGameProviders();
 
   return (
     <>
       <Banner />
 
       <Home
-        getTopGamesData={getTopGamesData}
-        getHotGamesData={getHotGamesData}
-        getLiveCasinoData={getLiveCasinoData}
+        gethHomePageGames={gethHomePageGames}
         getGameWinnerData={getGameWinnerData}
-        getAllGameProvidersData={getAllGameProvidersData}
       />
     </>
   );

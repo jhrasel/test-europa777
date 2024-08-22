@@ -2,8 +2,8 @@
 import { Container, H3, HeaderTitle, UIImage, UILink } from "@/components/UI";
 import { useLocale, useTranslations } from "next-intl";
 
-export const AllProviders = ({ getAllGameProvidersData }) => {
-  const getData = getAllGameProvidersData.data;
+export const AllProviders = ({ gethHomePageGames }) => {
+  const getData = gethHomePageGames.data.gameProviders;
 
   const t = useTranslations("HomePage");
   const locale = useLocale();

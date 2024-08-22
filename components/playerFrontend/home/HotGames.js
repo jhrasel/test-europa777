@@ -12,8 +12,8 @@ import { useLocale, useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 import { FadeLoader } from "react-spinners";
 
-export const HotGames = ({ getHotGamesData }) => {
-  const getData = getHotGamesData.data;
+export const HotGames = ({ gethHomePageGames }) => {
+  const getData = gethHomePageGames.data.hotGames;
 
   const { isLoggedIn } = useAuth();
   const { fetchData, isLoading } = useApi();

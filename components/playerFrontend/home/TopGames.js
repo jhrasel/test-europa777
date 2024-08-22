@@ -14,8 +14,9 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { FadeLoader } from "react-spinners";
 
-export const TopGames = ({ getTopGamesData }) => {
-  const getData = getTopGamesData.data;
+export const TopGames = ({ gethHomePageGames }) => {
+
+  const getData = gethHomePageGames.data.topGames;
 
   const { isLoggedIn } = useAuth();
   const { fetchData, isLoading } = useApi();

@@ -5,7 +5,6 @@ import { useLoading } from "@/context/LoadingContext";
 import useApi from "@/helpers/apiRequest";
 import { useLocale, useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
-import toast from "react-hot-toast";
 
 export const GamesProvider = ({ closeModal }) => {
   const { fetchData } = useApi();
@@ -24,7 +23,6 @@ export const GamesProvider = ({ closeModal }) => {
       if (data) {
         setGameData(data.data);
       } else if (error) {
-       
       }
     };
 

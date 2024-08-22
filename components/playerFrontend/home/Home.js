@@ -11,11 +11,11 @@ import { TopGames } from "./TopGames";
 import { WelcomeBonus } from "./WelcomeBonus";
 
 export const Home = ({
-  getTopGamesData,
-  getHotGamesData,
   getLiveCasinoData,
   getGameWinnerData,
   getAllGameProvidersData,
+
+  gethHomePageGames,
 }) => {
   // console.log("getTopGamesData", getTopGamesData);
   return (
@@ -34,12 +34,12 @@ export const Home = ({
 
       <Suspense
         fallback={
-          <h3 className="flex items-center gap-2 text-white">
+          <h3 className="flex items-center gap-2 text-white my-2">
             <FadeLoader color="#FFF" />
           </h3>
         }
       >
-        <TopGames getTopGamesData={getTopGamesData} />
+        <TopGames gethHomePageGames={gethHomePageGames} />
       </Suspense>
 
       <WelcomeBonus />
@@ -51,7 +51,7 @@ export const Home = ({
           </h3>
         }
       >
-        <LiveCasinoHomePage getLiveCasinoData={getLiveCasinoData} />
+        <LiveCasinoHomePage gethHomePageGames={gethHomePageGames} />
       </Suspense>
 
       <BonusPromotion />
@@ -63,7 +63,7 @@ export const Home = ({
           </h3>
         }
       >
-        <HotGames getHotGamesData={getHotGamesData} />
+        <HotGames gethHomePageGames={gethHomePageGames} />
       </Suspense>
 
       <Suspense
@@ -73,7 +73,7 @@ export const Home = ({
           </h3>
         }
       >
-        <AllProviders getAllGameProvidersData={getAllGameProvidersData} />
+        <AllProviders gethHomePageGames={gethHomePageGames} />
       </Suspense>
     </>
   );
