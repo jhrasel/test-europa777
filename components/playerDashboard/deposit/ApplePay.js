@@ -9,6 +9,7 @@ import { useTranslations } from "next-intl";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import PromoCodeInput from "./PromoCodeInput";
+import { ProfileUpdateModal } from "../profile/ProfileUpdateModal";
 
 export const ApplePay = ({ country }) => {
   const [depositAmount, setDepositAmount] = useState(25);
@@ -18,6 +19,7 @@ export const ApplePay = ({ country }) => {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const t = useTranslations("playerDashboardPage");
+  const [needProfileUpdate, setNeedProfileUpdate] = useState(false);
 
   const showModal = () => {
     setIsModalOpen(true);
@@ -66,7 +68,7 @@ export const ApplePay = ({ country }) => {
   // submit Form
   const handleSubmit = async (values) => {
     values.deposit_amount = depositAmount.toString();
-    const { data, error } = await fetchData(
+    const { data, status, error } = await fetchData(
       "/player/makeDeposit",
       "POST",
       values
@@ -75,10 +77,13 @@ export const ApplePay = ({ country }) => {
     if (data) {
       handleResponse(data);
     } else if (error) {
-      if (error.message) {
-        toast.error(error.message);
+      if (status === 422) {
+        setNeedProfileUpdate(true);
       } else {
-        toast.error("An unexpected error occurred. Please try again.");
+        console.error("API Request Error:", error);
+        toast.error(
+          error.message || "An unexpected error occurred. Please try again."
+        );
       }
     }
   };
@@ -155,6 +160,10 @@ gap-1 tab:gap-3"
             </div>
           </div>
         </form>
+        <ProfileUpdateModal
+          openModal={needProfileUpdate}
+          handleModal={setNeedProfileUpdate}
+        />
       </div>
     </>
   );

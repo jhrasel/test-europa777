@@ -80,10 +80,14 @@ function useApi() {
 
         const response = await axios(url, options);
         const responseData = response.data;
-        return { data: responseData, error: null };
+        const status = response.status;
+
+        return { data: responseData, status, error: null };
       } catch (error) {
+        const status = error.response ? error.response.status : null;
         return {
           data: null,
+          status,
           error: error.response ? error.response.data : error,
         };
       } finally {

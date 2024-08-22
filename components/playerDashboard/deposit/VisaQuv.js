@@ -7,11 +7,13 @@ import useBalance from "@/hook/useBalance";
 import { useFormik } from "formik";
 import { useState } from "react";
 import toast from "react-hot-toast";
+import { ProfileUpdateModal } from "../profile/ProfileUpdateModal";
 import PromoCodeInput from "./PromoCodeInput";
 
 export const VisaQuv = ({ country }) => {
   const [depositAmount, setDepositAmount] = useState(25);
   const { fetchData, error, isLoading } = useApi();
+  const [needProfileUpdate, setNeedProfileUpdate] = useState(false);
 
   const handleButtonClick = (amount) => {
     setDepositAmount(amount);
@@ -92,7 +94,7 @@ export const VisaQuv = ({ country }) => {
   const handleSubmit = async (values) => {
     values.deposit_amount = depositAmount.toString();
 
-    const { data, error } = await fetchData(
+    const { data, status, error } = await fetchData(
       "/player/makeDeposit",
       "POST",
       values
@@ -101,7 +103,14 @@ export const VisaQuv = ({ country }) => {
     if (data) {
       handleResponse(data);
     } else if (error) {
-      toast.error(error.message);
+      if (status === 422) {
+        setNeedProfileUpdate(true);
+      } else {
+        console.error("API Request Error:", error);
+        toast.error(
+          error.message || "An unexpected error occurred. Please try again."
+        );
+      }
     }
   };
 
@@ -178,6 +187,10 @@ gap-1 tab:gap-3"
             </div>
           </div>
         </form>
+        <ProfileUpdateModal
+          openModal={needProfileUpdate}
+          handleModal={setNeedProfileUpdate}
+        />
       </div>
     </>
   );

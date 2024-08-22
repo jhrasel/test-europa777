@@ -8,12 +8,14 @@ import { useFormik } from "formik";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import PromoCodeInput from "./PromoCodeInput";
+import { ProfileUpdateModal } from "../profile/ProfileUpdateModal";
 
 export const Interac = () => {
   const [depositAmount, setDepositAmount] = useState(25);
   const { fetchData, isLoading } = useApi();
   const [showModalData, setShowModalData] = useState({});
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [needProfileUpdate, setNeedProfileUpdate] = useState(false);
 
   const showModal = () => {
     setIsModalOpen(true);
@@ -50,7 +52,7 @@ export const Interac = () => {
   const handleSubmit = async (values) => {
     values.deposit_amount = depositAmount.toString();
 
-    const { data, error } = await fetchData(
+    const { data, status, error } = await fetchData(
       "/player/makeDeposit",
       "POST",
       values
@@ -59,7 +61,14 @@ export const Interac = () => {
     if (data) {
       handleResponse(data);
     } else if (error) {
-      toast.error(error.message);
+      if (status === 422) {
+        setNeedProfileUpdate(true);
+      } else {
+        console.error("API Request Error:", error);
+        toast.error(
+          error.message || "An unexpected error occurred. Please try again."
+        );
+      }
     }
   };
 
@@ -138,6 +147,10 @@ gap-1 tab:gap-3"
             </div>
           </div>
         </form>
+        <ProfileUpdateModal
+          openModal={needProfileUpdate}
+          handleModal={setNeedProfileUpdate}
+        />
       </div>
     </>
   );

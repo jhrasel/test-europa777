@@ -71,7 +71,7 @@ export const MasterCard = ({ country }) => {
     values.deposit_amount = depositAmount.toString();
 
     try {
-      const { data, error } = await fetchData(
+      const { data, status, error } = await fetchData(
         "/player/makeDeposit",
         "POST",
         values
@@ -80,16 +80,18 @@ export const MasterCard = ({ country }) => {
       if (data) {
         handleResponse(data);
       } else if (error) {
-        if (error.status === 422) {
+        if (status === 422) {
           setNeedProfileUpdate(true);
-        } else if (error.status === 401) {
-          router.push(`/${locale}/player-dashboard/varification`);
         } else {
           console.error("API Request Error:", error);
           toast.error(
             error.message || "An unexpected error occurred. Please try again."
           );
         }
+
+        // else if (status === 401) {
+        //   router.push(`/${locale}/player-dashboard/verification`);
+        // }
       }
     } catch (err) {
       console.error("Unexpected Error:", err);

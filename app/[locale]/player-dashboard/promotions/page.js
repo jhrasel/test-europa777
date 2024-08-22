@@ -1,9 +1,11 @@
 import { Bonus } from "@/components/playerFrontend";
+import { fetchBonus } from "@/lib/fetchBonusAPI";
 
-export default function Page() {
+export default async function Page() {
+  const getBonusData = await fetchBonus();
   return (
     <section className="promotion-db-page">
-      <Bonus />
+      <Bonus getBonusData={getBonusData} />
     </section>
   );
 }

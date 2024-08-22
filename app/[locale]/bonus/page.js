@@ -7,6 +7,7 @@ export const metadata = {
 
 const BonusPage = async () => {
   const getBonusData = await fetchBonus();
+
   return (
     <>
       <Bonus getBonusData={getBonusData} />

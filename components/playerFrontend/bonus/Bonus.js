@@ -10,8 +10,6 @@ import { Container, H2, H3, H4, H5, H6, P, UIImage, UILink } from "../../UI";
 import Modal from "./Modal";
 
 export const Bonus = ({ getBonusData }) => {
-  console.log("getBonusData", getBonusData);
-
   const getData = getBonusData.data;
 
   const { loading } = useLoading();
