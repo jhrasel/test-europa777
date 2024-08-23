@@ -36,7 +36,7 @@ const Banner = () => {
                           height="500"
                           alt="banner"
                           className="w-full tab:h-full object-cover rounded-3xl"
-                          quality={50}
+                          quality={45}
                         />
                       </>
                     )}
@@ -54,7 +54,7 @@ const Banner = () => {
                       src="/images/banner/join-now.png"
                       alt="join"
                       className="!w-[250px] !h-auto"
-                      quality={50}
+                      quality={45}
                     />
                   </>
                 )}
@@ -76,7 +76,7 @@ const Banner = () => {
                           height="500"
                           alt="banner"
                           className="w-full tab:h-full object-cover rounded-3xl"
-                          quality={50}
+                          quality={45}
                         />
                       </>
                     )}
@@ -94,7 +94,7 @@ const Banner = () => {
                       src="/images/banner/join-now.png"
                       alt="join"
                       className=" !w-[150px] !h-auto"
-                      quality={50}
+                      quality={45}
                     />
                   </>
                 )}
