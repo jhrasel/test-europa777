@@ -1,6 +1,7 @@
 "use client";
 
 import { Card } from "@/components/UI";
+import CustomSkeleton from "@/helpers/CustomSkeleton";
 import useApi from "@/helpers/apiRequest";
 import { Tabs } from "antd";
 import { useEffect, useState } from "react";
@@ -10,6 +11,7 @@ export const Deposit = () => {
   const { fetchData } = useApi();
   const [items, setItems] = useState([]);
   const [activeKey, setActiveKey] = useState("1");
+  const [isLoading, setIsLoading] = useState(false);
 
   const onChange = (key) => {
     setActiveKey(key);
@@ -31,10 +33,13 @@ export const Deposit = () => {
   return (
     <>
       <section className="custom-tabs">
-        <Card className="!p-3 tab:!p-5">
-          <Tabs defaultActiveKey="1" items={items} onChange={onChange} />
-        </Card>
-        {/* <DepositHistory /> */}
+        {isLoading ? (
+          <CustomSkeleton hasImage={true} hasText={true} />
+        ) : (
+          <Card className="!p-3 tab:!p-5">
+            <Tabs defaultActiveKey="1" items={items} onChange={onChange} />
+          </Card>
+        )}
       </section>
     </>
   );

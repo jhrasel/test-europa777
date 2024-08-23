@@ -97,15 +97,6 @@ export const Slots = () => {
     getLockData();
   }, [isLoggedIn]);
 
-  // if (isLoading)
-  //   return (
-  //     <Container>
-  //       <div className="mt-2 m-auto text-center flex items-center justify-center">
-  //         <FadeLoader color="#FFF" />
-  //       </div>
-  //     </Container>
-  //   );
-
   const renderLink = (gameData) => {
     const isNoDepositBonus = lockByBonus?.promotion_type === "noDepositBonus";
     const isAkaPovProvider = gameData?.api_provider === "Akapov";

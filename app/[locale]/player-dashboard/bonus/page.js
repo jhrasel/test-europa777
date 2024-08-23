@@ -1,11 +1,9 @@
 import { BounsDB } from "@/components/playerDashboard";
 
-const page = () => {
+export default async function DashboardBonus() {
   return (
     <>
       <BounsDB />
     </>
   );
-};
-
-export default page;
+}

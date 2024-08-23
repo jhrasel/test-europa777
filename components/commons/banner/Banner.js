@@ -36,6 +36,7 @@ const Banner = () => {
                           height="500"
                           alt="banner"
                           className="w-full tab:h-full object-cover rounded-3xl"
+                          quality={50}
                         />
                       </>
                     )}
@@ -53,6 +54,7 @@ const Banner = () => {
                       src="/images/banner/join-now.png"
                       alt="join"
                       className="!w-[250px] !h-auto"
+                      quality={50}
                     />
                   </>
                 )}
@@ -70,10 +72,11 @@ const Banner = () => {
                       <>
                         <UIImage
                           src={data.images}
-                          width="600"
-                          height="600"
+                          width="500"
+                          height="500"
                           alt="banner"
                           className="w-full tab:h-full object-cover rounded-3xl"
+                          quality={50}
                         />
                       </>
                     )}
@@ -90,16 +93,13 @@ const Banner = () => {
                     <UIImage
                       src="/images/banner/join-now.png"
                       alt="join"
-                      className=" !w-[180px] tab:!w-[250px] !h-auto"
+                      className=" !w-[150px] !h-auto"
+                      quality={50}
                     />
                   </>
                 )}
               </div>
             </div>
-            {/* <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center z-1">
-              <LottieAnimation animationData={animationData} loop={true} />
-            </div> */}
-            {/* GameName */}
             <GameName />
           </div>
         </Container>

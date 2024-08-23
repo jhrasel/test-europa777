@@ -10,7 +10,7 @@ import toast from "react-hot-toast";
 
 export const ActiveBonusData = () => {
   const [data, setData] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const t = useTranslations("tableData");
@@ -30,11 +30,11 @@ export const ActiveBonusData = () => {
   const tableTdStyle =
     "mob:w-[120px] text-center border-b border-gray-50 p-3 text-sm font-normal text-white capitalize";
 
-  const fetchUserData = async () => {
+  const getFetchData = async () => {
     setIsLoading(true);
     try {
       const data = await fetchActiveBonusAPI();
-      // console.log("data.activeBonus.data", data.activeBonus.data);
+      console.log(data.activeBonus.data);
       setData(data.activeBonus.data);
       setTotalPages(Math.ceil(data.activeBonus.total / pageSize));
     } catch (error) {
@@ -48,96 +48,91 @@ export const ActiveBonusData = () => {
   };
 
   useEffect(() => {
-    fetchUserData();
+    getFetchData();
   }, [currentPage]);
 
   let serialNumber = (currentPage - 1) * pageSize;
 
   return (
-    <>
-      <section>
-        <Card className="overflow-x-auto">
-          <H4
-            name={t("activeBonus")}
-            className="!text-indigo-500 text-center mb-5"
-          />
+    <section>
+      <Card className="overflow-x-auto">
+        <H4
+          name={t("activeBonus")}
+          className="!text-indigo-500 text-center mb-5"
+        />
 
-          <div className="w-full overflow-x-auto">
-            {isLoading ? (
-              <CustomSkeleton hasImage={true} hasText={true} />
-            ) : (
-              <table className="table-fixed w-full">
-                <thead>
-                  <tr className="bg-[#ececec]">
-                    {TableHead?.map((data, i) => (
-                      <th
-                        key={i}
-                        className="p-3 text-base font-bold first:text-left md:text-center mob:w-[120px] first:mob:w-[50px]"
-                      >
-                        {data}
-                      </th>
+        <div className="w-full overflow-x-auto">
+          {isLoading ? (
+            <CustomSkeleton hasImage={true} hasText={true} />
+          ) : (
+            <table className="table-fixed w-full">
+              <thead>
+                <tr className="bg-[#ececec]">
+                  {TableHead?.map((header, i) => (
+                    <th
+                      key={i}
+                      className="p-3 text-base font-bold first:text-left md:text-center mob:w-[120px] first:mob:w-[50px]"
+                    >
+                      {header}
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {data.length > 0 ? (
+                  <>
+                    {data.map((depositData) => (
+                      <tr key={depositData.id}>
+                        <td
+                          className={`${tableTdStyle} text-left md:text-center first:mob:w-[50px]`}
+                        >
+                          {++serialNumber}
+                        </td>
+                        <td className={`${tableTdStyle} md:text-center`}>
+                          {depositData.amount}
+                        </td>
+                        <td className={`${tableTdStyle} md:text-center`}>
+                          {depositData.currency}
+                        </td>
+                        <td className={`${tableTdStyle} md:text-center`}>
+                          {depositData.wager}
+                        </td>
+                        <td className={`${tableTdStyle} md:text-center`}>
+                          {depositData.wagered}
+                        </td>
+                        <td className={`${tableTdStyle} md:text-center`}>
+                          {depositData.status}
+                        </td>
+                        <td
+                          className={`${tableTdStyle} text-right md:text-center`}
+                        >
+                          {depositData.created_at}
+                        </td>
+                      </tr>
                     ))}
+                  </>
+                ) : (
+                  <tr>
+                    <td colSpan={TableHead.length} className="text-center p-4">
+                      <Empty description="No data available" />
+                    </td>
                   </tr>
-                </thead>
-                <tbody>
-                  {data.length > 0 ? (
-                    <>
-                      {data.map((depositData) => (
-                        <tr key={depositData.id}>
-                          <td
-                            className={`${tableTdStyle} text-left md:text-center first:mob:w-[50px]`}
-                          >
-                            {++serialNumber}
-                          </td>
-                          <td className={`${tableTdStyle} md:text-center`}>
-                            {depositData.amount}
-                          </td>
-                          <td className={`${tableTdStyle} md:text-center`}>
-                            {depositData.currency}
-                          </td>
-                          <td className={`${tableTdStyle} md:text-center`}>
-                            {depositData.wager}
-                          </td>
-                          <td className={`${tableTdStyle} md:text-center`}>
-                            {depositData.wagered}
-                          </td>
-                          <td className={`${tableTdStyle} md:text-center`}>
-                            {depositData.status}
-                          </td>
-                          <td
-                            className={`${tableTdStyle} text-right md:text-center`}
-                          >
-                            {depositData.created_at}
-                          </td>
-                        </tr>
-                      ))}
-                    </>
-                  ) : (
-                    <tr>
-                      <td
-                        colSpan={TableHead.length}
-                        className="text-center p-4"
-                      >
-                        <Empty description="No data available" />
-                      </td>
-                    </tr>
-                  )}
-                </tbody>
-              </table>
-            )}
-          </div>
+                )}
+              </tbody>
+            </table>
+          )}
+        </div>
 
-          {/* pagination */}
-          <div className="text-right mt-5">
-            <Pagination
-              current={currentPage}
-              pageSize={pageSize}
-              total={totalPages * pageSize}
-              onChange={(page) => setCurrentPage(page)}
-            />
-          </div>
-        </Card>
-      </section>
-    </>
+        {/* Pagination */}
+        <div className="text-right mt-5">
+          <Pagination
+            current={currentPage}
+            pageSize={pageSize}
+            total={totalPages * pageSize}
+            onChange={(page) => setCurrentPage(page)}
+          />
+        </div>
+      </Card>
+    </section>
   );
 };

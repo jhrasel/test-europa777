@@ -34,16 +34,18 @@ const PromoCodeComponent = ({
   };
 
   const validatePromoCode = async (code) => {
-    const { data } = await fetchData("/player/addPromoCode", "POST", {
+    const { data, error } = await fetchData("/player/addPromoCode", "POST", {
       code,
     });
 
     if (data && data.success) {
       toast.success(message);
       await fetchPromoCodeDetails();
-    } else if (data) {
-      // console.log("data dsdsds", data);
-      toast.error(data.message);
+    } else if (error) {
+      console.error("API Request Error:", error);
+      toast.error(
+        error.message || "An unexpected error occurred. Please try again."
+      );
     }
   };
 
@@ -71,7 +73,10 @@ const PromoCodeComponent = ({
       toast.success(data.message);
       await fetchPromoCodeDetails();
     } else {
-      toast.error(data.message);
+      console.error("API Request Error:", error);
+      toast.error(
+        error.message || "An unexpected error occurred. Please try again."
+      );
     }
   };
 

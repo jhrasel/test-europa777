@@ -10,7 +10,6 @@ import { fetchLockByBonus } from "@/lib/fetchLockByBonus";
 import { Empty } from "antd";
 import { useLocale, useTranslations } from "next-intl";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { FadeLoader } from "react-spinners";
 
 export const LiveCasinoHomePage = ({ gethHomePageGames }) => {
   const getData = gethHomePageGames.data.liveGames;
@@ -44,22 +43,13 @@ export const LiveCasinoHomePage = ({ gethHomePageGames }) => {
           // console.log("fetchLockByBonus", data);
           setLockByBonus(data);
         } catch (err) {
-          setError(err.message);
+          // setError(err.message);
         }
       }
     };
 
     getLockData();
   }, [isLoggedIn]);
-
-  if (isLoading)
-    return (
-      <Container>
-        <div className="mt-2 m-auto text-center flex items-center justify-center">
-          <FadeLoader color="#FFF" />
-        </div>
-      </Container>
-    );
 
   const renderLink = (gameData) => {
     const isNoDepositBonus = lockByBonus?.promotion_type === "noDepositBonus";
@@ -203,22 +193,13 @@ export const LiveCasino = () => {
           // console.log("fetchLockByBonus", data);
           setLockByBonus(data);
         } catch (err) {
-          setError(err.message);
+          // setError(err.message);
         }
       }
     };
 
     getLockData();
   }, [isLoggedIn]);
-
-  if (isLoading)
-    return (
-      <Container>
-        <div className="mt-2 m-auto text-center flex items-center justify-center">
-          <FadeLoader color="#FFF" />
-        </div>
-      </Container>
-    );
 
   const renderLink = (gameData) => {
     const isNoDepositBonus = lockByBonus?.promotion_type === "noDepositBonus";

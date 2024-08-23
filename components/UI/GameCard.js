@@ -2,7 +2,6 @@
 
 import { useFavoriteGames } from "@/context/FavoriteGamesContext";
 import { useLoading } from "@/context/LoadingContext";
-import CustomSkeleton from "@/helpers/CustomSkeleton";
 import useApi from "@/helpers/apiRequest";
 import useAuth from "@/helpers/useAuth";
 import toast from "react-hot-toast";
@@ -71,10 +70,13 @@ export const GameCard = ({
         className="rounded-lg bg-bg-color3 group transition duration-500 ease-out hover:translate-y-[-3px]"
       >
         <div className="rounded-lg relative">
-          {loading && <CustomSkeleton hasImage={true} hasText={true} />}
+          {/* {loading && <CustomSkeleton hasImage={true} hasText={true} />} */}
           {!loading && (
             <UIImage
               src={image}
+              width={200}
+              height={200}
+              quality={60}
               className="rounded-lg !w-full !h-[175px] tab:!h-[180px] group-hover:blur-sm"
               alt="Game-img"
             />

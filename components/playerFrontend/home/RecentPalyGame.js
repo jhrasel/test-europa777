@@ -11,7 +11,6 @@ import { fetchRecentGameHistory } from "@/lib/fetchHomeAPI";
 import { fetchLockByBonus } from "@/lib/fetchLockByBonus";
 import { useLocale } from "next-intl";
 import { useEffect, useState } from "react";
-import { FadeLoader } from "react-spinners";
 
 export const RecentPalyGame = () => {
   const { fetchData, isLoading } = useApi();
@@ -42,22 +41,13 @@ export const RecentPalyGame = () => {
           const data = await fetchLockByBonus();
           setLockByBonus(data);
         } catch (err) {
-          setError(err.message);
+          // setError(err.message);
         }
       }
     };
 
     getLockData();
   }, [isLoggedIn]);
-
-  if (isLoading)
-    return (
-      <Container>
-        <div className="mt-2 m-auto text-center flex items-center justify-center">
-          <FadeLoader color="#FFF" />
-        </div>
-      </Container>
-    );
 
   const renderLink = (gameData) => {
     const isNoDepositBonus = lockByBonus?.promotion_type === "noDepositBonus";
