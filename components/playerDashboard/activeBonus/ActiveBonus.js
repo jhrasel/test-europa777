@@ -2,7 +2,7 @@
 
 import { Card, H4 } from "@/components/UI";
 import CustomSkeleton from "@/helpers/CustomSkeleton";
-import useApi from "@/helpers/apiRequest";
+import { fetchActiveBonusAPI } from "@/lib/fetchActiveBonusAPI";
 import { Empty, Pagination } from "antd";
 import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
@@ -10,7 +10,7 @@ import toast from "react-hot-toast";
 
 export const ActiveBonusData = () => {
   const [data, setData] = useState([]);
-  const { fetchData, isLoading, setIsLoading } = useApi();
+  const [isLoading, setIsLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const t = useTranslations("tableData");
@@ -31,23 +31,25 @@ export const ActiveBonusData = () => {
     "mob:w-[120px] text-center border-b border-gray-50 p-3 text-sm font-normal text-white capitalize";
 
   const fetchUserData = async () => {
-    const { data, error } = await fetchData("/player/getActiveBonus", "GET");
-
-    if (data) {
-      console.log("getActiveBonus", data.activeBonus.data);
+    setIsLoading(true);
+    try {
+      const data = await fetchActiveBonusAPI();
+      // console.log("data.activeBonus.data", data.activeBonus.data);
       setData(data.activeBonus.data);
       setTotalPages(Math.ceil(data.activeBonus.total / pageSize));
-    } else if (error) {
+    } catch (error) {
       console.error("API Request Error:", error);
       toast.error(
-        error.message || "An error occurred while fetching free spins history."
+        error.message || "An error occurred while fetching active bonuses."
       );
+    } finally {
+      setIsLoading(false);
     }
   };
 
   useEffect(() => {
     fetchUserData();
-  }, [fetchData, currentPage]);
+  }, [currentPage]);
 
   let serialNumber = (currentPage - 1) * pageSize;
 

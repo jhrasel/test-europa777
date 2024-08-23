@@ -38,7 +38,7 @@ export default function WeekPromotion() {
     let timeout;
     const lastShown = localStorage.getItem("lastModalShown");
     const currentTime = new Date().getTime();
-    const twentyFourHours = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
+    const twentyFourHours = 24 * 60 * 60 * 1000; 
 
     if (
       isLoggedIn &&
@@ -52,23 +52,6 @@ export default function WeekPromotion() {
 
     return () => clearTimeout(timeout);
   }, [isLoggedIn]);
-
-  // useEffect(() => {
-  //   const fetchUserData = async () => {
-  //     try {
-  //       const response = await fetchData("/player/getDepositHistory", "GET");
-  //       let count = 0;
-  //       if (response?.deposits?.data) {
-  //         count = response?.deposits?.data.filter(
-  //           (item) => item.status === "completed"
-  //         ).length;
-  //       }
-  //       setTotalDeposit(count);
-  //     } catch (error) {}
-  //   };
-
-  //   fetchUserData();
-  // }, [fetchData]);
 
   useEffect(() => {
     const fetchUserData = async () => {
