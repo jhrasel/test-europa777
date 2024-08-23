@@ -1,29 +1,29 @@
 export const BannerImageDesktop = [
   {
-    images: "/images/banner/banner1.jpg",
+    images: "/images/banner/banner1.webp",
   },
   {
-    images: "/images/banner/banner2.jpg",
+    images: "/images/banner/banner2.webp",
   },
   {
-    images: "/images/banner/banner3.jpg",
+    images: "/images/banner/banner3.webp",
   },
   // {
-  //   images: "/images/banner/banner4.jpg",
+  //   images: "/images/banner/banner4.webp",
   // },
 ];
 
 export const BannerImageMobile = [
   {
-    images: "/images/banner/banner1_mobile.jpg",
+    images: "/images/banner/banner1_mobile.webp",
   },
   {
-    images: "/images/banner/banner2_mobile.jpg",
+    images: "/images/banner/banner2_mobile.webp",
   },
   {
-    images: "/images/banner/banner3_mobile.jpg",
+    images: "/images/banner/banner3_mobile.webp",
   },
   // {
-  //   images: "/images/banner/Banner4_mobile.jpg",
+  //   images: "/images/banner/Banner4_mobile.webp",
   // },
 ];
