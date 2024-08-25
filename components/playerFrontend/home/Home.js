@@ -10,13 +10,7 @@ import { RecentPalyGame } from "./RecentPalyGame";
 import { TopGames } from "./TopGames";
 import { WelcomeBonus } from "./WelcomeBonus";
 
-export const Home = ({
-  getLiveCasinoData,
-  getGameWinnerData,
-  getAllGameProvidersData,
-
-  gethHomePageGames,
-}) => {
+export const Home = ({ getGameWinnerData, gethHomePageGames }) => {
   // console.log("getTopGamesData", getTopGamesData);
   return (
     <>

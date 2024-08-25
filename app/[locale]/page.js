@@ -6,7 +6,6 @@ import { fetchGameWinner, fetchHomePageGames } from "@/lib/fetchHomeAPI";
 
 const Page = async () => {
   const gethHomePageGames = await fetchHomePageGames();
-
   const getGameWinnerData = await fetchGameWinner();
 
   return (

@@ -27,28 +27,28 @@ export default function GameWinner({ getGameWinnerData }) {
                   <Swiper
                     className="mySwiper"
                     autoplay={{
-                      delay: 2500,
+                      delay: 1000,
                       disableOnInteraction: false,
                     }}
                     modules={[Autoplay]}
                     breakpoints={{
                       320: {
                         slidesPerView: 1.3,
-                        spaceBetween: 10,
+                        spaceBetween: 8,
                       },
                       768: {
-                        slidesPerView: 2.9,
-                        spaceBetween: 15,
+                        slidesPerView: 3.2,
+                        spaceBetween: 8,
                       },
                       1024: {
-                        slidesPerView: 4.2,
-                        spaceBetween: 15,
+                        slidesPerView: 6.2,
+                        spaceBetween: 8,
                       },
                     }}
                   >
                     {getData.map((winner) => (
                       <SwiperSlide key={winner.game_name}>
-                        <div className="flex items-center gap-3 bg-bg-color1 p-3 rounded-lg">
+                        <div className="flex items-center gap-2.5 bg-bg-color1 p-2 rounded-lg">
                           <div className="">
                             <UIImage
                               src={winner.thumbnail}
@@ -56,7 +56,7 @@ export default function GameWinner({ getGameWinnerData }) {
                               className="!w-16 !h-16 rounded-lg"
                             />
                           </div>
-                          <div className="">
+                          <div className="w-[80%]">
                             <H6
                               name={winner.username}
                               className="!text-text-color-primary"
