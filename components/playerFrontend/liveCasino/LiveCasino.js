@@ -9,10 +9,11 @@ import useAuth from "@/helpers/useAuth";
 import { fetchLockByBonus } from "@/lib/fetchLockByBonus";
 import { Empty } from "antd";
 import { useLocale, useTranslations } from "next-intl";
+import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 
-export const LiveCasinoHomePage = ({ gethHomePageGames }) => {
-  const getData = gethHomePageGames.data.liveGames;
+export const LiveCasinoHomePage = ({ getLiveCasinoData }) => {
+  const getData = getLiveCasinoData.data;
 
   const { fetchData, isLoading } = useApi();
   const { favoriteGames } = useFavoriteGames();
@@ -52,24 +53,16 @@ export const LiveCasinoHomePage = ({ gethHomePageGames }) => {
   }, [isLoggedIn]);
 
   const renderLink = (gameData) => {
-    const isNoDepositBonus = lockByBonus?.promotion_type === "noDepositBonus";
-    const isAkaPovProvider = gameData?.api_provider === "Akapov";
-    const isEvolutionProvider = gameData?.provider != "Evolution";
-    const isSameApiProvider =
-      lockByBonus?.provider_name === gameData.api_provider;
+    const haveDepositBonus =
+      lockByBonus?.data?.promotion_type === "noDepositBonus" &&
+      gameData?.no_dep_bonus === 1;
+    const noDepositBonus =
+      lockByBonus?.data?.promotion_type === "noDepositBonus" &&
+      gameData?.no_dep_bonus === 0;
 
-    if (
-      isNoDepositBonus &&
-      isAkaPovProvider &&
-      isEvolutionProvider &&
-      isSameApiProvider
-    ) {
+    if (haveDepositBonus) {
       return `/${locale}/play-game/${gameData.slug}`;
-    } else if (
-      isNoDepositBonus &&
-      !isAkaPovProvider &&
-      (!isEvolutionProvider || !isSameApiProvider)
-    ) {
+    } else if (noDepositBonus) {
       return {
         link: `/${locale}/player-dashboard/deposit`,
         text: "LOCK IN BONUS",
@@ -133,18 +126,17 @@ export const LiveCasinoHomePage = ({ gethHomePageGames }) => {
   );
 };
 
-export const LiveCasino = () => {
+export const LiveCasino = ({ initialGamesData }) => {
   const { fetchData, isLoading } = useApi();
   const { favoriteGames } = useFavoriteGames();
-  const [gameDatas, setGameDatas] = useState([]);
-  const { loading } = useLoading();
+  const [gameDatas, setGameDatas] = useState(initialGamesData.data || []);
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const observer = useRef();
   const locale = useLocale();
   const { isLoggedIn, logout } = useAuth();
+  const pathname = usePathname();
   const [lockByBonus, setLockByBonus] = useState(null);
-
   const [activeCardId, setActiveCardId] = useState(null);
 
   const lastGameElementRef = useCallback(
@@ -161,28 +153,28 @@ export const LiveCasino = () => {
     [isLoading, hasMore]
   );
 
-  //  handleFavoriteChange
   const handleFavoriteChange = (gameId, isFavorite) => {
-    `Game ${gameId} is now ${isFavorite ? "favorited" : "unfavorited"}`;
+    console.log(
+      `Game ${gameId} is now ${isFavorite ? "favorited" : "unfavorited"}`
+    );
+    try {
+      fetchGameData(page);
+    } catch (error) {
+      console.error("Error updating favorite status:", error);
+      toast.error(
+        "An error occurred while updating favorite status. Please try again."
+      );
+    }
+  };
 
-    fetchGameData();
+  const fetchGameData = async (currentPage) => {
+    const newGames = initialGamesData.games.data;
+    setGameDatas((prevGames) => [...prevGames, ...newGames]);
+    setHasMore(initialGamesData.games.next_page_url !== null);
   };
 
   useEffect(() => {
-    const fetchGameData = async () => {
-      const { data, error } = await fetchData(
-        `/getGamesByType/live-casino?page=${page}`,
-        "GET"
-      );
-      if (data) {
-        const newGames = data.games.data;
-        setGameDatas((prevGames) => [...prevGames, ...newGames]);
-        setHasMore(data.games.next_page_url !== null);
-      } else if (error) {
-        console.error("Error fetching game data:", error);
-      }
-    };
-    fetchGameData();
+    fetchGameData(page);
   }, [fetchData, page]);
 
   useEffect(() => {
@@ -190,10 +182,9 @@ export const LiveCasino = () => {
       if (isLoggedIn) {
         try {
           const data = await fetchLockByBonus();
-          // console.log("fetchLockByBonus", data);
           setLockByBonus(data);
         } catch (err) {
-          // setError(err.message);
+          console.error("Error fetching lock by bonus data:", err.message);
         }
       }
     };
@@ -202,24 +193,16 @@ export const LiveCasino = () => {
   }, [isLoggedIn]);
 
   const renderLink = (gameData) => {
-    const isNoDepositBonus = lockByBonus?.promotion_type === "noDepositBonus";
-    const isAkaPovProvider = gameData?.api_provider === "Akapov";
-    const isEvolutionProvider = gameData?.provider != "Evolution";
-    const isSameApiProvider =
-      lockByBonus?.provider_name === gameData.api_provider;
+    const haveDepositBonus =
+      lockByBonus?.data?.promotion_type === "noDepositBonus" &&
+      gameData?.no_dep_bonus === 1;
+    const noDepositBonus =
+      lockByBonus?.data?.promotion_type === "noDepositBonus" &&
+      gameData?.no_dep_bonus === 0;
 
-    if (
-      isNoDepositBonus &&
-      isAkaPovProvider &&
-      isEvolutionProvider &&
-      isSameApiProvider
-    ) {
+    if (haveDepositBonus) {
       return `/${locale}/play-game/${gameData.slug}`;
-    } else if (
-      isNoDepositBonus &&
-      !isAkaPovProvider &&
-      (!isEvolutionProvider || !isSameApiProvider)
-    ) {
+    } else if (noDepositBonus) {
       return {
         link: `/${locale}/player-dashboard/deposit`,
         text: "LOCK IN BONUS",
@@ -237,11 +220,13 @@ export const LiveCasino = () => {
             {gameDatas.map((gameData, index) => {
               const liveLink = renderLink(gameData);
               const isLiveLinkObject = typeof liveLink === "object";
+              const uniqueKey = `${gameData.id}-${index}`; // Composite key
+
               if (gameDatas.length === index + 1) {
                 return (
-                  <div ref={lastGameElementRef} key={gameData.id}>
+                  <div ref={lastGameElementRef} key={uniqueKey}>
                     <GameCard
-                      key={gameData.id}
+                      key={uniqueKey}
                       gameId={gameData.id}
                       image={gameData.thumbnail || "/images/default-cart.jpg"}
                       gameName={gameData.game_name}
@@ -263,7 +248,7 @@ export const LiveCasino = () => {
               } else {
                 return (
                   <GameCard
-                    key={gameData.id}
+                    key={uniqueKey}
                     gameId={gameData.id}
                     image={gameData.thumbnail || "/images/default-cart.jpg"}
                     gameName={gameData.game_name}
@@ -283,6 +268,7 @@ export const LiveCasino = () => {
                 );
               }
             })}
+
             {isLoading &&
               Array.from({ length: 6 }).map((_, index) => (
                 <CustomSkeleton key={index} hasImage={true} hasText={true} />

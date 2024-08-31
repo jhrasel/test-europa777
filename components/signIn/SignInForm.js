@@ -44,7 +44,7 @@ export const SignInForm = ({ onLoginSuccess }) => {
     setCookies("token", responseData.token);
     setCookies("isLoggedIn", true);
     onLoginSuccess();
-    window.location.href = `/${locale}/`;
+    window.location.href = `/${locale}/player-dashboard/deposit/`;
   };
 
   // submit Form
@@ -89,6 +89,15 @@ export const SignInForm = ({ onLoginSuccess }) => {
 
   return (
     <>
+      <div className="flex flex-col items-center justify-center gap-1 mb-1">
+        <a href={`${process.env.NEXT_PUBLIC_API_URL}/api/login/google`}>
+          <img
+            className="cursor-pointer"
+            src="https://developers.google.com/static/identity/images/branding_guideline_sample_lt_rd_lg.svg"
+          />
+        </a>
+        <P name="OR" cla />
+      </div>
       <form onSubmit={formik.handleSubmit}>
         <div className="">
           <P name={t("Email Address")} className="mb-1 !text-sm" />

@@ -73,12 +73,20 @@ const Navbar = ({ showSidebar, handleSidebarToggle, showSidebarMobile }) => {
                   className="text-xl font-bold hover:text-blue-color"
                 />
                 <UILink
-                  href={`/${locale}/vip`}
-                  name={t("VIP")}
+                  href={
+                    isLoggedIn
+                      ? `/${locale}/player-dashboard/cashback/`
+                      : `/${locale}/vip/`
+                  }
+                  name={t("vipCashback")}
                   className="text-xl font-bold hover:text-blue-color"
                 />
                 <UILink
-                  href={`/${locale}/bonus`}
+                  href={
+                    isLoggedIn
+                      ? `/${locale}/player-dashboard/promotions/`
+                      : `/${locale}/bonus/`
+                  }
                   name={t("Promotions")}
                   className="text-xl font-bold hover:text-blue-color uppercase"
                 />

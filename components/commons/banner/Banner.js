@@ -32,11 +32,14 @@ const Banner = () => {
                       <>
                         <UIImage
                           src={data.images}
-                          width="1920"
+                          width="1000"
                           height="500"
                           alt="banner"
                           className="w-full tab:h-full object-cover rounded-3xl"
-                          quality={45}
+                          quality={40}
+                          loading
+                          priority={false}
+                          placeholder="blur"
                         />
                       </>
                     )}
@@ -55,6 +58,9 @@ const Banner = () => {
                       alt="join"
                       className="!w-[250px] !h-auto"
                       quality={45}
+                      loading
+                      priority={false}
+                      placeholder="blur"
                     />
                   </>
                 )}
@@ -72,8 +78,8 @@ const Banner = () => {
                       <>
                         <UIImage
                           src={data.images}
-                          width="500"
-                          height="500"
+                          width="400"
+                          height="400"
                           alt="banner"
                           className="w-full tab:h-full object-cover rounded-3xl"
                           quality={45}

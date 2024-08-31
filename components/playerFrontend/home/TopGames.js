@@ -13,8 +13,10 @@ import { useRouter } from "next/navigation";
 
 import { useEffect, useState } from "react";
 
-export const TopGames = ({ gethHomePageGames }) => {
-  const getData = gethHomePageGames.data.topGames;
+export const TopGames = ({ getTopGamesData }) => {
+  // console.log("getTopGamesData", getTopGamesData);
+
+  const getData = getTopGamesData.data;
 
   const { isLoggedIn } = useAuth();
   const { fetchData, isLoading } = useApi();
@@ -50,24 +52,16 @@ export const TopGames = ({ gethHomePageGames }) => {
   }, [isLoggedIn]);
 
   const renderLink = (gameData) => {
-    const isNoDepositBonus = lockByBonus?.promotion_type === "noDepositBonus";
-    const isAkaPovProvider = gameData?.api_provider === "Akapov";
-    const isEvolutionProvider = gameData?.provider != "Evolution";
-    const isSameApiProvider =
-      lockByBonus?.provider_name === gameData.api_provider;
+    const haveDepositBonus =
+      lockByBonus?.data?.promotion_type === "noDepositBonus" &&
+      gameData?.no_dep_bonus === 1;
+    const noDepositBonus =
+      lockByBonus?.data?.promotion_type === "noDepositBonus" &&
+      gameData?.no_dep_bonus === 0;
 
-    if (
-      isNoDepositBonus &&
-      isAkaPovProvider &&
-      isEvolutionProvider &&
-      isSameApiProvider
-    ) {
+    if (haveDepositBonus) {
       return `/${locale}/play-game/${gameData.slug}`;
-    } else if (
-      isNoDepositBonus &&
-      !isAkaPovProvider &&
-      (!isEvolutionProvider || !isSameApiProvider)
-    ) {
+    } else if (noDepositBonus) {
       return {
         link: `/${locale}/player-dashboard/deposit`,
         text: "LOCK IN BONUS",

@@ -119,7 +119,7 @@ export function AfterLogin() {
           <UILink
             href={`/${locale}/player-dashboard/cashback`}
             icon={<GiReceiveMoney />}
-            name={t("Cashback")}
+            name={t("vipCashback")}
             className="!text-text-color-primary !bg-none"
           />
         </div>

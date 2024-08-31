@@ -10,7 +10,13 @@ import { RecentPalyGame } from "./RecentPalyGame";
 import { TopGames } from "./TopGames";
 import { WelcomeBonus } from "./WelcomeBonus";
 
-export const Home = ({ getGameWinnerData, gethHomePageGames }) => {
+export const Home = ({
+  getTopGamesData,
+  getHotGamesData,
+  getLiveCasinoData,
+  getGameWinnerData,
+  getAllGameProvidersData,
+}) => {
   // console.log("getTopGamesData", getTopGamesData);
   return (
     <>
@@ -33,7 +39,7 @@ export const Home = ({ getGameWinnerData, gethHomePageGames }) => {
           </h3>
         }
       >
-        <TopGames gethHomePageGames={gethHomePageGames} />
+        <TopGames getTopGamesData={getTopGamesData} />
       </Suspense>
 
       <WelcomeBonus />
@@ -45,7 +51,7 @@ export const Home = ({ getGameWinnerData, gethHomePageGames }) => {
           </h3>
         }
       >
-        <LiveCasinoHomePage gethHomePageGames={gethHomePageGames} />
+        <LiveCasinoHomePage getLiveCasinoData={getLiveCasinoData} />
       </Suspense>
 
       <BonusPromotion />
@@ -57,7 +63,7 @@ export const Home = ({ getGameWinnerData, gethHomePageGames }) => {
           </h3>
         }
       >
-        <HotGames gethHomePageGames={gethHomePageGames} />
+        <HotGames getHotGamesData={getHotGamesData} />
       </Suspense>
 
       <Suspense
@@ -67,7 +73,7 @@ export const Home = ({ getGameWinnerData, gethHomePageGames }) => {
           </h3>
         }
       >
-        <AllProviders gethHomePageGames={gethHomePageGames} />
+        <AllProviders getAllGameProvidersData={getAllGameProvidersData} />
       </Suspense>
     </>
   );

@@ -1,4 +1,5 @@
 "use client";
+
 import useApi from "@/helpers/apiRequest";
 import { useFingerPrint } from "@/hook/useFingerPrint";
 import { registrationValidation } from "@/validations/Valodation";
@@ -14,6 +15,7 @@ import PhoneInput from "react-phone-number-input";
 import "react-phone-number-input/style.css";
 import { ClockLoader } from "react-spinners";
 import { ErrorMessage, P, UIButton, UIInput, UILink } from "../UI";
+import BonusRegister from "./BonusRegister";
 
 // Ant Select
 const onChange = (e) => {
@@ -159,6 +161,11 @@ export const SignUpForm = ({ onSignUpSuccess, defaultCountry }) => {
 
   return (
     <>
+      {/* step 1 */}
+      <BonusRegister />
+
+      {/* step 2 */}
+
       <div className="flex flex-col items-center justify-center gap-1 mb-1">
         <a href={`${process.env.NEXT_PUBLIC_API_URL}/api/login/google`}>
           <img
@@ -309,7 +316,7 @@ export const SignUpForm = ({ onSignUpSuccess, defaultCountry }) => {
         {/* capcha */}
         <div className="">
           <ReCAPTCHA
-            sitekey="6LdYaWcpAAAAAEPCH8Bfn5z_9SjTkvCh7Np3NuDB" // Replace with your reCAPTCHA Site Key
+            sitekey="6LdYaWcpAAAAAEPCH8Bfn5z_9SjTkvCh7Np3NuDB"
             onChange={handleRecaptchaChange}
           />
           {recaptchaError && (

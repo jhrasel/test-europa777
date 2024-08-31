@@ -15,7 +15,7 @@ const PromoCodeComponent = ({
 }) => {
   const searchParams = useSearchParams();
   const promo = searchParams.get("promo");
-  const { fetchData, error, isLoading } = useApi();
+  const { fetchData, error, isLoading, setIsLoading } = useApi();
 
   const [promoCode, setPromoCode] = useState(initialPromoCode || promo || "");
   const [promoMessage, setPromoMessage] = useState(null);
@@ -23,29 +23,28 @@ const PromoCodeComponent = ({
   const t = useTranslations("promoCode");
 
   const fetchPromoCodeDetails = async () => {
-    const { data, error } = await fetchData("/player/promoCodeDetails", "GET");
-
-    if (data) {
-      setPromoMessage(data);
-      // console.log("response promo", data);
-    } else if (error) {
-      toast.error(error.message);
+    setIsLoading(false);
+    try {
+      const response = await fetchData("/player/promoCodeDetails", "GET");
+      // console.log("promoCodeDetails", response);
+      setPromoMessage(response.data);
+    } catch (error) {
+      toast.error("Failed to fetch promo code details");
     }
   };
 
   const validatePromoCode = async (code) => {
     const { data, error } = await fetchData("/player/addPromoCode", "POST", {
-      code,
+      code: code,
     });
 
-    if (data && data.success) {
-      toast.success(message);
+    if (data?.success) {
+      toast.success(data.message);
       await fetchPromoCodeDetails();
+    } else if (data) {
+      toast.error(data.message);
     } else if (error) {
-      console.error("API Request Error:", error);
-      toast.error(
-        error.message || "An unexpected error occurred. Please try again."
-      );
+      toast.error(error.message);
     }
   };
 
@@ -60,23 +59,19 @@ const PromoCodeComponent = ({
     await validatePromoCode(promoCode);
   };
 
-  const handleBlur = () => {
-    validatePromoCode(promoCode);
-  };
-
   const handleRemovePromoCode = async () => {
     const { data, error } = await fetchData("/player/removePromoCode", "POST", {
       code: promoCode,
     });
     if (data?.success) {
       setPromoCode("");
+      setPromoMessage(null);
       toast.success(data.message);
       await fetchPromoCodeDetails();
-    } else {
-      console.error("API Request Error:", error);
-      toast.error(
-        error.message || "An unexpected error occurred. Please try again."
-      );
+    } else if (data) {
+      toast.error(data.message);
+    } else if (error) {
+      toast.error(error.message);
     }
   };
 
@@ -93,13 +88,10 @@ const PromoCodeComponent = ({
       </div>
       <div className="flex w-full items-center gap-2">
         <UIInput
-          name="promo_code"
+          name="code"
           placeholder="Promo Code Optional"
-          value={
-            promoMessage?.promo_code ? promoMessage?.promo_code : promoCode
-          }
+          value={promoMessage?.code ? promoMessage?.code : promoCode}
           onChange={handlePromoCodeChange}
-          onBlur={handleBlur}
         />
 
         {isLoading ? (
@@ -114,18 +106,17 @@ const PromoCodeComponent = ({
               />
             }
             disabled
-            className={`w-10 !bg-blue-color ${className}`}
           />
         ) : (
           <>
-            {promoMessage?.promo_code ? (
-              <button
-                type="button"
+            {promoMessage?.code ? (
+              <submit
+                type="submit"
                 className="rounded-full bg-blue-color text-white px-5 py-1.5 text-lg hover:bg-blue-600"
                 onClick={handleRemovePromoCode}
               >
                 {t("remove")}
-              </button>
+              </submit>
             ) : (
               <button
                 type="button"

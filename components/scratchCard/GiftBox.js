@@ -1,11 +1,11 @@
 import useApi from "@/helpers/apiRequest";
 import Lottie from "lottie-react";
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import giftBoxAnimation from "../../public/images/giftBox.json";
 import { H6, UIImage } from "../UI";
 import { ScratchCard } from "./ScratchCard";
 import ScratchModal from "./ScratchModal";
-import toast from "react-hot-toast";
 
 export default function GiftBox() {
   const [showScratchCard, setShowScratchCard] = useState(false);
@@ -105,8 +105,6 @@ export default function GiftBox() {
       const response = await fetchData("/player/scratchBonusClaim", "POST", {
         winAmount,
       });
-
-      // console.log("scratchBonusClaim", response);
     } catch (error) {}
   };
 

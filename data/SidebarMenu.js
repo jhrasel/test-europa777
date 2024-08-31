@@ -1,15 +1,15 @@
+import useAuth from "@/helpers/useAuth";
 import Slots from "@/svgs/Slots";
 import { useLocale, useTranslations } from "next-intl";
-import { BsCashCoin } from "react-icons/bs";
 import { FaGift, FaHeart } from "react-icons/fa";
-import { GiCardAceSpades, GiShipWheel } from "react-icons/gi";
+import { GiCardAceSpades, GiReceiveMoney, GiShipWheel } from "react-icons/gi";
 import { HiHome } from "react-icons/hi";
 import { LuContact } from "react-icons/lu";
-import { RiVipCrown2Fill } from "react-icons/ri";
 
 export const SidebarMenuData = () => {
   const t = useTranslations("Menubar");
   const locale = useLocale();
+  const { isLoggedIn } = useAuth();
 
   return [
     {
@@ -45,25 +45,27 @@ export const SidebarMenuData = () => {
     },
     {
       id: crypto.randomUUID(),
-      icon: <RiVipCrown2Fill />,
-      name: t("VIP"),
-      url: "/vip",
-      url: `/${locale}/vip/`,
+      icon: <GiReceiveMoney />,
+      name: t("vipCashback"),
+      url: isLoggedIn
+        ? `/${locale}/player-dashboard/cashback/`
+        : `/${locale}/vip/`,
     },
     {
       id: crypto.randomUUID(),
       icon: <FaGift />,
       name: t("Promotions"),
-      url: "/bonus",
-      url: `/${locale}/bonus/`,
+      url: isLoggedIn
+        ? `/${locale}/player-dashboard/promotions/`
+        : `/${locale}/bonus/`,
     },
-    {
-      id: crypto.randomUUID(),
-      icon: <BsCashCoin />,
-      name: t("Cashback"),
-      // url: `/${locale}/player-dashboard/cashback/`,
-      url: `/${locale}/cashback/`,
-    },
+    // {
+    //   id: crypto.randomUUID(),
+    //   icon: <BsCashCoin />,
+    //   name: t("Cashback"),
+    //   // url: `/${locale}/player-dashboard/cashback/`,
+    //   url: `/${locale}/cashback/`,
+    // },
     {
       id: crypto.randomUUID(),
       icon: <LuContact />,

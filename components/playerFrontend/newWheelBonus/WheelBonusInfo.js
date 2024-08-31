@@ -106,22 +106,24 @@ const WheelBonusInfo = ({
           </div>
         )}
         {/* Condition for users who haven't made a deposit and are within the registration period */}
-        {remainingTime === 0 && afterRegistration > 0 && (
-          <div className="tab:w-[600px] m-auto bg-bg-color1 shadow-lg rounded-3xl p-5 text-center">
-            <H3
-              name={t("win500Spin")}
-              className="!text-[#dd1fe5] uppercase !text-base tab:!text-3xl mb-2"
-            />
+        {remainingTime === 0 &&
+          afterRegistration > 0 &&
+          madeDeposit === false && (
+            <div className="tab:w-[600px] m-auto bg-bg-color1 shadow-lg rounded-3xl p-5 text-center">
+              <H3
+                name={t("win500Spin")}
+                className="!text-[#dd1fe5] uppercase !text-base tab:!text-3xl mb-2"
+              />
 
-            <H4
-              name={t("every2hours")}
-              className="!text-white text-uppercase !text-base tab:!text-2xl"
-            />
+              <H4
+                name={t("every2hours")}
+                className="!text-white text-uppercase !text-base tab:!text-2xl"
+              />
 
-            {/* Render the SpinGame component for new registered users */}
-            <SpinGame winNumber={winNumber} wheelPrizes={wheelPrizes} />
-          </div>
-        )}
+              {/* Render the SpinGame component for new registered users */}
+              <SpinGame winNumber={winNumber} wheelPrizes={wheelPrizes} />
+            </div>
+          )}
         {/* Condition for when daysLeft is 0 */}
         {daysLeft === 0 && afterRegistration === 0 && (
           <div className="relative tab:w-[600px] m-auto bg-bg-color1 shadow-lg rounded-3xl p-5 text-center">
@@ -139,7 +141,7 @@ const WheelBonusInfo = ({
               alt="wheel"
               className=" !h-[90%] tab:!h-[445px] !w-[90%] tab:!w-[450px] rounded-full m-auto"
             />
-            <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center">
+            <div className="absolute top-12 laptop:top-0 left-0 w-full h-full flex items-center justify-center">
               <div className="w-[620px] m-auto bg-bg-color1 shadow-lg rounded-3xl p-5 text-center">
                 <div className="text-center !text-white p-4 prizeInfoContainer">
                   <H4

@@ -1,13 +1,15 @@
-import { H6 } from "@/components/UI";
+import { H6, UILinkBG } from "@/components/UI";
 import useBalance from "@/hook/useBalance";
 import { Dropdown } from "antd";
 import { useLocale, useTranslations } from "next-intl";
+import { BsCashCoin } from "react-icons/bs";
 import { IoIosArrowDown } from "react-icons/io";
 
 export const AmountDropdown = ({ className }) => {
   const balance = useBalance();
   const locale = useLocale();
   const t = useTranslations("playerDashboardPage");
+  const menubar = useTranslations("Menubar");
 
   const items = [
     {
@@ -37,13 +39,25 @@ export const AmountDropdown = ({ className }) => {
     {
       key: "3",
       label: (
-        <div className="flex items-center justify-between gap-2 pb-1">
+        <div className="flex items-center justify-between gap-2 pb-1 border-b border-gray-400">
           <H6 name={t("Lock By Bonus")} />
           <H6
             name={balance?.bonus_balance}
             className="!font-bold text-red-color"
           />
         </div>
+      ),
+    },
+
+    {
+      key: "4",
+      label: (
+        <UILinkBG
+          href={`/${locale}/player-dashboard/deposit`}
+          icon={<BsCashCoin />}
+          name={`${menubar("Deposit")} Now`}
+          className="justify-center line-clamp-1 !text-sm w-full"
+        />
       ),
     },
   ];

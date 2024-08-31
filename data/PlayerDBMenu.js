@@ -1,3 +1,4 @@
+import useAuth from "@/helpers/useAuth";
 import { useLocale, useTranslations } from "next-intl";
 import { BsBank, BsCashCoin } from "react-icons/bs";
 import {
@@ -9,7 +10,6 @@ import {
 } from "react-icons/fa";
 import { FaMoneyBillTrendUp } from "react-icons/fa6";
 import { GiReceiveMoney } from "react-icons/gi";
-import { HiOutlineIdentification } from "react-icons/hi";
 import { IoGameController } from "react-icons/io5";
 import { TbCherry } from "react-icons/tb";
 
@@ -17,6 +17,7 @@ export const PlayerDashboardMenuOld = () => {
   const t = useTranslations("Menubar");
   const tData = useTranslations("tableData");
   const locale = useLocale();
+  const { isLoggedIn } = useAuth();
 
   return [
     {

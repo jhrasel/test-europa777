@@ -88,6 +88,7 @@ export const PlayGame = ({ slagId }) => {
                 href="/"
                 name={<HiHome className="text-3xl" />}
                 className="!text-red-color"
+                onClick={handleCloseButtonClick}
               />
               <div className="cursor-pointer" onClick={toggleFullscreen}>
                 {fullscreen ? (

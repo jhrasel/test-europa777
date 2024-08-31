@@ -8,21 +8,24 @@ import useAuth from "@/helpers/useAuth";
 import { fetchLockByBonus } from "@/lib/fetchLockByBonus";
 import { Empty } from "antd";
 import { useLocale } from "next-intl";
+import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
 
-export const Slots = () => {
+export const Slots = ({ initialGamesData }) => {
   const { fetchData, isLoading } = useApi();
   const { favoriteGames } = useFavoriteGames();
-  const [gameDatas, setGameDatas] = useState([]);
+  const [gameDatas, setGameDatas] = useState(initialGamesData.data || []);
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const observer = useRef();
   const locale = useLocale();
   const { isLoggedIn, logout } = useAuth();
+  const pathname = usePathname();
+
+  console.log("pathname", pathname);
 
   const [lockByBonus, setLockByBonus] = useState(null);
-
   const [activeCardId, setActiveCardId] = useState(null);
 
   const lastGameElementRef = useCallback(
@@ -39,13 +42,12 @@ export const Slots = () => {
     [isLoading, hasMore]
   );
 
-  //  handleFavoriteChange
   const handleFavoriteChange = (gameId, isFavorite) => {
     console.log(
       `Game ${gameId} is now ${isFavorite ? "favorited" : "unfavorited"}`
     );
     try {
-      fetchGameData(page); // Re-fetch game data after favorite change
+      fetchGameData(page);
     } catch (error) {
       console.error("Error updating favorite status:", error);
       toast.error(
@@ -55,26 +57,9 @@ export const Slots = () => {
   };
 
   const fetchGameData = async (currentPage) => {
-    try {
-      const { data, error } = await fetchData(
-        `/getGamesByType/slot?page=${currentPage}`,
-        "GET"
-      );
-
-      if (data) {
-        const newGames = data.games.data;
-        setGameDatas((prevGames) => [...prevGames, ...newGames]);
-        setHasMore(data.games.next_page_url !== null);
-      } else if (error) {
-        console.error("API Request Error:", error);
-        toast.error(
-          error.message || "Failed to fetch game data. Please try again."
-        );
-      }
-    } catch (err) {
-      console.error("Unexpected Error:", err);
-      toast.error("An unexpected error occurred. Please try again.");
-    }
+    const newGames = initialGamesData.games.data;
+    setGameDatas((prevGames) => [...prevGames, ...newGames]);
+    setHasMore(initialGamesData.games.next_page_url !== null);
   };
 
   useEffect(() => {
@@ -86,10 +71,9 @@ export const Slots = () => {
       if (isLoggedIn) {
         try {
           const data = await fetchLockByBonus();
-          // console.log("fetchLockByBonus", data);
           setLockByBonus(data);
         } catch (err) {
-          setError(err.message);
+          console.error("Error fetching lock by bonus data:", err.message);
         }
       }
     };
@@ -98,24 +82,16 @@ export const Slots = () => {
   }, [isLoggedIn]);
 
   const renderLink = (gameData) => {
-    const isNoDepositBonus = lockByBonus?.promotion_type === "noDepositBonus";
-    const isAkaPovProvider = gameData?.api_provider === "Akapov";
-    const isEvolutionProvider = gameData?.provider != "Evolution";
-    const isSameApiProvider =
-      lockByBonus?.provider_name === gameData.api_provider;
+    const haveDepositBonus =
+      lockByBonus?.data?.promotion_type === "noDepositBonus" &&
+      gameData?.no_dep_bonus === 1;
+    const noDepositBonus =
+      lockByBonus?.data?.promotion_type === "noDepositBonus" &&
+      gameData?.no_dep_bonus === 0;
 
-    if (
-      isNoDepositBonus &&
-      isAkaPovProvider &&
-      isEvolutionProvider &&
-      isSameApiProvider
-    ) {
+    if (haveDepositBonus) {
       return `/${locale}/play-game/${gameData.slug}`;
-    } else if (
-      isNoDepositBonus &&
-      !isAkaPovProvider &&
-      (!isEvolutionProvider || !isSameApiProvider)
-    ) {
+    } else if (noDepositBonus) {
       return {
         link: `/${locale}/player-dashboard/deposit`,
         text: "LOCK IN BONUS",
@@ -133,11 +109,13 @@ export const Slots = () => {
             {gameDatas.map((gameData, index) => {
               const liveLink = renderLink(gameData);
               const isLiveLinkObject = typeof liveLink === "object";
+              const uniqueKey = `${gameData.id}-${index}`; // Composite key
+
               if (gameDatas.length === index + 1) {
                 return (
-                  <div ref={lastGameElementRef} key={gameData.id}>
+                  <div ref={lastGameElementRef} key={uniqueKey}>
                     <GameCard
-                      key={gameData.id}
+                      key={uniqueKey}
                       gameId={gameData.id}
                       image={gameData.thumbnail || "/images/default-cart.jpg"}
                       gameName={gameData.game_name}
@@ -159,7 +137,7 @@ export const Slots = () => {
               } else {
                 return (
                   <GameCard
-                    key={gameData.id}
+                    key={uniqueKey}
                     gameId={gameData.id}
                     image={gameData.thumbnail || "/images/default-cart.jpg"}
                     gameName={gameData.game_name}
@@ -179,6 +157,7 @@ export const Slots = () => {
                 );
               }
             })}
+
             {isLoading &&
               Array.from({ length: 6 }).map((_, index) => (
                 <CustomSkeleton key={index} hasImage={true} hasText={true} />

@@ -1,5 +1,4 @@
 "use client";
-
 import { Container, GameCard, H2 } from "@/components/UI";
 import { useFavoriteGames } from "@/context/FavoriteGamesContext";
 import { useLoading } from "@/context/LoadingContext";
@@ -9,76 +8,85 @@ import useAuth from "@/helpers/useAuth";
 import { Empty } from "antd";
 import { useLocale } from "next-intl";
 import { useRouter } from "next/navigation";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-
 export const FreeSpinGames = () => {
+  // ;
   const { isLoggedIn } = useAuth();
-  const { fetchData, isLoading } = useApi();
+  const { fetchData, error, isLoading } = useApi();
   const { favoriteGames } = useFavoriteGames();
   const [gameDatas, setGameDatas] = useState([]);
   const router = useRouter();
   const { loading } = useLoading();
   const locale = useLocale();
-
-  const [activeCardId, setActiveCardId] = useState(null);
   const [freeSpin, setFreeSpin] = useState("0");
+  const handleFavoriteChange = (gameId, isFavorite) => {
+    `Game ${gameId} is now ${isFavorite ? "favorited" : "unfavorited"}`;
+    fetchGameData();
+  };
   const [lockByBonus, setLockByBonus] = useState(null);
 
-  const fetchAllData = useCallback(async () => {
-    if (isLoggedIn) {
-      try {
-        // Fetch lock by bonus data
-        const lockByBonusResponse = await fetchData(
-          "/player/getFreeSpinGames",
-          "GET"
-        );
-        if (lockByBonusResponse.data) {
-          setLockByBonus(lockByBonusResponse.data.games);
-        } else if (lockByBonusResponse.error) {
-          console.error("API Request Error:", lockByBonusResponse.error);
-          toast.error(
-            lockByBonusResponse.error.message ||
-              "An error occurred while fetching free spin games."
-          );
-        }
+  const [activeCardId, setActiveCardId] = useState(null);
 
-        // Fetch free spins data
-        const freeSpinResponse = await fetchData(
-          "/player/getFreeSpinsHistory",
-          "GET"
-        );
-        if (freeSpinResponse.data) {
-          setFreeSpin(freeSpinResponse.data.freeSpinRemaining);
-        } else if (freeSpinResponse.error) {
-          console.error("API Request Error:", freeSpinResponse.error);
-          toast.error(
-            freeSpinResponse.error.message ||
-              "An error occurred while fetching free spins history."
+  useEffect(() => {
+    if (isLoggedIn) {
+      const fetchLockByBonusData = async () => {
+        try {
+          const { data, error } = await fetchData(
+            "/player/getFreeSpinGames",
+            "GET"
           );
+          if (data) {
+            console.log("getFreeSpinGames", data.games);
+            setLockByBonus(data.games);
+          } else if (error) {
+            console.error("API Request Error:", error);
+            toast.error(
+              error.message ||
+                "An error occurred while fetching free spin games."
+            );
+          }
+        } catch (err) {
+          console.error("Unexpected Error:", err);
+          toast.error("An unexpected error occurred. Please try again.");
         }
-      } catch (err) {
-        console.error("Unexpected Error:", err);
-        toast.error("An unexpected error occurred. Please try again.");
-      }
+      };
+      fetchLockByBonusData();
     }
   }, [isLoggedIn, fetchData]);
 
-  useEffect(() => {
-    fetchAllData();
-  }, [fetchAllData]);
-
-  const handleFavoriteChange = (gameId, isFavorite) => {
-    `Game ${gameId} is now ${isFavorite ? "favorited" : "unfavorited"}`;
-    // Ensure this function is defined or remove it
-  };
-
   const renderLink = (gameData) => {
+    console.log("gameData", gameData.game_id);
+
     const isNoDepositBonus = lockByBonus?.promotion_type === "noDepositBonus";
     const isSameApiProvider =
       lockByBonus?.provider_name === gameData.api_provider;
     return `/${locale}/play-game/${gameData.slug}`;
   };
+
+  const fetchUserData = async () => {
+    try {
+      const { data, error } = await fetchData(
+        "/player/getFreeSpinsHistory",
+        "GET"
+      );
+      if (data) {
+        setFreeSpin(data.freeSpinRemaining);
+      } else if (error) {
+        console.error("API Request Error:", error);
+        toast.error(
+          error.message ||
+            "An error occurred while fetching free spins history."
+        );
+      }
+    } catch (err) {
+      console.error("Unexpected Error:", err);
+      toast.error("An unexpected error occurred. Please try again.");
+    }
+  };
+  useEffect(() => {
+    fetchUserData();
+  }, [fetchData]);
 
   return (
     <>
@@ -88,13 +96,12 @@ export const FreeSpinGames = () => {
             name={`${freeSpin} Free Spins - Games`}
             className="py-5 bg-bg-color2 text-center"
           />
-
           <div className="grid grid-cols-2 tab:grid-cols-3 laptop:grid-cols-4 desktop:grid-cols-6 gap-5 mt-7">
             {isLoading ? (
               Array.from({ length: 6 }).map((_, index) => (
                 <CustomSkeleton key={index} hasImage={true} hasText={true} />
               ))
-            ) : lockByBonus?.length === 0 ? (
+            ) : lockByBonus?.length == 0 ? (
               <Empty
                 description="No data available"
                 className="mt-5 text-center col-span-6"
@@ -103,7 +110,6 @@ export const FreeSpinGames = () => {
               lockByBonus?.map((gameData) => {
                 const liveLink = renderLink(gameData);
                 const isLiveLinkObject = typeof liveLink === "object";
-
                 return (
                   <GameCard
                     key={gameData.id}

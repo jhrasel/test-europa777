@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import useApi from "@/helpers/apiRequest";
+import { useEffect, useState } from "react";
+import Skeleton from "react-loading-skeleton";
 import { SignUpForm } from "./SignUpForm";
-import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 
 export const SignUpFormWrapper = ({ handleSignUpSuccess }) => {
   const { fetchData, error, isLoading } = useApi();

@@ -1,19 +1,18 @@
 "use client";
 
 import { Card, H4 } from "@/components/UI";
-import CustomSkeleton from "@/helpers/CustomSkeleton";
-import useApi from "@/helpers/apiRequest";
+import { fetchGameLogAPI } from "@/lib/fetchActiveBonusAPI";
 import { Empty, Pagination } from "antd";
 import { useTranslations } from "next-intl";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import toast from "react-hot-toast";
+import { FadeLoader } from "react-spinners";
 
 export const GameLog = () => {
-  // ;
-  const [datas, setDatas] = useState([]);
+  const [getData, setGetData] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
-  const { fetchData, isLoading } = useApi();
 
   const t = useTranslations("tableData");
 
@@ -33,25 +32,27 @@ export const GameLog = () => {
   const tableTdStyle =
     "text-center border-b border-gray-50 p-3 text-sm font-normal text-white capitalize";
 
-  useEffect(() => {
-    const fetchUserData = async () => {
-      const { data, error } = await fetchData(
-        "/player/getGamePlayHistory",
-        "GET"
+  const getFetchData = async (page = 1) => {
+    setIsLoading(true);
+    try {
+      const data = await fetchGameLogAPI(page);
+      console.log("fetchGameLogAPI", data.gamePlayHistory);
+      setGetData(data.gamePlayHistory.data);
+      setTotalPages(data.gamePlayHistory.last_page);
+      setCurrentPage(data.gamePlayHistory.current_page);
+    } catch (error) {
+      console.error("API Request Error:", error);
+      toast.error(
+        error.message || "An error occurred while fetching bonus history."
       );
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
-      if (data) {
-        console.log("getGamePlayHistory", data.gamePlayHistory);
-        const { data: gameData, total } = data.gamePlayHistory;
-        setDatas(gameData);
-        setTotalPages(Math.ceil(total / pageSize));
-      } else if (error) {
-        toast.error(responseData.message);
-      }
-    };
-
-    fetchUserData();
-  }, [fetchData, currentPage]);
+  useEffect(() => {
+    getFetchData();
+  }, []);
 
   let serialNumber = (currentPage - 1) * pageSize;
 
@@ -64,9 +65,14 @@ export const GameLog = () => {
               name={t("gamePlayHistory")}
               className="!text-indigo-500 text-center mb-5"
             />
-            {isLoading ? (
-              <CustomSkeleton hasImage={true} hasText={true} />
-            ) : (
+
+            <Suspense
+              fallback={
+                <h3 className="flex items-center gap-2 my-4 text-white">
+                  <FadeLoader color="#FFF" />
+                </h3>
+              }
+            >
               <table className="table-auto w-full relative">
                 <thead>
                   <tr className="bg-[#ececec]">
@@ -81,9 +87,9 @@ export const GameLog = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {datas.length > 0 ? (
+                  {getData.length > 0 ? (
                     <>
-                      {datas.map((data) => (
+                      {getData.map((data) => (
                         <tr key={data.id}>
                           <td className={`${tableTdStyle} first:text-left`}>
                             {++serialNumber}
@@ -119,7 +125,7 @@ export const GameLog = () => {
                   )}
                 </tbody>
               </table>
-            )}
+            </Suspense>
 
             {/* pagination */}
             <div className="text-right mt-5">
@@ -127,7 +133,11 @@ export const GameLog = () => {
                 current={currentPage}
                 pageSize={pageSize}
                 total={totalPages * pageSize}
-                onChange={(page) => setCurrentPage(page)}
+                onChange={(page) => {
+                  setCurrentPage(page);
+                  getFetchData(page);
+                }}
+                className="mt-5"
               />
             </div>
           </Card>

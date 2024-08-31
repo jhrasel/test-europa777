@@ -1,15 +1,15 @@
 "use client";
 import { Card, H4 } from "@/components/UI";
-import CustomSkeleton from "@/helpers/CustomSkeleton";
-import useApi from "@/helpers/apiRequest";
+import { fetchDepositHistoryAPI } from "@/lib/fetchDepositAPI";
 import { Empty, Pagination } from "antd";
 import { useTranslations } from "next-intl";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import toast from "react-hot-toast";
+import { FadeLoader } from "react-spinners";
 
 export const DepositHistory = () => {
-  const [depositDatas, setDepositData] = useState([]);
-  const { fetchData, isLoading, setIsLoading } = useApi();
+  const [data, setData] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const t = useTranslations("tableData");
@@ -28,25 +28,27 @@ export const DepositHistory = () => {
   const tableTdStyle =
     "mob:w-[120px] text-center border-b border-gray-50 p-3 text-sm font-normal text-white capitalize";
 
-  useEffect(() => {
-    const fetchUserData = async () => {
-      const { data, error } = await fetchData(
-        "/player/getPaymentHistory",
-        "GET"
-      );
-
+  const getFetchData = async (page = 1) => {
+    setIsLoading(true);
+    try {
+      const data = await fetchDepositHistoryAPI(page);
       if (data) {
-        // console.log("deposit data", data);
         const { deposits } = data.payment_history;
-        setDepositData(deposits.data);
-        setTotalPages(Math.ceil(deposits.total / pageSize));
-      } else if (error) {
-        toast.error(error.message);
-      }
-    };
 
-    fetchUserData();
-  }, [fetchData, currentPage, pageSize]);
+        setData(deposits.data);
+        setTotalPages(deposits.last_page);
+        setCurrentPage(deposits.current_page);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    getFetchData(currentPage);
+  }, []);
 
   let serialNumber = (currentPage - 1) * pageSize;
 
@@ -60,9 +62,13 @@ export const DepositHistory = () => {
           />
 
           <div className="w-full overflow-x-auto">
-            {isLoading ? (
-              <CustomSkeleton hasImage={true} hasText={true} />
-            ) : (
+            <Suspense
+              fallback={
+                <h3 className="flex items-center gap-2 my-4 text-white">
+                  <FadeLoader color="#FFF" />
+                </h3>
+              }
+            >
               <table className="table-fixed w-full">
                 <thead>
                   <tr className="bg-[#ececec]">
@@ -77,9 +83,9 @@ export const DepositHistory = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {depositDatas.length > 0 ? (
+                  {data.length > 0 ? (
                     <>
-                      {depositDatas.map((depositData) => (
+                      {data.map((depositData) => (
                         <tr key={depositData.id}>
                           <td
                             className={`${tableTdStyle} text-left md:text-center first:mob:w-[50px]`}
@@ -121,7 +127,7 @@ export const DepositHistory = () => {
                   )}
                 </tbody>
               </table>
-            )}
+            </Suspense>
           </div>
 
           {/* pagination */}
@@ -130,7 +136,11 @@ export const DepositHistory = () => {
               current={currentPage}
               pageSize={pageSize}
               total={totalPages * pageSize}
-              onChange={(page) => setCurrentPage(page)}
+              onChange={(page) => {
+                setCurrentPage(page);
+                getFetchData(page);
+              }}
+              className="mt-5"
             />
           </div>
         </Card>

@@ -553,3 +553,8 @@ input#phone {
 .promotion-db-page .container {
   padding: 0;
 }
+
+.bonus-modal .ant-modal-close {
+  color: #0055ff !important;
+  border: 1px solid #0055ff !important;
+}

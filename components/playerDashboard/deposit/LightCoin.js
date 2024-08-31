@@ -129,7 +129,7 @@ gap-1 tab:gap-3"
                   {`${amount} ${balance.currency}`}
                 </div>
               ))}
-            </div>
+            </div>z
             {/* deposit */}
             <div className="mt-5">
               <div className="flex flex-col items-center gap-5">

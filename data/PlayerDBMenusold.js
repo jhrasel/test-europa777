@@ -13,69 +13,6 @@ import { HiOutlineIdentification } from "react-icons/hi";
 import { IoGameController } from "react-icons/io5";
 import { TbCherry } from "react-icons/tb";
 
-// export const PlayerDashboardMenu = () => {
-//   const t = useTranslations("Menubar");
-//   const locale = useLocale();
-
-//   return [
-//     {
-//       id: crypto.randomUUID(),
-//       icon: <HiHome />,
-//       name: t("Dashboard"),
-//       url: `/${locale}/player-dashboard/`,
-//     },
-//     {
-//       id: crypto.randomUUID(),
-//       icon: <FaUserCircle />,
-//       name: t("Profile"),
-//       url: `/${locale}/player-dashboard/profile/`,
-//     },
-//     {
-//       id: crypto.randomUUID(),
-//       icon: <BsCashCoin />,
-//       name: t("Deposit"),
-//       url: `/${locale}/player-dashboard/deposit/`,
-//     },
-//     {
-//       id: crypto.randomUUID(),
-//       icon: <BsBank />,
-//       name: t("Withdraw"),
-//       url: `/${locale}/player-dashboard/withdraw/`,
-//     },
-//     {
-//       id: crypto.randomUUID(),
-//       icon: <FaGift />,
-//       name: t("Bonus"),
-//       url: `/${locale}/player-dashboard/bonus/`,
-//     },
-//     {
-//       id: crypto.randomUUID(),
-//       icon: <TbCherry />,
-//       name: t("Free Spins"),
-//       url: `/${locale}/player-dashboard/free-spin/`,
-//     },
-
-//     {
-//       id: crypto.randomUUID(),
-//       icon: <GiReceiveMoney />,
-//       name: t("Cashback"),
-//       url: `/${locale}/player-dashboard/cashback/`,
-//     },
-//     {
-//       id: crypto.randomUUID(),
-//       icon: <HiOutlineIdentification />,
-//       name: t("Verification"),
-//       url: `/${locale}/player-dashboard/varification/`,
-//     },
-//     {
-//       id: crypto.randomUUID(),
-//       icon: <IoGameController />,
-//       name: t("Game History"),
-//       url: `/${locale}/player-dashboard/game-log/`,
-//     },
-//   ];
-// };
-
 export const CashierMenu = () => {
   const t = useTranslations("Menubar");
   const locale = useLocale();
