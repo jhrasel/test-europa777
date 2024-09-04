@@ -19,6 +19,9 @@ const Layout = ({ children, showFooter = true, remainingTime }) => {
   const { isLoggedIn } = useAuth();
   const { loading } = useLoading();
 
+  const userName = "John Doe";
+  const userEmail = "john.doe@example.com";
+
   const shouldShowFooter =
     !route.includes("/play-game/") && !route.includes("/demo-game/");
 
@@ -88,7 +91,9 @@ const Layout = ({ children, showFooter = true, remainingTime }) => {
               )}
               {shouldShowFooter && <Footer />}
               {shouldShowFooter && <FooterMenu />}
-              {shouldShowFooter && !isMobile && <TawkToChat />}
+              {shouldShowFooter && !isMobile && (
+                <TawkToChat userName={userName} userEmail={userEmail} />
+              )}
             </>
           )}
         </main>

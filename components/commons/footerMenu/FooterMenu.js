@@ -6,9 +6,8 @@ import { useLocale, useTranslations } from "next-intl";
 import { BiSupport } from "react-icons/bi";
 import { BsCashCoin } from "react-icons/bs";
 import { CiSearch } from "react-icons/ci";
-import { HiHome } from "react-icons/hi";
-import { GameModal } from "../banner/modal/GameModal";
 import { GiCardAceSpades } from "react-icons/gi";
+import { GameModal } from "../banner/modal/GameModal";
 
 export default function FooterMenu({ closeModal }) {
   const { isLoggedIn } = useAuth();
@@ -84,7 +83,7 @@ export default function FooterMenu({ closeModal }) {
             <div className="">
               <UILink
                 className="!flex-col justify-center !gap-0.5 !text-sm"
-                href="https://tawk.to/chat/6306272254f06e12d8907c8c/1gb80ho5i"
+                href="https://embed.tawk.to/66d8974c50c10f7a00a404b0/1i6v0u0cs"
                 target="_blank"
                 icon={<BiSupport />}
                 name="Support"

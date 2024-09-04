@@ -1,14 +1,13 @@
 "use client";
 import { ErrorMessage, H4, P, UIImage, UIInput } from "@/components/UI";
 import { ProfileUpdateModal } from "@/components/playerDashboard/profile/ProfileUpdateModal";
+import { CreditCardVerification } from "@/components/creditCardVerification/CreditCardVerification";
 import CustomSkeleton from "@/helpers/CustomSkeleton";
 import SubmitButton from "@/helpers/SubmitButton";
 import useApi from "@/helpers/apiRequest";
 import useBalance from "@/hook/useBalance";
 import { paymentCardValidation } from "@/validations/Valodation";
 import { useFormik } from "formik";
-import { useLocale } from "next-intl";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { IoCardOutline } from "react-icons/io5";
@@ -17,8 +16,7 @@ import PromoCodeInput from "./PromoCodeInput";
 export const MasterCard = ({ country }) => {
   const [depositAmount, setDepositAmount] = useState(25);
   const { fetchData, error, isLoading } = useApi();
-  const router = useRouter();
-  const locale = useLocale();
+  const [verifyCard, setVerifyCard] = useState(false);
   const [needProfileUpdate, setNeedProfileUpdate] = useState(false);
 
   const handleButtonClick = (amount) => {
@@ -82,16 +80,14 @@ export const MasterCard = ({ country }) => {
       } else if (error) {
         if (status === 422) {
           setNeedProfileUpdate(true);
+        } else if (status === 401) {
+          setVerifyCard(true);
         } else {
           console.error("API Request Error:", error);
           toast.error(
             error.message || "An unexpected error occurred. Please try again."
           );
         }
-
-        // else if (status === 401) {
-        //   router.push(`/${locale}/player-dashboard/verification`);
-        // }
       }
     } catch (err) {
       console.error("Unexpected Error:", err);
@@ -140,8 +136,8 @@ export const MasterCard = ({ country }) => {
         <div className="flex items-center gap-2">
           <UIImage
             src="/images/bank-img/mastercard.png"
-            alt='deposit'
-            className="!w-16 tab:!w-32 !h-auto object-cover"
+            alt="deposit"
+            className="!w-16 tab:!w-24 !h-auto object-cover"
           />
           <H4
             name={`Min: 10 ${balance.currency}`}
@@ -152,30 +148,30 @@ export const MasterCard = ({ country }) => {
         <form onSubmit={formik.handleSubmit}>
           <div className="border-t border-indigo-300 pt-3 mt-3">
             <H4 name="" className="mt-3 !text-indigo-600" />
-            <div
-              className="flex flex-wrap items-center 
-gap-1 tab:gap-3"
-            >
+            <div className="flex flex-wrap items-center gap-1">
               {[25, 50, 100, 200, 500].map((amount) => (
                 <div
                   key={amount}
                   onClick={() => handleButtonClick(amount)}
-                  className="link__bg py-2 px-2 tab:px-8 rounded-full cursor-pointer text-white text-[11px] tab:text-lg font-semibold"
+                  className="link__bg py-2 px-2 tab:px-5 rounded-full cursor-pointer text-white text-[11px] tab:text-base font-semibold"
                 >
                   {`${amount} ${balance.currency}`}
                 </div>
-                // <UIButton
-                //   key={amount}
-                //   name={`${amount} ${balance.currency}`}
-                //   className="bg-red-color"
-                //   onClick={() => handleButtonClick(amount)}
-                // />
               ))}
             </div>
+
+            <div className="">
+              <PromoCodeInput
+                fetchData={fetchData}
+                isLoading={isLoading}
+                className="!w-full"
+              />
+            </div>
+
             <div className="mt-5">
               <div className="flex flex-col items-center gap-3">
                 {/* Deposit */}
-                <div className=" w-[100%] laptop:w-[50%] desktop:w-[40%]">
+                <div className=" w-[100%]">
                   <P
                     name={`Deposit Amount ${balance.currency}:`}
                     className="mb-2"
@@ -190,7 +186,7 @@ gap-1 tab:gap-3"
                 </div>
 
                 {/* Card number */}
-                <div className=" w-[100%] laptop:w-[50%] desktop:w-[40%] relative">
+                <div className="w-[100%] relative">
                   <P name="Card Number" className="mb-2" />
                   <UIInput
                     type="number"
@@ -214,7 +210,7 @@ gap-1 tab:gap-3"
                   )}
                 </div>
 
-                <div className="w-[100%] laptop:w-[50%] desktop:w-[40%] grid grid-cols-2 gap-2">
+                <div className="w-[100%] grid grid-cols-2 gap-2">
                   {/* Expiry Date */}
                   <div className="">
                     <P name="Expiry Date" className="mb-2" />
@@ -258,7 +254,6 @@ gap-1 tab:gap-3"
                   </div>
                 </div>
                 {/* promo Code */}
-                <PromoCodeInput fetchData={fetchData} isLoading={isLoading} />
               </div>
 
               {/* SubmitButton */}
@@ -275,6 +270,10 @@ gap-1 tab:gap-3"
           handleModal={setNeedProfileUpdate}
         />
       </div>
+      <CreditCardVerification
+        modal={verifyCard}
+        onCancel={() => setVerifyCard(false)}
+      />
     </>
   );
 };

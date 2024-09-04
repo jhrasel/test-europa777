@@ -71,7 +71,7 @@ export default function ProviderGames({ slagId }) {
         try {
           const data = await fetchLockByBonus();
           // console.log("fetchLockByBonus", data);
-          setLockByBonus(data);
+          setLockByBonus(data.Player);
         } catch (err) {
           setError(err.message);
         }
@@ -92,10 +92,10 @@ export default function ProviderGames({ slagId }) {
 
   const renderLink = (gameData) => {
     const haveDepositBonus =
-      lockByBonus?.data?.promotion_type === "noDepositBonus" &&
+      lockByBonus?.promotion_type === "noDepositBonus" &&
       gameData?.no_dep_bonus === 1;
     const noDepositBonus =
-      lockByBonus?.data?.promotion_type === "noDepositBonus" &&
+      lockByBonus?.promotion_type === "noDepositBonus" &&
       gameData?.no_dep_bonus === 0;
 
     if (haveDepositBonus) {

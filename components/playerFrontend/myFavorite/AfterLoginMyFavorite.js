@@ -55,7 +55,7 @@ export default function AfterLoginMyFavorite() {
       const fetchLockByBonusData = async () => {
         const { data, error } = await fetchData("/player/lockByBonus", "GET");
         if (data) {
-          setLockByBonus(data);
+          setLockByBonus(data.Player);
         } else if (error) {
           console.error("Error fetching lock by bonus:", error);
         }
@@ -67,10 +67,10 @@ export default function AfterLoginMyFavorite() {
 
   const renderLink = (gameData) => {
     const haveDepositBonus =
-      lockByBonus?.data?.promotion_type === "noDepositBonus" &&
+      lockByBonus?.promotion_type === "noDepositBonus" &&
       gameData?.no_dep_bonus === 1;
     const noDepositBonus =
-      lockByBonus?.data?.promotion_type === "noDepositBonus" &&
+      lockByBonus?.promotion_type === "noDepositBonus" &&
       gameData?.no_dep_bonus === 0;
 
     if (haveDepositBonus) {

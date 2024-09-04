@@ -160,7 +160,7 @@ export const BounsDB = () => {
                               Active
                             </span>
                             <Button
-                              onClick={() => showCancelModal(depositData.id)}
+                              onClick={() => showCancelModal(data.id)}
                               className="!bg-blue-color !text-white border !border-blue-color w-full"
                             >
                               Cancel

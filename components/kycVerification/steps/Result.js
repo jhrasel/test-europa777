@@ -1,0 +1,46 @@
+"use client";
+
+import { UIButton } from "@/components/UI/Button";
+import { Step } from "./steps";
+import { UIImage } from "@/components/UI/Image";
+
+export const Result = ({ setStep, data, onCancel }) => {
+  const { kyc_status } = data.response;
+  const title = kyc_status
+    ? "Congratulations"
+    : "Please use another identity document";
+
+  const paragraph = kyc_status
+    ? "You have successfully verified your identity, Now you can close the popup"
+    : "Sorry, the identity document you used cannot be verified. Please try again with different identity document";
+
+  return (
+    <div className="flex flex-col text-slate-700">
+      <div className="bg-bg-color1 py-2 rounded-tr-lg">
+        <UIImage
+          src="/images/logo.png"
+          alt="logo"
+          className="!w-auto h-6 laptop:h-8 m-auto"
+        />
+      </div>
+      <div className="my-8 flex flex-col items-center">
+        <h2 className="text-2xl font-bold text-center">{title}</h2>
+        <h4 className="text-sm font-normal text-slate-600 text-center w-[80%] mt-2">
+          {paragraph}
+        </h4>
+        {kyc_status ? (
+          <div className="flex justify-center my-4">
+            <UIButton name="Close" onClick={onCancel} />
+          </div>
+        ) : (
+          <div className="flex justify-center my-4">
+            <UIButton
+              name="Try again"
+              onClick={() => setStep(Step.INTRODUCTION)}
+            />
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};

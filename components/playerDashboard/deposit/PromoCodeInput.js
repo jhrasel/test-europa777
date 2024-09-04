@@ -89,7 +89,7 @@ const PromoCodeComponent = ({
       <div className="flex w-full items-center gap-2">
         <UIInput
           name="code"
-          placeholder="Promo Code Optional"
+          placeholder="Promo Code"
           value={promoMessage?.code ? promoMessage?.code : promoCode}
           onChange={handlePromoCodeChange}
         />

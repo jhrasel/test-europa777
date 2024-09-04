@@ -1,6 +1,7 @@
 "use client";
 
 import { Modal } from "antd";
+
 import { useTranslations } from "next-intl";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -9,15 +10,15 @@ import BonusRegister from "./BonusRegister";
 import { SignUpFormWrapper } from "./SignUpFormWrapper";
 
 const SignUpModal = () => {
+  const router = useRouter();
+  const pathname = usePathname();
+
   const [step, setStep] = useState(1);
   const [isOpen, setIsOpen] = useState(false);
 
   const goToStep2 = () => {
     setStep(2);
   };
-
-  const router = useRouter();
-  const pathname = usePathname();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const t = useTranslations("Common");
@@ -32,7 +33,6 @@ const SignUpModal = () => {
     } else {
       setIsModalOpen(false);
       setIsOpen(false);
-      setStep(1);
     }
   }, [modalName]);
 
@@ -55,6 +55,7 @@ const SignUpModal = () => {
           setIsOpen={setIsOpen}
         />
       )}
+
       {step === 2 && (
         <Modal
           open={isModalOpen}

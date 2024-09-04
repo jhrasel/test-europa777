@@ -59,9 +59,10 @@ export default function AfterLoginWheel() {
               daysLeft={wheelData?.days_left}
               wheelPrizes={wheelData?.wheel_prizes}
               prizeName={wheelData?.prize_name}
-              spinWinNumber={
-                wheelData?.spin?.win_number ? wheelData?.spin?.win_number : 0
-              }
+              // spinWinNumber={
+              //   wheelData?.spin?.win_number ? wheelData?.spin?.win_number : 0
+              // }
+              spinWinNumber={wheelData.win_number ? wheelData?.win_number : 0}
               winNumber={wheelData.win_number ? wheelData?.win_number : 0}
             />
           )}

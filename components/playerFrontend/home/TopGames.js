@@ -41,7 +41,7 @@ export const TopGames = ({ getTopGamesData }) => {
       if (isLoggedIn) {
         try {
           const data = await fetchLockByBonus();
-          setLockByBonus(data);
+          setLockByBonus(data.Player);
         } catch (err) {
           // setError(err.message);
         }
@@ -53,10 +53,10 @@ export const TopGames = ({ getTopGamesData }) => {
 
   const renderLink = (gameData) => {
     const haveDepositBonus =
-      lockByBonus?.data?.promotion_type === "noDepositBonus" &&
+      lockByBonus?.promotion_type === "noDepositBonus" &&
       gameData?.no_dep_bonus === 1;
     const noDepositBonus =
-      lockByBonus?.data?.promotion_type === "noDepositBonus" &&
+      lockByBonus?.promotion_type === "noDepositBonus" &&
       gameData?.no_dep_bonus === 0;
 
     if (haveDepositBonus) {

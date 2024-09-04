@@ -63,7 +63,7 @@ function useApi() {
   const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/api`;
 
   const fetchData = useCallback(
-    async (endpoint, method, bodyData = null, token = null) => {
+    async (endpoint, method, bodyData = null, token = null, headers) => {
       const url = apiUrl + endpoint;
       const apiKey = token || Cookies.get("token");
       setIsLoading(true);
@@ -74,6 +74,7 @@ function useApi() {
             "Content-Type": "application/json",
             "X-Requested-With": "XMLHttpRequest",
             Authorization: `Bearer ${apiKey}`,
+            ...headers,
           },
           data: bodyData,
         };

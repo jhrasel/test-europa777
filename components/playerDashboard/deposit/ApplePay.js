@@ -118,25 +118,31 @@ export const ApplePay = ({ country }) => {
         <form onSubmit={formik.handleSubmit}>
           <div className="border-t border-indigo-300 pt-3 mt-3">
             <H4 name="" className="mt-3 !text-indigo-600" />
-            <div
-              className="flex flex-wrap items-center 
-gap-1 tab:gap-3"
-            >
+            <div className="flex flex-wrap items-center gap-1">
               {[25, 50, 100, 200, 500].map((amount) => (
                 <div
                   key={amount}
                   onClick={() => handleButtonClick(amount)}
-                  className="link__bg py-2 px-2 tab:px-8 rounded-full cursor-pointer text-white text-[11px] tab:text-lg font-semibold"
+                  className="link__bg py-2 px-2 tab:px-5 rounded-full cursor-pointer text-white text-[11px] tab:text-base font-semibold"
                 >
                   {`${amount} ${balance.currency}`}
                 </div>
               ))}
             </div>
+
+            <div className="">
+              <PromoCodeInput
+                fetchData={fetchData}
+                isLoading={isLoading}
+                className="!w-full"
+              />
+            </div>
+
             {/* deposit */}
             <div className="mt-5">
               <div className="flex flex-col items-center gap-5">
                 {/* Deposit */}
-                <div className="w-[100%] laptop:w-[50%] desktop:w-[40%] m-auto">
+                <div className="w-[100%] m-auto">
                   <P
                     name={`Deposit Amount ${balance.currency}:`}
                     className="mb-2"
@@ -149,8 +155,6 @@ gap-1 tab:gap-3"
                     onChange={handleInputChange}
                   />
                 </div>
-                {/* promo Code */}
-                <PromoCodeInput fetchData={fetchData} isLoading={isLoading} />
               </div>
               {/* SubmitButton */}
               <SubmitButton

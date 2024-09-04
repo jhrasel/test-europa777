@@ -1,5 +1,5 @@
 {
-  "name": "my-app",
+  "name": "europa777",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -7,12 +7,15 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "postinstall": "shx cp -r node_modules/@microblink/blinkcard-in-browser-sdk/resources public"
+    "copy-wasm": "cp -R ./node_modules/@innovatrics/dot-document-auto-capture/wasm ./public"
   },
   "dependencies": {
     "@ant-design/nextjs-registry": "^1.0.0",
     "@fingerprintjs/fingerprintjs-pro": "^3.9.8",
-    "@microblink/blinkcard-in-browser-sdk": "~2.9.0",
+    "@innovatrics/dot-auto-capture-ui": "5.2.8",
+    "@innovatrics/dot-document-auto-capture": "5.2.8",
+    "@innovatrics/dot-magnifeye-liveness": "5.2.8",
+    "@tawk.to/tawk-messenger-react": "^2.0.2",
     "antd": "^5.13.2",
     "axios": "^1.6.7",
     "card-validator": "^9.1.0",

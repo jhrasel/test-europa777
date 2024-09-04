@@ -37,7 +37,8 @@ export const HotGames = ({ getHotGamesData }) => {
       if (isLoggedIn) {
         try {
           const data = await fetchLockByBonus();
-          setLockByBonus(data);
+          // console.log("fetchLockByBonus", data.Player);
+          setLockByBonus(data.Player);
         } catch (err) {}
       }
     };
@@ -47,10 +48,10 @@ export const HotGames = ({ getHotGamesData }) => {
 
   const renderLink = (gameData) => {
     const haveDepositBonus =
-      lockByBonus?.data?.promotion_type === "noDepositBonus" &&
+      lockByBonus?.promotion_type === "noDepositBonus" &&
       gameData?.no_dep_bonus === 1;
     const noDepositBonus =
-      lockByBonus?.data?.promotion_type === "noDepositBonus" &&
+      lockByBonus?.promotion_type === "noDepositBonus" &&
       gameData?.no_dep_bonus === 0;
 
     if (haveDepositBonus) {

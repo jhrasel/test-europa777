@@ -39,7 +39,7 @@ export const RecentPalyGame = () => {
           const getRecentHistory = await fetchRecentGameHistory();
           setGameDatas(getRecentHistory.data.data);
           const data = await fetchLockByBonus();
-          setLockByBonus(data);
+          setLockByBonus(data.Player);
         } catch (err) {
           // setError(err.message);
         }
@@ -51,10 +51,10 @@ export const RecentPalyGame = () => {
 
   const renderLink = (gameData) => {
     const haveDepositBonus =
-      lockByBonus?.data?.promotion_type === "noDepositBonus" &&
+      lockByBonus?.promotion_type === "noDepositBonus" &&
       gameData?.no_dep_bonus === 1;
     const noDepositBonus =
-      lockByBonus?.data?.promotion_type === "noDepositBonus" &&
+      lockByBonus?.promotion_type === "noDepositBonus" &&
       gameData?.no_dep_bonus === 0;
 
     if (haveDepositBonus) {
@@ -120,4 +120,3 @@ export const RecentPalyGame = () => {
     </>
   );
 };
-

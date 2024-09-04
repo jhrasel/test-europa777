@@ -112,6 +112,7 @@ export default function BonusRegister({ goToStep2, isOpen, setIsOpen }) {
                           className="w-full py-1.5 px-2 !border !border-border-color rounded-md tab:mt-2 text-xs tab:text-base"
                           placeholder="Enter your promo code"
                         />
+                        // <PromoCodeComponent/>
                       )}
                     </div>
                     <input

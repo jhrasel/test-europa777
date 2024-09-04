@@ -1,9 +1,10 @@
-import { Card, H4 } from "@/components/UI";
+import { Card, H4, P } from "@/components/UI";
 import { fetchDepositHistoryAPI } from "@/lib/fetchDepositAPI";
-import { Empty, Pagination } from "antd";
+import { Button, Empty, Modal, Pagination } from "antd";
 import { useTranslations } from "next-intl";
 import { Suspense, useEffect, useState } from "react";
 import toast from "react-hot-toast";
+import { CiWarning } from "react-icons/ci";
 import { FadeLoader } from "react-spinners";
 
 export default function WithdrawHistory() {
@@ -11,6 +12,9 @@ export default function WithdrawHistory() {
   const [isLoading, setIsLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
+
+  const [isCancelModalVisible, setIsCancelModalVisible] = useState(false);
+  const [selectedBonusId, setSelectedBonusId] = useState(null);
 
   const t = useTranslations("tableData");
 
@@ -20,8 +24,9 @@ export default function WithdrawHistory() {
     t("currency"),
     t("transactionId"),
     t("paymentMethod"),
-    t("status"),
     t("createdAt"),
+    t("status"),
+    t("action"),
   ];
 
   const pageSize = 10;
@@ -29,34 +34,14 @@ export default function WithdrawHistory() {
   const tableTdStyle =
     "text-center border-b border-gray-50 p-3 text-sm font-normal text-white capitalize";
 
-  // useEffect(() => {
-  //   const fetchUserData = async () => {
-  //     const { data, error } = await fetchData(
-  //       "/player/getPaymentHistory",
-  //       "GET"
-  //     );
-
-  //     if (data) {
-  //       const { data: withdrawData, total } = data.payment_history.withdraws;
-  //       setwithdrawsData(withdrawData);
-  //       setTotalPages(Math.ceil(total / pageSize));
-  //     } else if (error) {
-  //       // console.error("API Request Error:", error);
-  //       toast.error(
-  //         error.message || "An error occurred while fetching payment history."
-  //       );
-  //     }
-  //   };
-
-  //   fetchUserData();
-  // }, [fetchData, currentPage]);
-
   const getFetchData = async (page = 1) => {
     setIsLoading(true);
     try {
       const data = await fetchDepositHistoryAPI(page);
       if (data) {
         const { withdraws } = data.payment_history;
+
+        console.log("withdraws.data", withdraws.data);
 
         setData(withdraws.data);
         setTotalPages(withdraws.last_page);
@@ -67,6 +52,30 @@ export default function WithdrawHistory() {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const handleCancelBonus = async () => {
+    const result = await fetchData("/player/cancelActiveBonus", "POST", {
+      bonusId: selectedBonusId,
+    });
+
+    if (result.error) {
+      toast.error(result.error.message);
+    } else {
+      toast.success("Bonus cancelled successfully.");
+      getFetchData();
+    }
+
+    setIsCancelModalVisible(false);
+  };
+
+  const showCancelModal = (bonusId) => {
+    setSelectedBonusId(bonusId);
+    setIsCancelModalVisible(true);
+  };
+
+  const handleCancelModal = () => {
+    setIsCancelModalVisible(false);
   };
 
   useEffect(() => {
@@ -124,11 +133,32 @@ export default function WithdrawHistory() {
                       <td className={`${tableTdStyle}`}>
                         {withdrawsData.payment_method}
                       </td>
+
+                      <td className={`${tableTdStyle} text-right`}>
+                        {withdrawsData.created_at}
+                      </td>
+
                       <td className={`${tableTdStyle}`}>
                         {withdrawsData.status}
                       </td>
-                      <td className={`${tableTdStyle} text-right`}>
-                        {withdrawsData.created_at}
+
+                      <td className={`${tableTdStyle}`}>
+                        {withdrawsData.status === "pending" ||
+                          withdrawsData.status === "submitted" ||
+                          (withdrawsData.status === "waiting" && (
+                            <div className="flex flex-col items-center gap-2">
+                              <Button
+                                onClick={() =>
+                                  showCancelModal(withdrawsData.id)
+                                }
+                                className="!bg-blue-color !text-white border !border-blue-color w-full"
+                              >
+                                Cancel
+                              </Button>
+                            </div>
+                          ))}
+
+                        {withdrawsData.status === "cancelled" && ""}
                       </td>
                     </tr>
                   ))}
@@ -157,6 +187,38 @@ export default function WithdrawHistory() {
             className="mt-5"
           />
         </div>
+
+        {/* Convert Confirmation Modal */}
+        <Modal
+          centered
+          visible={isCancelModalVisible}
+          onCancel={handleCancelModal}
+          className="bonus-modal"
+        >
+          <div className="p-5 flex flex-col text-center gap-5">
+            <div className="flex flex-col gap-1 justify-center items-center">
+              <CiWarning className="text-5xl text-blue-color" />
+              <H4 name="Warning" className="!text-blue-color" />
+            </div>
+
+            <P name="Do you want to cancel the withdraw?" />
+
+            <div className="flex items-center justify-center gap-5">
+              <Button
+                key="submit"
+                type="primary"
+                onClick={handleCancelBonus}
+                className="!bg-blue-color !text-white w-32"
+              >
+                Cancel
+              </Button>
+
+              <Button key="back" onClick={handleCancelModal} className="w-32">
+                Close
+              </Button>
+            </div>
+          </div>
+        </Modal>
       </Card>
     </>
   );

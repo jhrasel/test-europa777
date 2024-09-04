@@ -227,6 +227,7 @@
     "createdAt": "Created at",
     "depositHistory": "Deposit History",
     "withdrawalHistory": "Withdrawal History",
+    "history": "History",
     "bonusHistory": "Bonus History",
     "title": "Title",
     "bonus": "Bonus",
@@ -249,11 +250,12 @@
     "winAmount": "Win Amount",
     "balance": "Balance",
     "date": "Date",
+    "action": "Action",
     "status": "Status"
   },
 
   "promoCode": {
-    "title1": "Do you have a promo code? (Optional)",
+    "title1": "Do you have a promo code?",
     "title2": "Looking for promo code?",
     "clickHere": "click here",
     "add": "Add",

@@ -15,7 +15,6 @@ import PhoneInput from "react-phone-number-input";
 import "react-phone-number-input/style.css";
 import { ClockLoader } from "react-spinners";
 import { ErrorMessage, P, UIButton, UIInput, UILink } from "../UI";
-import BonusRegister from "./BonusRegister";
 
 // Ant Select
 const onChange = (e) => {
@@ -100,7 +99,7 @@ export const SignUpForm = ({ onSignUpSuccess, defaultCountry }) => {
   const handleSignUpSuccess = (responseData) => {
     formik.resetForm();
     toast.success(
-      "Registration Successful!. Please Check Your Email For Verification"
+      "Registration Successful! Please Check Your Email For Verification."
     );
     router.push(
       pathname +
@@ -161,11 +160,6 @@ export const SignUpForm = ({ onSignUpSuccess, defaultCountry }) => {
 
   return (
     <>
-      {/* step 1 */}
-      <BonusRegister />
-
-      {/* step 2 */}
-
       <div className="flex flex-col items-center justify-center gap-1 mb-1">
         <a href={`${process.env.NEXT_PUBLIC_API_URL}/api/login/google`}>
           <img
@@ -246,7 +240,9 @@ export const SignUpForm = ({ onSignUpSuccess, defaultCountry }) => {
         </div>
 
         {/* phone */}
-        <div className="">
+        <div className="relative">
+          {/* overlay */}
+          <div className="absolute left-0 top-0 bg-red-300 w-14 h-full z-10 rounded-lg opacity-0"></div>
           <PhoneInput
             id="phone"
             placeholder="Enter phone number"
@@ -316,7 +312,7 @@ export const SignUpForm = ({ onSignUpSuccess, defaultCountry }) => {
         {/* capcha */}
         <div className="">
           <ReCAPTCHA
-            sitekey="6LdYaWcpAAAAAEPCH8Bfn5z_9SjTkvCh7Np3NuDB"
+            sitekey="6LdYaWcpAAAAAEPCH8Bfn5z_9SjTkvCh7Np3NuDB" // Replace with your reCAPTCHA Site Key
             onChange={handleRecaptchaChange}
           />
           {recaptchaError && (

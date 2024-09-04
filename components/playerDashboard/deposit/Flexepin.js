@@ -81,12 +81,20 @@ export const Flexepin = () => {
     <div className="bg-white p-2 tab:p-5 rounded-lg">
       <UIImage
         src="/images/bank-img/flexepin.png"
-        alt='deposit'
+        alt="deposit"
         className="!w-16 tab:!w-32 !h-auto object-cover"
       />
       <form onSubmit={formik.handleSubmit}>
+        <div className="">
+          <PromoCodeInput
+            fetchData={fetchData}
+            isLoading={isLoading}
+            className="!w-full"
+          />
+        </div>
+
         <div className="border-t border-indigo-300 pt-3 mt-3">
-          <div className="w-[100%] laptop:w-[50%] desktop:w-[40%] m-auto mt-2">
+          <div className="w-[100%] m-auto mt-2">
             <P name="Voucher Currency" className="mb-2" />
             <Select
               showSearch
@@ -111,7 +119,7 @@ export const Flexepin = () => {
 
           <div className="mt-5">
             <div className="flex flex-col items-center gap-5">
-              <div className="w-[100%] laptop:w-[50%] desktop:w-[40%] m-auto">
+              <div className="w-[100%] m-auto">
                 <P name="Flexepin Voucher:" className="mb-2" />
                 <UIInput
                   type="text"
@@ -126,8 +134,6 @@ export const Flexepin = () => {
                   }
                 />
               </div>
-
-              <PromoCodeInput fetchData={fetchData} isLoading={isLoading} />
             </div>
 
             <div className="flex items-center justify-center mt-3 gap-0.5">

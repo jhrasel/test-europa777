@@ -10,6 +10,7 @@ import {
 } from "react-icons/fa";
 import { FaMoneyBillTrendUp } from "react-icons/fa6";
 import { GiReceiveMoney } from "react-icons/gi";
+import { HiOutlineIdentification } from "react-icons/hi";
 import { IoGameController } from "react-icons/io5";
 import { TbCherry } from "react-icons/tb";
 
@@ -41,7 +42,7 @@ export const PlayerDashboardMenuOld = () => {
         {
           id: crypto.randomUUID(),
           icon: <IoGameController />,
-          name: tData("withdrawalHistory"),
+          name: tData("history"),
           url: `/${locale}/player-dashboard/payment-history/`,
         },
       ],
@@ -102,12 +103,12 @@ export const PlayerDashboardMenuOld = () => {
           name: t("Profile"),
           url: `/${locale}/player-dashboard/profile/`,
         },
-        // {
-        //   id: crypto.randomUUID(),
-        //   icon: <HiOutlineIdentification />,
-        //   name: t("Verification"),
-        //   url: `/${locale}/player-dashboard/varification/`,
-        // },
+        {
+          id: crypto.randomUUID(),
+          icon: <HiOutlineIdentification />,
+          name: t("Verification"),
+          url: `/${locale}/player-dashboard/varification/`,
+        },
         {
           id: crypto.randomUUID(),
           icon: <FaStopwatch />,
