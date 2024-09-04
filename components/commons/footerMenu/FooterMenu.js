@@ -83,7 +83,7 @@ export default function FooterMenu({ closeModal }) {
             <div className="">
               <UILink
                 className="!flex-col justify-center !gap-0.5 !text-sm"
-                href="https://embed.tawk.to/66d8974c50c10f7a00a404b0/1i6v0u0cs"
+                href="https://tawk.to/chat/66d8974c50c10f7a00a404b0/1i6v0u0cs"
                 target="_blank"
                 icon={<BiSupport />}
                 name="Support"

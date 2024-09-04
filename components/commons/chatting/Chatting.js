@@ -1,14 +1,42 @@
-// components/TawkToChat.js
-import { useEffect } from "react";
+import useApi from "@/helpers/apiRequest";
+import { useEffect, useState } from "react";
 
-const TawkToChat = ({ userName, userEmail }) => {
+const TawkToChat = () => {
+  const { fetchData } = useApi();
+  const [userData, setUserData] = useState(null);
+
   useEffect(() => {
-    // Function to initialize Tawk.to script
-    const loadTawkToScript = () => {
+    const fetchUserData = async () => {
+      const { data, error } = await fetchData("/player/getProfile", "GET");
+
+      if (data) {
+        setUserData(data.Player);
+      } else if (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+
+    fetchUserData();
+  }, []);
+
+  useEffect(() => {
+    if (userData) {
+      // Create and inject the Tawk.to script
       const script = document.createElement("script");
       script.type = "text/javascript";
       script.innerHTML = `
-        var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+        var Tawk_API=Tawk_API||{};
+        Tawk_API.visitor = {
+          name : '${userData.first_name || "Visitor Name"} ${
+        userData.last_name || ""
+      }',
+          email : '${userData.email || "visitor@email.com"}',
+          hash : '${
+            userData.hash || "hash-value"
+          }' // Adjust if you have hash value logic
+        };
+
+        var Tawk_LoadStart=new Date();
         (function(){
           var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
           s1.async=true;
@@ -20,26 +48,16 @@ const TawkToChat = ({ userName, userEmail }) => {
       `;
       document.body.appendChild(script);
 
-      // Wait for Tawk.to script to load and then set user info
-      script.onload = () => {
-        window.Tawk_API = window.Tawk_API || {};
-        window.Tawk_API.onLoad = function () {
-          window.Tawk_API.setAttributes({
-            name: userName,
-            email: userEmail,
-          });
-        };
-      };
-
       return () => {
         document.body.removeChild(script);
       };
-    };
-
-    loadTawkToScript();
-  }, [userName, userEmail]);
+    }
+  }, [userData]);
 
   return null;
 };
 
 export default TawkToChat;
+
+
+
