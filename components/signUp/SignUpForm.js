@@ -39,7 +39,7 @@ export const SignUpForm = ({
   const { fetchData, error, isLoading } = useApi();
   const [phoneNumber, setPhoneNumber] = useState("");
   const [recaptchaValue, setRecaptchaValue] = useState("");
-  const [recaptchaError, setRecaptchaError] = useState(false);
+  // const [recaptchaError, setRecaptchaError] = useState(false);
   const [defaultPhoneCountry, setDefaultPhoneCountry] = useState(
     defaultCountry.code
   );
@@ -65,9 +65,9 @@ export const SignUpForm = ({
     return "US";
   };
 
-  const handleRecaptchaChange = (value) => {
-    setRecaptchaValue(value);
-  };
+  // const handleRecaptchaChange = (value) => {
+  //   setRecaptchaValue(value);
+  // };
 
   const handlePhoneChange = (value) => {
     setPhoneNumber(value);
@@ -113,13 +113,13 @@ export const SignUpForm = ({
 
   const handleSubmit = async (values) => {
     try {
-      if (!recaptchaValue) {
-        setRecaptchaError(true);
-        toast.error("Please complete the CAPTCHA to continue.");
-        return;
-      }
+      // if (!recaptchaValue) {
+      //   setRecaptchaError(true);
+      //   toast.error("Please complete the CAPTCHA to continue.");
+      //   return;
+      // }
 
-      setRecaptchaError(false);
+      // setRecaptchaError(false);
 
       const { data, error } = await fetchData("/register", "POST", {
         ...values,
@@ -314,7 +314,7 @@ export const SignUpForm = ({
         </div> */}
 
         {/* capcha */}
-        <div className="">
+        {/* <div className="">
           <ReCAPTCHA
             sitekey="6LdYaWcpAAAAAEPCH8Bfn5z_9SjTkvCh7Np3NuDB" // Replace with your reCAPTCHA Site Key
             onChange={handleRecaptchaChange}
@@ -324,7 +324,7 @@ export const SignUpForm = ({
               Please complete the CAPTCHA verification.
             </div>
           )}
-        </div>
+        </div> */}
 
         {/* submit Button */}
         <div className="mt-2 flex items-center justify-between">
