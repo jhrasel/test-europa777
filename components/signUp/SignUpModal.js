@@ -13,7 +13,12 @@ const SignUpModal = () => {
   const router = useRouter();
   const pathname = usePathname();
 
+  const [selectedBonus, setSelectedBonus] = useState(null);
+
   const [step, setStep] = useState(1);
+  // const goToStep2 = () => setStep(2);
+  // const goBackToStep1 = () => setStep(1);
+
   const [isOpen, setIsOpen] = useState(false);
 
   const goToStep2 = () => {
@@ -46,6 +51,10 @@ const SignUpModal = () => {
     onCancel();
   };
 
+  const handleBonusSelect = (bonus) => {
+    setSelectedBonus(bonus);
+  };
+
   return (
     <>
       {step === 1 && (
@@ -53,6 +62,8 @@ const SignUpModal = () => {
           goToStep2={goToStep2}
           isOpen={isOpen}
           setIsOpen={setIsOpen}
+          onCancel={onCancel}
+          onSelect={handleBonusSelect}
         />
       )}
 
@@ -95,6 +106,7 @@ const SignUpModal = () => {
                 <div className="mt-2 pt-0 pb-4 px-5 ">
                   <SignUpFormWrapper
                     handleSignUpSuccess={handleSignUpSuccess}
+                    selectedBonus={selectedBonus}
                   />
                 </div>
               </div>

@@ -25,7 +25,11 @@ const onChange = (e) => {
 const countries = countryList.getData();
 
 // main part
-export const SignUpForm = ({ onSignUpSuccess, defaultCountry }) => {
+export const SignUpForm = ({
+  onSignUpSuccess,
+  defaultCountry,
+  selectedBonus,
+}) => {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -121,13 +125,13 @@ export const SignUpForm = ({ onSignUpSuccess, defaultCountry }) => {
         ...values,
         recaptchaValue: recaptchaValue,
         fingerprint: fingerprint,
+        promotion: selectedBonus,
       });
 
       if (data) {
         onSignUpSuccess();
         handleSignUpSuccess(data);
       } else if (error) {
-        // console.error("API Request Error:", error);
         toast.error(error.message || "Registration failed. Please try again.");
       }
     } catch (err) {}

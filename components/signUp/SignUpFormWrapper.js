@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import Skeleton from "react-loading-skeleton";
 import { SignUpForm } from "./SignUpForm";
 
-export const SignUpFormWrapper = ({ handleSignUpSuccess }) => {
+export const SignUpFormWrapper = ({ selectedBonus, handleSignUpSuccess }) => {
   const { fetchData, error, isLoading } = useApi();
   const [defaultCountry, setDefaultCountry] = useState(null);
 
@@ -68,6 +68,7 @@ export const SignUpFormWrapper = ({ handleSignUpSuccess }) => {
     <SignUpForm
       onSignUpSuccess={handleSignUpSuccess}
       defaultCountry={defaultCountry}
+      selectedBonus={selectedBonus}
     />
   );
 };
