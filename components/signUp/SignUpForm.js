@@ -14,7 +14,7 @@ import toast from "react-hot-toast";
 import PhoneInput from "react-phone-number-input";
 import "react-phone-number-input/style.css";
 import { ClockLoader } from "react-spinners";
-import { ErrorMessage, P, UIButton, UIInput, UILink } from "../UI";
+import { ErrorMessage, H5, P, UIButton, UIInput, UILink } from "../UI";
 
 // Ant Select
 const onChange = (e) => {
@@ -39,10 +39,25 @@ export const SignUpForm = ({
   const { fetchData, error, isLoading } = useApi();
   const [phoneNumber, setPhoneNumber] = useState("");
   const [recaptchaValue, setRecaptchaValue] = useState("");
-  // const [recaptchaError, setRecaptchaError] = useState(false);
+  const [recaptchaError, setRecaptchaError] = useState(false);
   const [defaultPhoneCountry, setDefaultPhoneCountry] = useState(
     defaultCountry.code
   );
+
+  console.log("selectedBonus", selectedBonus);
+
+  const [bonusData, setBonusData] = useState(selectedBonus);
+  let bonusDataShow = "";
+
+  if (bonusData.option === "BONUS1") {
+    bonusDataShow = "200% up to 1000.00 + 100 free spins";
+  } else if (bonusData.option === "promoCode") {
+    bonusDataShow = `Your promo code is ${bonusData.promo_code}`;
+  } else {
+    bonusDataShow = "You have no promo code";
+  }
+
+  console.log("bonusData", bonusData);
 
   const fingerprint = useFingerPrint();
 
@@ -65,9 +80,9 @@ export const SignUpForm = ({
     return "US";
   };
 
-  // const handleRecaptchaChange = (value) => {
-  //   setRecaptchaValue(value);
-  // };
+  const handleRecaptchaChange = (value) => {
+    setRecaptchaValue(value);
+  };
 
   const handlePhoneChange = (value) => {
     setPhoneNumber(value);
@@ -113,19 +128,19 @@ export const SignUpForm = ({
 
   const handleSubmit = async (values) => {
     try {
-      // if (!recaptchaValue) {
-      //   setRecaptchaError(true);
-      //   toast.error("Please complete the CAPTCHA to continue.");
-      //   return;
-      // }
+      if (!recaptchaValue) {
+        setRecaptchaError(true);
+        toast.error("Please complete the CAPTCHA to continue.");
+        return;
+      }
 
-      // setRecaptchaError(false);
+      setRecaptchaError(false);
 
       const { data, error } = await fetchData("/register", "POST", {
         ...values,
         recaptchaValue: recaptchaValue,
         fingerprint: fingerprint,
-        promotion: selectedBonus,
+        promotion: selectedBonus.promo_code,
       });
 
       if (data) {
@@ -174,6 +189,15 @@ export const SignUpForm = ({
         <P name="OR" cla />
         {/* <span className="mt-2 font-semibold">Or</span> */}
       </div>
+
+      {/* select bonus */}
+      <div className="">
+        <div className="bg-bg-color1 py-2 px-5 rounded text-center mb-2">
+          <H5 name="Welcome Bonus" className="!text-white" />
+          <H5 name={bonusDataShow} />
+        </div>
+      </div>
+
       <form
         onSubmit={formik.handleSubmit}
         className="registration flex flex-col gap-2"
@@ -217,51 +241,55 @@ export const SignUpForm = ({
             <ErrorMessage errorName={formik.errors.password} />
           )}
         </div>
-        {/* Country */}
-        <div className="bg-[#f2f8ff] border border-[#d9d9d9] px-4 py-2 rounded-lg">
-          <label htmlFor="Country" className="block text-xs">
-            {t("Country")}
-          </label>
 
-          <Select
-            showSearch
-            placeholder="Select a country"
-            value={selectedCountry}
-            onChange={(selectedCountry) => {
-              setSelectedCountry(selectedCountry);
-              handleCountryChange(selectedCountry);
-            }}
-            style={{ width: "100%" }}
-            options={countryOptions}
-            className="!bg-[#f2f8ff]"
-          />
-          {formik.touched.country && formik.errors.country && (
-            <ErrorMessage
-              errorName={formik.errors.country}
-              className="!text-sm"
+        <div className="grid grid-cols-2 gap-2">
+          {/* Country */}
+          <div className="bg-[#f2f8ff] border border-[#d9d9d9] px-4 py-2 rounded-lg">
+            <label htmlFor="Country" className="block text-xs">
+              {t("Country")}
+            </label>
+
+            <Select
+              showSearch
+              placeholder="Select a country"
+              value={selectedCountry}
+              onChange={(selectedCountry) => {
+                setSelectedCountry(selectedCountry);
+                handleCountryChange(selectedCountry);
+              }}
+              style={{ width: "100%" }}
+              options={countryOptions}
+              className="!bg-[#f2f8ff]"
             />
-          )}
+            {formik.touched.country && formik.errors.country && (
+              <ErrorMessage
+                errorName={formik.errors.country}
+                className="!text-sm"
+              />
+            )}
+          </div>
+
+          {/* phone */}
+          <div className="relative">
+            {/* overlay */}
+            <div className="absolute left-0 top-0 bg-red-300 w-14 h-full z-10 rounded-lg opacity-0"></div>
+            <PhoneInput
+              id="phone"
+              placeholder="Enter phone number"
+              international
+              countryCallingCodeEditable={false}
+              defaultCountry={defaultPhoneCountry}
+              value={`${phoneNumber}`}
+              onChange={handlePhoneChange}
+              className="w-full text-md text-gray-800 !bg-[#f2f8ff] border border-[#d9d9d9] py-5 px-4 rounded-lg placeholder:text-sm tab:placeholder:text-xs"
+            />
+            {/* error */}
+            {formik.touched.phone && formik.errors.phone && (
+              <div className="text-xs text-red-600">{formik.errors.phone}</div>
+            )}
+          </div>
         </div>
 
-        {/* phone */}
-        <div className="relative">
-          {/* overlay */}
-          <div className="absolute left-0 top-0 bg-red-300 w-14 h-full z-10 rounded-lg opacity-0"></div>
-          <PhoneInput
-            id="phone"
-            placeholder="Enter phone number"
-            international
-            countryCallingCodeEditable={false}
-            defaultCountry={defaultPhoneCountry}
-            value={`${phoneNumber}`}
-            onChange={handlePhoneChange}
-            className="w-full text-md text-gray-800 !bg-[#f2f8ff] border border-[#d9d9d9] py-5 px-4 rounded-lg placeholder:text-sm tab:placeholder:text-xs"
-          />
-          {/* error */}
-          {formik.touched.phone && formik.errors.phone && (
-            <div className="text-xs text-red-600">{formik.errors.phone}</div>
-          )}
-        </div>
         {/* Currency */}
         <div className="bg-[#f2f8ff] border border-[#d9d9d9] px-4 py-2 rounded-lg">
           <label htmlFor="Currency" className="text-xs block">
@@ -314,7 +342,7 @@ export const SignUpForm = ({
         </div> */}
 
         {/* capcha */}
-        {/* <div className="">
+        <div className="">
           <ReCAPTCHA
             sitekey="6LdYaWcpAAAAAEPCH8Bfn5z_9SjTkvCh7Np3NuDB" // Replace with your reCAPTCHA Site Key
             onChange={handleRecaptchaChange}
@@ -324,7 +352,7 @@ export const SignUpForm = ({
               Please complete the CAPTCHA verification.
             </div>
           )}
-        </div> */}
+        </div>
 
         {/* submit Button */}
         <div className="mt-2 flex items-center justify-between">

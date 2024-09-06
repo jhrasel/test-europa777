@@ -16,8 +16,6 @@ const SignUpModal = () => {
   const [selectedBonus, setSelectedBonus] = useState(null);
 
   const [step, setStep] = useState(1);
-  // const goToStep2 = () => setStep(2);
-  // const goBackToStep1 = () => setStep(1);
 
   const [isOpen, setIsOpen] = useState(false);
 
