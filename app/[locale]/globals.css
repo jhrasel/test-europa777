@@ -530,10 +530,109 @@ input#phone {
   line-height: 14px;
 }
 
+/* deposit-modal */
+
+.deposit-modal .ant-tabs {
+  display: flex;
+  flex-direction: row;
+}
+
+.deposit-modal .ant-tabs-nav-list {
+  width: 190px;
+  flex-wrap: wrap;
+  height: fit-content;
+}
+
+.deposit-modal .ant-tabs-nav-list {
+  flex-wrap: wrap;
+}
+
+.deposit-modal .custom-tabs .ant-tabs-tab {
+  width: 80px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.deposit-modal .ant-tabs img {
+  width: 70px !important;
+}
+
+.deposit-modal .ant-tabs h4 {
+  font-size: 16px;
+  margin-top: 0;
+}
+
+.deposit-modal .border-t.border-indigo-300.pt-3.mt-3 {
+  margin-top: 10px;
+}
+
+.deposit-modal .flex.flex-wrap .link__bg {
+  font-size: 13px;
+  padding: 5px 10px;
+}
+
+.deposit-modal .py-3.mt-3.border-y.border-gray-150 {
+  padding: 0;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.deposit-modal p.text-sm.text-text-color-primary.font-normal.mb-2 {
+  font-size: 14px;
+}
+
+.deposit-modal .mt-5 {
+  margin-top: 10px;
+}
+
+:where(.css-dev-only-do-not-override-1gwfwyx).ant-modal-root .ant-modal-wrap {
+  z-index: 9999999999;
+}
+
+.deposit-have-promo .promo-p p{
+  display: none;
+}
+
 @media (max-width: 667px) {
   .custom-tabs .ant-tabs-tab {
     width: 100px;
     height: 50px;
+  }
+
+  .deposit-modal .custom-tabs .ant-tabs-tab {
+    width: 70px;
+    height: 40px;
+  }
+
+  .deposit-modal .ant-tabs-nav-list {
+    width: 100%;
+  }
+
+  .deposit-modal .ant-tabs img {
+    width: 50px !important;
+  }
+
+  .deposit-modal .border-t.border-indigo-300.pt-3.mt-3 {
+    margin-top: 6px;
+    padding-top: 6px;
+  }
+
+  .deposit-modal .flex.flex-wrap .link__bg {
+    font-size: 10px;
+    padding: 5px 9px;
+  }
+
+  .deposit-modal input,
+  .deposit-modal input::placeholder {
+    padding: 5px 8px;
+    font-size: 12px;
+  }
+
+  .deposit-modal .py-3.mt-3.border-y.border-gray-150 button {
+    padding: 2px 15px;
+    font-size: 14px;
   }
 
   .custom-tabs .ant-tabs-tab .ant-tabs-tab-btn {
@@ -547,6 +646,10 @@ input#phone {
 
   .mobile-sign-in button.ant-btn.justify-center span {
     font-size: 12px;
+  }
+
+  .deposit-modal .ant-tabs {
+    flex-direction: column;
   }
 }
 

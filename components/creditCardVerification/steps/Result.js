@@ -12,6 +12,11 @@ export const Result = ({ setStep, data, onCancel }) => {
     ? "You have successfully verified your credit card, Now you can close the popup"
     : "Sorry, the credit card you used cannot be verified. Please try again with valid credit card on your hand";
 
+  const closeVerification = () => {
+    setStep(Step.INSTRUCTION);
+    onCancel();
+  };
+
   return (
     <div className="flex flex-col text-slate-700">
       <div className="bg-bg-color1 py-2 rounded-tr-lg">
@@ -28,7 +33,7 @@ export const Result = ({ setStep, data, onCancel }) => {
         </h4>
         {success ? (
           <div className="flex justify-center my-4">
-            <UIButton name="Close" onClick={onCancel} />
+            <UIButton name="Close" onClick={closeVerification} />
           </div>
         ) : (
           <div className="flex justify-center my-4">

@@ -13,6 +13,7 @@ import Sidebar from "./commons/sidebar/Sidebar";
 import WeekPromotion from "./commons/weekPromotion/WeekPromotion";
 import SideWheel from "./playerFrontend/newWheelBonus/SideWheel";
 import GiftBox from "./scratchCard/GiftBox";
+import { QuickDepositModal } from "@/components/playerDashboard/deposit/QuickDepositModal";
 
 const Layout = ({ children, showFooter = true, remainingTime }) => {
   const route = usePathname();
@@ -75,6 +76,8 @@ const Layout = ({ children, showFooter = true, remainingTime }) => {
                 }`
           }`}
         >
+          <TawkToChat />
+
           {loading && <CustomSkeleton hasImage={true} hasText={true} />}
           {!loading && (
             <>
@@ -84,6 +87,7 @@ const Layout = ({ children, showFooter = true, remainingTime }) => {
                 <>
                   <GiftBox />
                   <SideWheel />
+                  <QuickDepositModal />
                 </>
               )}
               {shouldShowFooter && <Footer />}

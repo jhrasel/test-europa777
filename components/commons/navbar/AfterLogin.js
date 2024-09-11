@@ -11,7 +11,7 @@ import { BsBank, BsCashCoin } from "react-icons/bs";
 import { CgProfile } from "react-icons/cg";
 import { FaGift, FaUserCircle } from "react-icons/fa";
 import { GiReceiveMoney } from "react-icons/gi";
-import { HiHome, HiOutlineIdentification } from "react-icons/hi";
+import { HiHome } from "react-icons/hi";
 import { IoGameController } from "react-icons/io5";
 import { RiLogoutCircleRLine } from "react-icons/ri";
 import { TbCherry } from "react-icons/tb";
@@ -126,22 +126,22 @@ export function AfterLogin() {
       ),
     },
 
-    {
-      key: "8",
-      label: (
-        <div className="flex items-center gap-2 text-lg text-text-color-primary">
-          <UILink
-            href={`/${locale}/player-dashboard/varification`}
-            icon={<HiOutlineIdentification />}
-            name={t("Verification")}
-            className="!text-text-color-primary !bg-none"
-          />
-        </div>
-      ),
-    },
+    // {
+    //   key: "8",
+    //   label: (
+    //     <div className="flex items-center gap-2 text-lg text-text-color-primary">
+    //       <UILink
+    //         href={`/${locale}/player-dashboard/varification`}
+    //         icon={<HiOutlineIdentification />}
+    //         name={t("Verification")}
+    //         className="!text-text-color-primary !bg-none"
+    //       />
+    //     </div>
+    //   ),
+    // },
 
     {
-      key: "9",
+      key: "8",
       label: (
         <div className="flex items-center gap-2 text-lg text-text-color-primary">
           <UILink

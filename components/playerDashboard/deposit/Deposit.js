@@ -36,7 +36,7 @@ export const Deposit = () => {
         {isLoading ? (
           <CustomSkeleton hasImage={true} hasText={true} />
         ) : (
-          <Card className="!p-3 tab:!p-5 w-[780px] m-auto">
+          <Card className="!p-2 tab:!p-5 laptop:w-[780px] m-auto">
             <Tabs defaultActiveKey="1" items={items} onChange={onChange} />
           </Card>
         )}

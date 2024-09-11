@@ -26,10 +26,11 @@ const useAuth = () => {
     Cookies.remove("isLoggedIn");
     Cookies.remove("token");
     Cookies.remove("admin_token");
+    Cookies.remove("user");
     setIsLoggedIn(false);
 
     if (admin) {
-      route = `https://backoffice.europa777.com/impersonate_logout?admin_token=${admin}`;
+      route = `${process.env.NEXT_PUBLIC_API_URL}/impersonate_logout?admin_token=${admin}`;
     }
 
     window.location.href = route;

@@ -79,9 +79,6 @@ export const Verify = ({ setStep, data, setData }) => {
         <div className="my-8">
           <VerifyingSteps />
         </div>
-        <div className="flex justify-center my-4">
-          <UIButton name="Try again" onClick={verifyKyc} />
-        </div>
       </div>
     </div>
   );

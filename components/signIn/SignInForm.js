@@ -41,8 +41,11 @@ export const SignInForm = ({ onLoginSuccess }) => {
   const handleLoginSuccess = (responseData) => {
     formik.resetForm();
     toast.success("Login successful!");
+    const user = responseData.user;
+
     setCookies("token", responseData.token);
     setCookies("isLoggedIn", true);
+    setCookies("user", JSON.stringify(user));
     onLoginSuccess();
     window.location.href = `/${locale}/player-dashboard/deposit/`;
   };

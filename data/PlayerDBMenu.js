@@ -103,12 +103,12 @@ export const PlayerDashboardMenuOld = () => {
           name: t("Profile"),
           url: `/${locale}/player-dashboard/profile/`,
         },
-        {
-          id: crypto.randomUUID(),
-          icon: <HiOutlineIdentification />,
-          name: t("Verification"),
-          url: `/${locale}/player-dashboard/varification/`,
-        },
+        // {
+        //   id: crypto.randomUUID(),
+        //   icon: <HiOutlineIdentification />,
+        //   name: t("Verification"),
+        //   url: `/${locale}/player-dashboard/varification/`,
+        // },
         {
           id: crypto.randomUUID(),
           icon: <FaStopwatch />,

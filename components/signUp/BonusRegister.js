@@ -44,6 +44,9 @@ export default function BonusRegister({
       promo_code = promoCode;
     } else if (selectedOption === "freeSpinNo") {
       promo_code = null;
+      onSelect({ option: selectedOption, promo_code });
+      goToStep2();
+      return;
     }
 
     // Fetch data (optional, based on your logic)

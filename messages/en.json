@@ -242,6 +242,7 @@
     "cashbackHistory": "Cashback History",
     "totalDeposit": "Total Deposit",
     "cashbackAmount": "Cashback Amount",
+    "cashbackType": "Cashback Type",
     "creditCardVerification": "Credit Card Verification",
     "gamePlayHistory": "Game Play History",
     "gameName": "Game Name",
@@ -259,7 +260,9 @@
     "title2": "Looking for promo code?",
     "clickHere": "click here",
     "add": "Add",
-    "remove": "Remove"
+    "remove": "Remove",
+    "yes": "YES",
+    "no": "NO"
   },
 
   "wheelBonus": {

@@ -1,4 +1,4 @@
-import { VIP } from "@/components/playerFrontend";
+import { CashbackDB } from "@/components/playerDashboard";
 
 export const metadata = {
   title: "Europa777-Cashback",
@@ -9,7 +9,8 @@ const page = () => {
     <>
       {/* <CashbackDB /> */}
       <section className="promotion-db-page">
-        <VIP />
+        {/* <VIP /> */}
+        <CashbackDB />
       </section>
     </>
   );

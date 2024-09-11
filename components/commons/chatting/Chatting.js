@@ -7,51 +7,48 @@ const TawkToChat = () => {
 
   useEffect(() => {
     const fetchUserData = async () => {
-      const { data, error } = await fetchData("/player/getProfile", "GET");
+      const { data } = await fetchData("/player/getProfile", "GET");
+
+      // console.log("getProfile", data?.Player?.email);
 
       if (data) {
         setUserData(data.Player);
-      } else if (error) {
-        console.error("Error fetching user data:", error);
       }
     };
 
     fetchUserData();
-  }, []);
+  }, [fetchData]);
 
   useEffect(() => {
-    if (userData) {
-      // Create and inject the Tawk.to script
-      const script = document.createElement("script");
-      script.type = "text/javascript";
-      script.innerHTML = `
-        var Tawk_API=Tawk_API||{};
-        Tawk_API.visitor = {
-          name : '${userData.first_name || "Visitor Name"} ${
-        userData.last_name || ""
-      }',
-          email : '${userData.email || "visitor@email.com"}',
-          hash : '${
-            userData.hash || "hash-value"
-          }' // Adjust if you have hash value logic
+    // Inject the Tawk.to script
+    const script = document.createElement("script");
+    script.type = "text/javascript";
+    script.async = true;
+    script.src = "https://embed.tawk.to/66d8974c50c10f7a00a404b0/1i6v0u0cs";
+    script.charset = "UTF-8";
+    script.setAttribute("crossorigin", "*");
+    document.body.appendChild(script);
+
+    script.onload = () => {
+      if (window.Tawk_API) {
+        window.Tawk_API.onLoad = function () {
+          // Set visitor info once the widget is ready
+          window.Tawk_API.setAttributes(
+            {
+              name: userData ? userData.username : "Visitor",
+              email: userData ? userData.email : "visitor@example.com",
+            },
+            function (error) {
+              if (error) console.log("Error setting visitor details:", error);
+            }
+          );
         };
+      }
+    };
 
-        var Tawk_LoadStart=new Date();
-        (function(){
-          var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
-          s1.async=true;
-          s1.src='https://embed.tawk.to/66d8974c50c10f7a00a404b0/1i6v0u0cs';
-          s1.charset='UTF-8';
-          s1.setAttribute('crossorigin','*');
-          s0.parentNode.insertBefore(s1,s0);
-        })();
-      `;
-      document.body.appendChild(script);
-
-      return () => {
-        document.body.removeChild(script);
-      };
-    }
+    return () => {
+      document.body.removeChild(script);
+    };
   }, [userData]);
 
   return null;

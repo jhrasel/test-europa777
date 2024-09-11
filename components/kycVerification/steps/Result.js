@@ -14,6 +14,11 @@ export const Result = ({ setStep, data, onCancel }) => {
     ? "You have successfully verified your identity, Now you can close the popup"
     : "Sorry, the identity document you used cannot be verified. Please try again with different identity document";
 
+  const closeVerification = () => {
+    setStep(Step.INTRODUCTION);
+    onCancel();
+  };
+
   return (
     <div className="flex flex-col text-slate-700">
       <div className="bg-bg-color1 py-2 rounded-tr-lg">
@@ -30,7 +35,7 @@ export const Result = ({ setStep, data, onCancel }) => {
         </h4>
         {kyc_status ? (
           <div className="flex justify-center my-4">
-            <UIButton name="Close" onClick={onCancel} />
+            <UIButton name="Close" onClick={closeVerification} />
           </div>
         ) : (
           <div className="flex justify-center my-4">

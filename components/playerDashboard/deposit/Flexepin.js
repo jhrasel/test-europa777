@@ -15,12 +15,23 @@ export const Flexepin = () => {
   const [depositAmount, setDepositAmount] = useState(25);
   const { fetchData, isLoading } = useApi();
   const [selectedCurrency, setSelectedCurrency] = useState("USD/CAD");
-  const [isAgreed, setIsAgreed] = useState(false); // Track the checkbox state
+  const [isAgreed, setIsAgreed] = useState(false);
 
   const t = useTranslations("Common");
 
+  const promoCodeT = useTranslations("promoCode");
+  const [havePromoCode, setHavePromoCode] = useState(false);
+
+  const handleHavePromoCode = () => {
+    setHavePromoCode(true);
+  };
+
+  const handleHavePromoCodeHide = () => {
+    setHavePromoCode(false);
+  };
+
   const onChange = (e) => {
-    setIsAgreed(e.target.checked); // Update the state when the checkbox changes
+    setIsAgreed(e.target.checked);
   };
 
   // Ant Select
@@ -85,14 +96,6 @@ export const Flexepin = () => {
         className="!w-16 tab:!w-32 !h-auto object-cover"
       />
       <form onSubmit={formik.handleSubmit}>
-        <div className="">
-          <PromoCodeInput
-            fetchData={fetchData}
-            isLoading={isLoading}
-            className="!w-full"
-          />
-        </div>
-
         <div className="border-t border-indigo-300 pt-3 mt-3">
           <div className="w-[100%] m-auto mt-2">
             <P name="Voucher Currency" className="mb-2" />
@@ -133,6 +136,33 @@ export const Flexepin = () => {
                       : "rounded-lg"
                   }
                 />
+              </div>
+
+              <div className="w-full deposit-have-promo">
+                <div className="text-base text-text-color-primary flex items-center gap-1">
+                  {promoCodeT("title1")},
+                  <span
+                    className="text-bg-color1 font-medium cursor-pointer italic"
+                    onClick={handleHavePromoCode}
+                  >
+                    {promoCodeT("yes")}
+                  </span>
+                  <span
+                    className="text-bg-color1 font-medium cursor-pointer italic"
+                    onClick={handleHavePromoCodeHide}
+                  >
+                    / {promoCodeT("no")}
+                  </span>
+                </div>
+                {havePromoCode && (
+                  <div className="w-full">
+                    <PromoCodeInput
+                      fetchData={fetchData}
+                      isLoading={isLoading}
+                      className="!w-full"
+                    />
+                  </div>
+                )}
               </div>
             </div>
 

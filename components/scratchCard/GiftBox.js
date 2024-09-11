@@ -11,7 +11,7 @@ export default function GiftBox() {
   const [showScratchCard, setShowScratchCard] = useState(false);
   const [fullscreen, setFullscreen] = useState(false);
   const [fullscreenMobile, setFullscreenMobile] = useState(false);
-  const [scratchCard, setScratchCard] = useState(null);
+  const [scratchCard, setScratchCard] = useState(false);
   const [timer, setTimer] = useState(null);
   const [scratchComplete, setScratchComplete] = useState(false);
   const { fetchData } = useApi();
@@ -37,7 +37,7 @@ export default function GiftBox() {
       if (showScratchCard && !scratchComplete) {
         event.preventDefault();
         event.returnValue =
-          "If you reload the page, your count will be 0. You will have to wait 20 minutes to try again.";
+          "If you reload the page, your count will be 0. You will have to wait 30 minutes to try again.";
         await sendWinAmountToApi(0);
       }
     };
@@ -56,7 +56,7 @@ export default function GiftBox() {
   const handleClose = async () => {
     if (
       window.confirm(
-        "If you close the scratch card, your count will be 0. You will have to wait 20 minutes to try again. Do you want to proceed?"
+        "If you close the scratch card, your count will be 0. You will have to wait 30 minutes to try again. Do you want to proceed?"
       )
     ) {
       setShowScratchCard(false);
@@ -115,12 +115,13 @@ export default function GiftBox() {
         "GET"
       );
       if (data) {
-        setScratchCard(data.data.remaining_time);
-        setTimer(
-          setTimeout(() => {
-            setScratchCard(0);
-          }, data.data.remaining_time)
-        );
+        if (!data.data.is_duplicate_user) {
+          setTimer(
+            setTimeout(() => {
+              setScratchCard(true);
+            }, data.data.remaining_time)
+          );
+        }
       } else if (error) {
         toast.error(error.message);
       }
@@ -137,7 +138,7 @@ export default function GiftBox() {
 
   return (
     <>
-      {scratchCard === 0 && (
+      {scratchCard && (
         <>
           <div
             className="cursor-pointer fixed bottom-14 tab:bottom-20 right-0 z-[99] bg-[#50ae3a] text-center px-0.5 pb-1"

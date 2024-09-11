@@ -219,19 +219,19 @@
   },
 
   "tableData": {
-    "sl": "SL",
+    "sl": "Nº",
     "amount": "Cantidad",
     "currency": "Moneda",
     "transactionId": "ID de Transacción",
     "paymentMethod": "Método de Pago",
-    "createdAt": "Creado en",
+    "createdAt": "Fecha de Creación",
     "depositHistory": "Historial de Depósitos",
     "withdrawalHistory": "Historial de Retiros",
     "history": "Historial",
-    "bonusHistory": "Historial de Bonos",
+    "bonusHistory": "Historial de Bonificaciones",
     "title": "Título",
-    "bonus": "Bono",
-    "activeBonus": "Bono Activo",
+    "bonus": "Bonificación",
+    "activeBonus": "Bonificación Activa",
     "wagerRequired": "Requisito de Apuesta",
     "wager": "Apuesta",
     "wagered": "Apostado",
@@ -239,9 +239,10 @@
     "freeSpinsHistory": "Historial de Giros Gratis",
     "freeSpinsAvailable": "Giros Gratis Disponibles",
     "freeSpinsUsed": "Giros Gratis Usados",
-    "cashbackHistory": "Historial de Reembolsos",
+    "cashbackHistory": "Historial de Cashback",
     "totalDeposit": "Depósito Total",
-    "cashbackAmount": "Monto del Reembolso",
+    "cashbackAmount": "Monto de Cashback",
+    "cashbackType": "Tipo de Cashback",
     "creditCardVerification": "Verificación de Tarjeta de Crédito",
     "gamePlayHistory": "Historial de Juego",
     "gameName": "Nombre del Juego",
@@ -259,7 +260,9 @@
     "title2": "¿Buscas un código promocional?",
     "clickHere": "haz clic aquí",
     "add": "Añadir",
-    "remove": "Eliminar"
+    "remove": "Eliminar",
+    "yes": "SI",
+    "no": "NO"
   },
 
   "wheelBonus": {

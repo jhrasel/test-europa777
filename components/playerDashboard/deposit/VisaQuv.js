@@ -5,6 +5,7 @@ import SubmitButton from "@/helpers/SubmitButton";
 import useApi from "@/helpers/apiRequest";
 import useBalance from "@/hook/useBalance";
 import { useFormik } from "formik";
+import { useTranslations } from "next-intl";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { ProfileUpdateModal } from "../profile/ProfileUpdateModal";
@@ -14,6 +15,17 @@ export const VisaQuv = ({ country }) => {
   const [depositAmount, setDepositAmount] = useState(25);
   const { fetchData, error, isLoading } = useApi();
   const [needProfileUpdate, setNeedProfileUpdate] = useState(false);
+
+  const promoCodeT = useTranslations("promoCode");
+  const [havePromoCode, setHavePromoCode] = useState(false);
+
+  const handleHavePromoCode = () => {
+    setHavePromoCode(true);
+  };
+
+  const handleHavePromoCodeHide = () => {
+    setHavePromoCode(false);
+  };
 
   const handleButtonClick = (amount) => {
     setDepositAmount(amount);
@@ -149,19 +161,11 @@ export const VisaQuv = ({ country }) => {
                 <div
                   key={amount}
                   onClick={() => handleButtonClick(amount)}
-                  className="link__bg py-2 px-2 tab:px-5 rounded-full cursor-pointer text-white text-[11px] tab:text-base font-semibold"
+                  className="link__bg py-1.5 px-2 tab:px-5 rounded-full cursor-pointer text-white text-[10px] tab:text-base font-semibold"
                 >
                   {`${amount} ${balance.currency}`}
                 </div>
               ))}
-            </div>
-
-            <div className="">
-              <PromoCodeInput
-                fetchData={fetchData}
-                isLoading={isLoading}
-                className="!w-full"
-              />
             </div>
 
             <div className="mt-5">
@@ -179,6 +183,33 @@ export const VisaQuv = ({ country }) => {
                     value={depositAmount}
                     onChange={handleInputChange}
                   />
+                </div>
+
+                <div className="w-full deposit-have-promo">
+                  <div className="text-base text-text-color-primary flex items-center gap-1">
+                    {promoCodeT("title1")},
+                    <span
+                      className="text-bg-color1 font-medium cursor-pointer italic"
+                      onClick={handleHavePromoCode}
+                    >
+                      {promoCodeT("yes")}
+                    </span>
+                    <span
+                      className="text-bg-color1 font-medium cursor-pointer italic"
+                      onClick={handleHavePromoCodeHide}
+                    >
+                      / {promoCodeT("no")}
+                    </span>
+                  </div>
+                  {havePromoCode && (
+                    <div className="w-full">
+                      <PromoCodeInput
+                        fetchData={fetchData}
+                        isLoading={isLoading}
+                        className="!w-full"
+                      />
+                    </div>
+                  )}
                 </div>
               </div>
 

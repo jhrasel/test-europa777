@@ -1,20 +1,23 @@
 "use client";
+
 import { Card, H4 } from "@/components/UI";
 import { Cashback } from "@/components/playerFrontend";
-import CustomSkeleton from "@/helpers/CustomSkeleton";
-import useApi from "@/helpers/apiRequest";
 import useAuth from "@/helpers/useAuth";
+import { fetchCashbackHistoryAPI } from "@/lib/fetchActiveBonusAPI";
 import { Empty, Pagination } from "antd";
 import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
 export const CashbackDB = () => {
-  const [datas, setDatas] = useState([]);
+  const { isLoggedIn } = useAuth();
+
+  const [getData, setGetData] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
-  const { fetchData, isLoading } = useApi();
-  const { isLoggedIn, logout } = useAuth();
+
+  const pageSize = 10;
 
   const t = useTranslations("tableData");
 
@@ -22,47 +25,37 @@ export const CashbackDB = () => {
     t("sl"),
     t("totalDeposit"),
     t("cashbackAmount"),
+    t("cashbackType"),
     t("status"),
     t("expireOn"),
   ];
 
-  const pageSize = 10;
+  console.log("TableHead:", TableHead); // Debugging line
 
   const tableTdStyle =
     "text-center border-b border-gray-50 p-3 text-sm font-normal text-white capitalize";
 
+  const getFetchData = async (page = 1) => {
+    setIsLoading(true);
+    try {
+      const data = await fetchCashbackHistoryAPI(page);
+      console.log("fetchCashbackHistoryAPI", data.cashbackHistory.data); // Debugging line
+      setGetData(data.cashbackHistory.data);
+      setTotalPages(data.cashbackHistory.last_page);
+      setCurrentPage(data.cashbackHistory.current_page);
+    } catch (error) {
+      console.error("API Request Error:", error);
+      toast.error(
+        error.message || "An error occurred while fetching bonus history."
+      );
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        // Fetch user data from the API
-        const response = await fetchData("/player/getCashbackHistory", "GET");
-
-        if (response && response.cashbackHistory) {
-          console.log("getCashbackHistory", response.cashbackHistory.data);
-          setDatas(response.cashbackHistory.data);
-          setTotalPages(Math.ceil(response.cashbackHistory.total / pageSize));
-        } else {
-          console.error("Invalid response data:", response);
-          setDatas([]);
-          setTotalPages(0);
-        }
-      } catch (error) {
-        console.error("Error fetching cashback history data:", error);
-
-        // Display error notification
-        if (error.message) {
-          toast.error(error.message);
-        } else {
-          toast.error("An unexpected error occurred. Please try again.");
-        }
-
-        setDatas([]);
-        setTotalPages(0);
-      }
-    };
-
-    fetchUserData();
-  }, [fetchData, currentPage]);
+    getFetchData();
+  }, []);
 
   let serialNumber = (currentPage - 1) * pageSize;
 
@@ -91,9 +84,7 @@ export const CashbackDB = () => {
                 name={t("cashbackHistory")}
                 className="!text-indigo-500 text-center mb-5"
               />
-              {isLoading ? (
-                <CustomSkeleton hasImage={true} hasText={true} />
-              ) : (
+              {
                 <table className="table-auto w-full relative">
                   <thead>
                     <tr className="bg-[#ececec]">
@@ -108,9 +99,9 @@ export const CashbackDB = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {datas.length > 0 ? (
+                    {getData.length > 0 ? (
                       <>
-                        {datas.map((data) => (
+                        {getData.map((data) => (
                           <tr key={data.id}>
                             <td className={`${tableTdStyle} first:text-left`}>
                               {++serialNumber}
@@ -120,6 +111,9 @@ export const CashbackDB = () => {
                             </td>
                             <td className={`${tableTdStyle}`}>
                               {data.amount} {data.currency}
+                            </td>
+                            <td className={`${tableTdStyle}`}>
+                              {data.cashback_type}
                             </td>
                             <td className={`${tableTdStyle}`}>
                               {getStatusText(data.status)}
@@ -142,9 +136,8 @@ export const CashbackDB = () => {
                     )}
                   </tbody>
                 </table>
-              )}
+              }
 
-              {/* pagination */}
               <div className="text-right mt-5">
                 <Pagination
                   current={currentPage}

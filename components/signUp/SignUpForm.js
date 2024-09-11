@@ -6,6 +6,7 @@ import { registrationValidation } from "@/validations/Valodation";
 import { Checkbox, Select } from "antd";
 import countryList from "country-list";
 import { useFormik } from "formik";
+import useCookies from "@/helpers/useCookies";
 import { useLocale, useTranslations } from "next-intl";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
@@ -44,8 +45,6 @@ export const SignUpForm = ({
     defaultCountry.code
   );
 
-  console.log("selectedBonus", selectedBonus);
-
   const [bonusData, setBonusData] = useState(selectedBonus);
   let bonusDataShow = "";
 
@@ -54,10 +53,10 @@ export const SignUpForm = ({
   } else if (bonusData.option === "promoCode") {
     bonusDataShow = `Your promo code is ${bonusData.promo_code}`;
   } else {
-    bonusDataShow = "You have no promo code";
+    bonusDataShow = null;
   }
 
-  console.log("bonusData", bonusData);
+  const { cookies, setCookies } = useCookies();
 
   const fingerprint = useFingerPrint();
 
@@ -116,14 +115,15 @@ export const SignUpForm = ({
   };
 
   const handleSignUpSuccess = (responseData) => {
-    formik.resetForm();
-    toast.success(
-      "Registration Successful! Please Check Your Email For Verification."
-    );
-    router.push(
-      pathname +
-        `?modal=sign-in&resend-email=open&email=${responseData.user.email}`
-    );
+    toast.success("Registration Successful!");
+
+    const user = responseData.user;
+    setCookies("token", responseData.token);
+    setCookies("isLoggedIn", true);
+    setCookies("user", JSON.stringify(user));
+    setTimeout(() => {
+      window.location.href = `/${locale}/?modal=quick-deposit`;
+    }, 1000);
   };
 
   const handleSubmit = async (values) => {
@@ -134,6 +134,9 @@ export const SignUpForm = ({
         return;
       }
 
+      const clickid = searchParams.get("clickid") || null;
+      const affid = searchParams.get("affid") || null;
+
       setRecaptchaError(false);
 
       const { data, error } = await fetchData("/register", "POST", {
@@ -141,10 +144,11 @@ export const SignUpForm = ({
         recaptchaValue: recaptchaValue,
         fingerprint: fingerprint,
         promotion: selectedBonus.promo_code,
+        clickid: clickid,
+        affid: affid,
       });
 
       if (data) {
-        onSignUpSuccess();
         handleSignUpSuccess(data);
       } else if (error) {
         toast.error(error.message || "Registration failed. Please try again.");
@@ -191,12 +195,14 @@ export const SignUpForm = ({
       </div>
 
       {/* select bonus */}
-      <div className="">
-        <div className="bg-bg-color1 py-2 px-5 rounded text-center mb-2">
-          <H5 name="Welcome Bonus" className="!text-white" />
-          <H5 name={bonusDataShow} />
+      {bonusDataShow && (
+        <div className="">
+          <div className="bg-bg-color1 py-2 px-5 rounded text-center mb-2">
+            <H5 name="Welcome Bonus" className="!text-white" />
+            <H5 name={bonusDataShow} />
+          </div>
         </div>
-      </div>
+      )}
 
       <form
         onSubmit={formik.handleSubmit}

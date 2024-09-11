@@ -13,12 +13,14 @@ const PromoCodeComponent = ({
   initialPromoCode,
   onPromoCodeChange,
 }) => {
+
   const searchParams = useSearchParams();
   const promo = searchParams.get("promo");
   const { fetchData, error, isLoading, setIsLoading } = useApi();
 
   const [promoCode, setPromoCode] = useState(initialPromoCode || promo || "");
   const [promoMessage, setPromoMessage] = useState(null);
+
   const locale = useLocale();
   const t = useTranslations("promoCode");
 
@@ -26,8 +28,8 @@ const PromoCodeComponent = ({
     setIsLoading(false);
     try {
       const response = await fetchData("/player/promoCodeDetails", "GET");
-      // console.log("promoCodeDetails", response);
-      setPromoMessage(response.data);
+      // console.log("promoCodeDetails", response.data.data);
+      setPromoMessage(response.data.data);
     } catch (error) {
       toast.error("Failed to fetch promo code details");
     }
@@ -83,14 +85,16 @@ const PromoCodeComponent = ({
     <div
       className={`w-[100%] laptop:w-[50%] desktop:w-[40%] py-3 mt-3 border-y border-gray-150 ${className}`}
     >
-      <div className="">
+      <div className="promo-p">
         <P name={t("title1")} className="mb-2" />
       </div>
       <div className="flex w-full items-center gap-2">
         <UIInput
           name="code"
           placeholder="Promo Code"
-          value={promoMessage?.code ? promoMessage?.code : promoCode}
+          value={
+            promoMessage?.promo_code ? promoMessage?.promo_code : promoCode
+          }
           onChange={handlePromoCodeChange}
         />
 
@@ -109,7 +113,7 @@ const PromoCodeComponent = ({
           />
         ) : (
           <>
-            {promoMessage?.code ? (
+            {promoMessage?.promo_code ? (
               <submit
                 type="submit"
                 className="rounded-full bg-blue-color text-white px-5 py-1.5 text-lg hover:bg-blue-600"

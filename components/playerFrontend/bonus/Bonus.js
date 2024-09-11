@@ -49,7 +49,7 @@ export const Bonus = ({ getBonusData }) => {
       <section>
         <Container>
           <div className="flex items-start gap-2 mb-5 mt-2 justify-center">
-            <H4 name=" Do you have promo code ?" className="!text-white" />
+            <H4 name="Do you have promo code ?" className="!text-white" />
             <UILink
               href={`/${locale}/player-dashboard/deposit/`}
               name="Yes"

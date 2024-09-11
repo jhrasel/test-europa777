@@ -1,7 +1,7 @@
 "use client";
 import { ErrorMessage, H4, P, UIImage, UIInput } from "@/components/UI";
-import { ProfileUpdateModal } from "@/components/playerDashboard/profile/ProfileUpdateModal";
 import { CreditCardVerification } from "@/components/creditCardVerification/CreditCardVerification";
+import { ProfileUpdateModal } from "@/components/playerDashboard/profile/ProfileUpdateModal";
 import CustomSkeleton from "@/helpers/CustomSkeleton";
 import SubmitButton from "@/helpers/SubmitButton";
 import useApi from "@/helpers/apiRequest";
@@ -12,12 +12,24 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 import { IoCardOutline } from "react-icons/io5";
 import PromoCodeInput from "./PromoCodeInput";
+import { useTranslations } from "next-intl";
 
 export const VisaCard = ({ country }) => {
   const [depositAmount, setDepositAmount] = useState(25);
   const { fetchData, error, isLoading } = useApi();
   const [verifyCard, setVerifyCard] = useState(false);
   const [needProfileUpdate, setNeedProfileUpdate] = useState(false);
+
+  const promoCodeT = useTranslations("promoCode");
+  const [havePromoCode, setHavePromoCode] = useState(false);
+
+  const handleHavePromoCode = () => {
+    setHavePromoCode(true);
+  };
+
+  const handleHavePromoCodeHide = () => {
+    setHavePromoCode(false);
+  };
 
   const handleButtonClick = (amount) => {
     setDepositAmount(amount);
@@ -153,20 +165,13 @@ export const VisaCard = ({ country }) => {
                 <div
                   key={amount}
                   onClick={() => handleButtonClick(amount)}
-                  className="link__bg py-2 px-2 tab:px-5 rounded-full cursor-pointer text-white text-[11px] tab:text-base font-semibold"
+                  className="link__bg py-1.5 px-2 tab:px-5 rounded-full cursor-pointer text-white text-[10px] tab:text-base font-semibold"
                 >
                   {`${amount} ${balance.currency}`}
                 </div>
               ))}
             </div>
 
-            <div className="">
-              <PromoCodeInput
-                fetchData={fetchData}
-                isLoading={isLoading}
-                className="!w-full"
-              />
-            </div>
             <div className="mt-5">
               <div className="flex flex-col items-center gap-3">
                 {/* Deposit */}
@@ -252,6 +257,34 @@ export const VisaCard = ({ country }) => {
                     )}
                   </div>
                 </div>
+
+                <div className="w-full deposit-have-promo">
+                  <div className="text-base text-text-color-primary flex items-center gap-1">
+                    {promoCodeT("title1")},
+                    <span
+                      className="text-bg-color1 font-medium cursor-pointer italic"
+                      onClick={handleHavePromoCode}
+                    >
+                      {promoCodeT("yes")}
+                    </span>
+                    <span
+                      className="text-bg-color1 font-medium cursor-pointer italic"
+                      onClick={handleHavePromoCodeHide}
+                    >
+                      / {promoCodeT("no")}
+                    </span>
+                  </div>
+                  {havePromoCode && (
+                    <div className="w-full">
+                      <PromoCodeInput
+                        fetchData={fetchData}
+                        isLoading={isLoading}
+                        className="!w-full"
+                      />
+                    </div>
+                  )}
+                </div>
+
               </div>
 
               {/* Submit Button */}

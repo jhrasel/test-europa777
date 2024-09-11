@@ -11,12 +11,24 @@ import QRCode from "qrcode.react";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import PromoCodeInput from "./PromoCodeInput";
+import { useTranslations } from "next-intl";
 
 export const Bitcoin = () => {
   const [depositAmount, setDepositAmount] = useState(25);
   const { fetchData, isLoading } = useApi();
   const [showModalData, setShowModalData] = useState({});
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const promoCodeT = useTranslations("promoCode");
+  const [havePromoCode, setHavePromoCode] = useState(false);
+
+  const handleHavePromoCode = () => {
+    setHavePromoCode(true);
+  };
+
+  const handleHavePromoCodeHide = () => {
+    setHavePromoCode(false);
+  };
 
   const showModal = () => {
     setIsModalOpen(true);
@@ -111,20 +123,13 @@ export const Bitcoin = () => {
                 <div
                   key={amount}
                   onClick={() => handleButtonClick(amount)}
-                  className="link__bg py-2 px-2 tab:px-5 rounded-full cursor-pointer text-white text-[11px] tab:text-base font-semibold"
+                  className="link__bg py-1.5 px-2 tab:px-5 rounded-full cursor-pointer text-white text-[10px] tab:text-base font-semibold"
                 >
                   {`${amount} ${balance.currency}`}
                 </div>
               ))}
             </div>
 
-            <div className="">
-              <PromoCodeInput
-                fetchData={fetchData}
-                isLoading={isLoading}
-                className="!w-full"
-              />
-            </div>
             <div className="mt-5">
               <div className="flex flex-col items-center gap-5">
                 <div className="w-[100%] m-auto">
@@ -140,6 +145,34 @@ export const Bitcoin = () => {
                     onChange={handleInputChange}
                   />
                 </div>
+
+                <div className="w-full deposit-have-promo">
+                  <div className="text-base text-text-color-primary flex items-center gap-1">
+                    {promoCodeT("title1")},
+                    <span
+                      className="text-bg-color1 font-medium cursor-pointer italic"
+                      onClick={handleHavePromoCode}
+                    >
+                      {promoCodeT("yes")}
+                    </span>
+                    <span
+                      className="text-bg-color1 font-medium cursor-pointer italic"
+                      onClick={handleHavePromoCodeHide}
+                    >
+                      / {promoCodeT("no")}
+                    </span>
+                  </div>
+                  {havePromoCode && (
+                    <div className="w-full">
+                      <PromoCodeInput
+                        fetchData={fetchData}
+                        isLoading={isLoading}
+                        className="!w-full"
+                      />
+                    </div>
+                  )}
+                </div>
+                
               </div>
               <SubmitButton
                 name="Deposit"

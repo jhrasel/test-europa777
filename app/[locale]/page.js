@@ -1,5 +1,3 @@
-// "use client";
-
 import Banner from "@/components/commons/banner/Banner";
 import { Home } from "@/components/playerFrontend";
 import {
@@ -13,35 +11,51 @@ import { Suspense } from "react";
 import { FadeLoader } from "react-spinners";
 
 const Page = async () => {
-  const getTopGamesData = await fetchTopGames();
+  try {
+    // Fetch all data in parallel
+    const [
+      getTopGamesData,
+      getHotGamesData,
+      getLiveCasinoData,
+      getGameWinnerData,
+      getAllGameProvidersData,
+    ] = await Promise.all([
+      fetchTopGames(),
+      fetchHotGames(),
+      fetchLiveCasinoGames(),
+      fetchGameWinner(),
+      fetchAllGameProviders(),
+    ]);
 
-  const getHotGamesData = await fetchHotGames();
-  const getLiveCasinoData = await fetchLiveCasinoGames();
+    return (
+      <>
+        <Suspense
+          fallback={
+            <h3 className="flex items-center justify-center my-5 gap-2 text-white">
+              <FadeLoader color="#FFF" />
+            </h3>
+          }
+        >
+          <Banner />
+        </Suspense>
 
-  const getGameWinnerData = await fetchGameWinner();
-  const getAllGameProvidersData = await fetchAllGameProviders();
-
-  return (
-    <>
-      <Suspense
-        fallback={
-          <h3 className="flex items-center justify-center my-5 gap-2 text-white">
-            <FadeLoader color="#FFF" />
-          </h3>
-        }
-      >
-        <Banner />
-      </Suspense>
-
-      <Home
-        getTopGamesData={getTopGamesData}
-        getHotGamesData={getHotGamesData}
-        getLiveCasinoData={getLiveCasinoData}
-        getGameWinnerData={getGameWinnerData}
-        getAllGameProvidersData={getAllGameProvidersData}
-      />
-    </>
-  );
+        <Home
+          getTopGamesData={getTopGamesData}
+          getHotGamesData={getHotGamesData}
+          getLiveCasinoData={getLiveCasinoData}
+          getGameWinnerData={getGameWinnerData}
+          getAllGameProvidersData={getAllGameProvidersData}
+        />
+      </>
+    );
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    return (
+      <h3 className="text-center text-white">
+        Error loading data. Please try again later.
+      </h3>
+    );
+  }
 };
 
 export default Page;
