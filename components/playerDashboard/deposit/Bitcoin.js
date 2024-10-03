@@ -7,11 +7,11 @@ import useBalance from "@/hook/useBalance";
 import { CopyOutlined } from "@ant-design/icons";
 import { Modal } from "antd";
 import { useFormik } from "formik";
+import { useTranslations } from "next-intl";
 import QRCode from "qrcode.react";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import PromoCodeInput from "./PromoCodeInput";
-import { useTranslations } from "next-intl";
 
 export const Bitcoin = () => {
   const [depositAmount, setDepositAmount] = useState(25);
@@ -20,15 +20,6 @@ export const Bitcoin = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const promoCodeT = useTranslations("promoCode");
-  const [havePromoCode, setHavePromoCode] = useState(false);
-
-  const handleHavePromoCode = () => {
-    setHavePromoCode(true);
-  };
-
-  const handleHavePromoCodeHide = () => {
-    setHavePromoCode(false);
-  };
 
   const showModal = () => {
     setIsModalOpen(true);
@@ -54,11 +45,8 @@ export const Bitcoin = () => {
     formik.resetForm();
     if (responseData?.success) {
       toast.success(responseData.message);
-      if (responseData?.data?.pay_currency === "btc") {
+      if (responseData?.data?.currency_rate?.rate_to_currency === "BTC") {
         showModal();
-      } else if (responseData?.data?.redirectUrl) {
-        toast.success("You are successfully redirecting to....");
-        window.location.href = responseData.data.redirectUrl;
       } else {
         toast.success(responseData.message);
         setTimeout(() => {
@@ -146,33 +134,11 @@ export const Bitcoin = () => {
                   />
                 </div>
 
-                <div className="w-full deposit-have-promo">
-                  <div className="text-base text-text-color-primary flex items-center gap-1">
-                    {promoCodeT("title1")},
-                    <span
-                      className="text-bg-color1 font-medium cursor-pointer italic"
-                      onClick={handleHavePromoCode}
-                    >
-                      {promoCodeT("yes")}
-                    </span>
-                    <span
-                      className="text-bg-color1 font-medium cursor-pointer italic"
-                      onClick={handleHavePromoCodeHide}
-                    >
-                      / {promoCodeT("no")}
-                    </span>
-                  </div>
-                  {havePromoCode && (
-                    <div className="w-full">
-                      <PromoCodeInput
-                        fetchData={fetchData}
-                        isLoading={isLoading}
-                        className="!w-full"
-                      />
-                    </div>
-                  )}
-                </div>
-                
+                <PromoCodeInput
+                  fetchData={fetchData}
+                  isLoading={isLoading}
+                  className="!w-full"
+                />
               </div>
               <SubmitButton
                 name="Deposit"
@@ -194,7 +160,7 @@ export const Bitcoin = () => {
         <div className="p-5 bg-bg-color2 rounded-lg">
           <H4 name="Crypto Details" className="text-center mb-3 !text-white" />
           <H3
-            name={`${showModalData.price_amount} ${showModalData.price_currency}`}
+            name={`${showModalData?.currency_rate?.rate_to} ${showModalData?.currency_rate?.rate_to_currency}`}
             className="!text-red-color text-center capitalize"
           />
           <P
@@ -205,7 +171,7 @@ export const Bitcoin = () => {
             <div className="flex items-center gap-5">
               <H5 name="Amount to Pay :" className="!text-white" />
               <H5
-                name={`${showModalData.pay_amount} ${showModalData.pay_currency}`}
+                name={`${showModalData?.currency_rate?.rate_to} ${showModalData?.currency_rate?.rate_to_currency}`}
                 className=" uppercase  !text-white"
               />
             </div>
@@ -213,19 +179,16 @@ export const Bitcoin = () => {
               <H5 name="Pay Address :" className=" !text-white" />
               <div className="mt-4">
                 <QRCode
-                  value={showModalData.pay_address}
+                  value={showModalData?.address}
                   size={150}
                   className="!w-28 !h-28 rounded-md"
                 />
                 <div className="flex gap-2 mt-2">
-                  <P
-                    name={showModalData.pay_address}
-                    className=" !text-white"
-                  />
+                  <P name={showModalData?.address} className=" !text-white" />
                   <button
                     className="text-red-color focus:outline-none"
                     onClick={() => {
-                      navigator.clipboard.writeText(showModalData.pay_address);
+                      navigator.clipboard.writeText(showModalData?.address);
                       toast.success("Pay address copied to clipboard");
                     }}
                   >

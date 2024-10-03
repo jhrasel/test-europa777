@@ -24,14 +24,16 @@ export const CreditCardBack = ({ setStep, data, setData }) => {
       null,
       { "Content-Type": "multipart/form-data" }
     );
-    setData({
-      ...data,
-      card: {
-        ...data.card,
-        back: back,
-      },
-      response: response,
-    });
+    if (response) {
+      setData({
+        ...data,
+        card: {
+          ...data.card,
+          back: back,
+        },
+        response: response,
+      });
+    }
     setStep(Step.RESULT);
   };
 

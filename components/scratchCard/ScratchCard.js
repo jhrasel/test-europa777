@@ -8,6 +8,7 @@ export const ScratchCard = ({
   className = "",
   onComplete = (num) => {},
   setScratchComplete,
+  canWin,
 }) => {
   const [numbers, setNumbers] = useState([]);
   const [result, setResult] = useState(null);
@@ -76,9 +77,12 @@ export const ScratchCard = ({
       const timestamp = new Date().getTime();
 
       try {
-        const response = await fetch(`/api/getSymbols?timestamp=${timestamp}`, {
-          cache: "no-store",
-        });
+        const response = await fetch(
+          `/api/getSymbols?canWin=${canWin}&timestamp=${timestamp}`,
+          {
+            cache: "no-store",
+          }
+        );
         if (!response.ok) {
           throw new Error("Failed to fetch symbols");
         }

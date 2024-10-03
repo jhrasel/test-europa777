@@ -39,7 +39,6 @@ export const FreeSpin = () => {
     setIsLoading(true);
     try {
       const data = await fetchFreeSpinAPI(page);
-      console.log("fetchFreeSpinAPI", data);
       setFreeSpin(data.freeSpinRemaining);
       setGetData(data.freeSpins.data);
       setTotalPages(data.freeSpins.last_page);
@@ -62,6 +61,11 @@ export const FreeSpin = () => {
     setPromoCode(newPromoCode);
   };
 
+  const handlePromoCodeApplied = () => {
+    // Fetch updated free spin data when promo code is applied or removed
+    getFetchData();
+  };
+
   let serialNumber = (currentPage - 1) * pageSize;
 
   return (
@@ -72,6 +76,7 @@ export const FreeSpin = () => {
             className="!border-none m-auto"
             initialPromoCode={promoCode}
             onPromoCodeChange={handlePromoCodeChange}
+            onPromoCodeApplied={handlePromoCodeApplied} // Pass the new callback
           />
 
           <div className="flex flex-col gap-3 items-center justify-center mb-5">
@@ -92,7 +97,6 @@ export const FreeSpin = () => {
             <UILinkBG
               name="Play Free Spin"
               href={`/${locale}/free-spin-games`}
-              // target="_blank"
               className="uppercase font-medium"
             />
           </div>
@@ -102,112 +106,54 @@ export const FreeSpin = () => {
             className="!text-indigo-500 text-center mb-3"
           />
 
-          {/* {isLoading ? (
-            <CustomSkeleton hasImage={true} hasText={true} />
-          ) : (
-            
-          )} */}
-
-          <Suspense
-            fallback={
-              <h3 className="flex items-center gap-2 my-4 text-white">
-                <FadeLoader color="#FFF" />
-              </h3>
-            }
-          >
-            <table className="table-auto w-full relative">
-              <thead>
-                <tr className="bg-[#ececec]">
-                  {TableHead?.map((data, i) => (
-                    <th
-                      key={i}
-                      className="first:text-left last:text-right first:rounded-tl-lg last:rounded-tr-lg p-3 text-base font-bold"
-                    >
-                      {data}
-                    </th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {getData.length > 0 ? (
-                  <>
-                    {getData.map((data) => (
-                      <tr key={data.id}>
-                        <td className={`${tableTdStyle} first:text-left`}>
-                          {++serialNumber}
-                        </td>
-                        <td className={`${tableTdStyle}`}>{data.title}</td>
-                        <td className={`${tableTdStyle}`}>
-                          {data.freespins_available}
-                        </td>
-                        <td className={`${tableTdStyle}`}>
-                          {data.freespins_used}
-                        </td>
-                        <td className={`${tableTdStyle}`}>
-                          {data.status === 0 && (
-                            <div className="flex flex-col items-center gap-2">
-                              <span className="text-white py-1.5 px-3 rounded inline-block w-full">
-                                Pending
-                              </span>
-                            </div>
-                          )}
-                          {data.status === 1 && (
-                            <span className=" text-white py-1.5 px-3 rounded inline-block">
-                              Active
-                            </span>
-                          )}
-                          {data.status === 2 && (
-                            <span className=" text-white py-1.5 px-3 rounded inline-block">
-                              Completed
-                            </span>
-                          )}
-                          {data.status === 3 && (
-                            <div className="flex flex-col items-center gap-2">
-                              <span className=" text-white py-1.5 px-3 rounded inline-block w-full">
-                                Cancelled
-                              </span>
-                            </div>
-                          )}
-                          {data.status === 4 && (
-                            <span className=" text-white py-1.5 px-3 rounded inline-block">
-                              Expired
-                            </span>
-                          )}
-                          {data.status === 5 && (
-                            <span className=" text-white py-1.5 px-3 rounded inline-block">
-                              Claimed
-                            </span>
-                          )}
-                        </td>
-                        <td className={`${tableTdStyle}`}>{data.created_at}</td>
-                        <td className={`${tableTdStyle} text-right`}>
-                          {data.expired_at}
-                        </td>
-                      </tr>
-                    ))}
-                  </>
-                ) : (
+          <Suspense fallback={<FadeLoader color="#36d7b7" />}>
+            {isLoading ? (
+              <FadeLoader className="m-auto" color="#36d7b7" />
+            ) : getData.length > 0 ? (
+              <table className="w-full text-sm border-collapse">
+                <thead>
                   <tr>
-                    <td colSpan={TableHead.length} className="text-center p-4">
-                      <Empty description="No data available" />
-                    </td>
+                    {TableHead.map((item, index) => (
+                      <th
+                        key={index}
+                        className="text-center border-b border-gray-50 text-white capitalize"
+                      >
+                        {item}
+                      </th>
+                    ))}
                   </tr>
-                )}
-              </tbody>
-            </table>
+                </thead>
+
+                <tbody>
+                  {getData.map((item, index) => (
+                    <tr key={item.id}>
+                      <td className={tableTdStyle}>
+                        {serialNumber + index + 1}
+                      </td>
+                      <td className={tableTdStyle}>{item.title}</td>
+                      <td className={tableTdStyle}>
+                        {item.free_spins_available}
+                      </td>
+                      <td className={tableTdStyle}>{item.free_spins_used}</td>
+                      <td className={tableTdStyle}>{item.status}</td>
+                      <td className={tableTdStyle}>{item.created_at}</td>
+                      <td className={tableTdStyle}>{item.expired_at}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            ) : (
+              <Empty />
+            )}
           </Suspense>
 
-          {/* pagination */}
-          <div className="text-right mt-5">
+          <div className="flex items-center justify-center mt-6 mb-2">
             <Pagination
               current={currentPage}
-              pageSize={pageSize}
               total={totalPages * pageSize}
-              onChange={(page) => {
-                setCurrentPage(page);
-                getFetchData(page);
-              }}
-              className="mt-5"
+              onChange={(page) => getFetchData(page)}
+              pageSize={pageSize}
+              showSizeChanger={false}
             />
           </div>
         </Card>

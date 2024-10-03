@@ -138,6 +138,7 @@ export const Mobilesidebar = ({ closeMobileSidebar }) => {
                 icon={data.icon}
                 name={data.name}
                 scroll={true}
+                target={data.external ? "_blank" : ""}
                 className={`w-full px-5 py-2 rounded-lg justify-start ${
                   router === data.url ? "bg-bg-color2" : "!text-white"
                 }`}

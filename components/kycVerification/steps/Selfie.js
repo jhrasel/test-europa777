@@ -5,7 +5,7 @@ import { useCallback, useState } from "react";
 import useApi from "@/helpers/apiRequest";
 import { UIImage } from "@/components/UI/Image";
 import { UIButton } from "@/components/UI/Button";
-import MagnifEyeLiveness from "@/components/kycVerification/dot/MagnifEyeLiveness";
+import SmileLiveness from "@/components/kycVerification/dot/SmileLiveness";
 
 export const Selfie = ({ setStep, data, setData }) => {
   const { fetchData, isLoading } = useApi();
@@ -13,8 +13,22 @@ export const Selfie = ({ setStep, data, setData }) => {
   const [message, setMessage] = useState("");
 
   const handleFaceCapturePhotoTaken = async (imageData, content) => {
+    const [faceData, simleData] = imageData;
+
+    if (!data.auto) {
+      setData({
+        ...data,
+        face: {
+          ...data.face,
+          request: faceData.image,
+        },
+      });
+      setStep(Step.ADDRESS);
+      return;
+    }
+
     const formData = new FormData();
-    formData.append("photo", imageData.image);
+    formData.append("photo", faceData.image);
 
     const { data: result, error: errorRes } = await fetchData(
       "/kyc/verifyFace",
@@ -36,7 +50,7 @@ export const Selfie = ({ setStep, data, setData }) => {
         ...data,
         face: {
           ...data.face,
-          request: imageData.image,
+          request: faceData.image,
           response: response,
         },
       });
@@ -83,7 +97,7 @@ export const Selfie = ({ setStep, data, setData }) => {
                   <UIButton name="Try again" onClick={() => setError(false)} />
                 </div>
               ) : (
-                <MagnifEyeLiveness
+                <SmileLiveness
                   onComplete={handleFaceCapturePhotoTaken}
                   onError={handleError}
                 />
@@ -96,7 +110,7 @@ export const Selfie = ({ setStep, data, setData }) => {
       <div className="flex justify-center">
         <p
           className="mt-2 cursor-pointer hover:text-slate-900 hover:underline"
-          onClick={() => setStep(Step.INTRODUCTION)}
+          onClick={() => setStep(Step.VERIFY_TYPE)}
         >
           Experiencing problem?
         </p>

@@ -6,6 +6,8 @@ import giftBoxAnimation from "../../public/images/giftBox.json";
 import { H6, UIImage } from "../UI";
 import { ScratchCard } from "./ScratchCard";
 import ScratchModal from "./ScratchModal";
+import { useRouter } from "next/navigation";
+import { useLocale } from "next-intl";
 
 export default function GiftBox() {
   const [showScratchCard, setShowScratchCard] = useState(false);
@@ -14,7 +16,11 @@ export default function GiftBox() {
   const [scratchCard, setScratchCard] = useState(false);
   const [timer, setTimer] = useState(null);
   const [scratchComplete, setScratchComplete] = useState(false);
+  const [canWin, setCanWin] = useState(null);
+  const [needKyc, setNeedKyc] = useState(false);
   const { fetchData } = useApi();
+  const router = useRouter();
+  const locale = useLocale();
 
   useEffect(() => {
     const preventDefault = (e) => {
@@ -50,7 +56,11 @@ export default function GiftBox() {
   }, [showScratchCard, scratchComplete]);
 
   const handleClick = () => {
-    setShowScratchCard(true);
+    if (needKyc) {
+      router.push(`/${locale}/player-dashboard/verification`);
+    } else {
+      setShowScratchCard(true);
+    }
   };
 
   const handleClose = async () => {
@@ -115,7 +125,11 @@ export default function GiftBox() {
         "GET"
       );
       if (data) {
-        if (!data.data.is_duplicate_user) {
+        if (data.data.need_kyc) {
+          setNeedKyc(true);
+          setScratchCard(true);
+        } else if (!data.data.is_duplicate_user) {
+          setCanWin(data.data.can_win);
           setTimer(
             setTimeout(() => {
               setScratchCard(true);
@@ -162,7 +176,12 @@ export default function GiftBox() {
                 className="!w-full tab:!w-[330px] !h-full tab:!h-[570px] rounded-xl"
               />
               <div className="absolute tab:bottom-2 left-1/2 -translate-x-1/2">
-                <ScratchCard setScratchComplete={setScratchComplete} />
+                {canWin !== null && (
+                  <ScratchCard
+                    canWin={canWin}
+                    setScratchComplete={setScratchComplete}
+                  />
+                )}
               </div>
             </div>
 
@@ -176,7 +195,12 @@ export default function GiftBox() {
                 className="!w-full tab:!w-[330px] !h-full tab:!h-[570px] rounded-xl"
               />
               <div className="absolute top-1/2 tab:bottom-2 left-1/2 -translate-x-1/2">
-                <ScratchCard setScratchComplete={setScratchComplete} />
+                {canWin !== null && (
+                  <ScratchCard
+                    canWin={canWin}
+                    setScratchComplete={setScratchComplete}
+                  />
+                )}
               </div>
             </div>
           </ScratchModal>

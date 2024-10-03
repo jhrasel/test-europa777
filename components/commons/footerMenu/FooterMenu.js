@@ -34,32 +34,32 @@ export default function FooterMenu({ closeModal }) {
     }
   }, [isLoggedIn, fetchData]);
 
-  const openTawkChat = () => {
-    if (userData) {
-      var Tawk_API = Tawk_API || {};
-      Tawk_API.visitor = {
-        name: `${userData.username || "Visitor"}`,
-        email: userData.email || "visitor@email.com",
-      };
+  // const openTawkChat = () => {
+  //   if (userData) {
+  //     var Tawk_API = Tawk_API || {};
+  //     Tawk_API.visitor = {
+  //       name: `${userData.username || "Visitor"}`,
+  //       email: userData.email || "visitor@email.com",
+  //     };
 
-      var Tawk_LoadStart = new Date();
-      (function () {
-        var s1 = document.createElement("script"),
-          s0 = document.getElementsByTagName("script")[0];
-        s1.async = true;
-        s1.src = "https://embed.tawk.to/66d8974c50c10f7a00a404b0/1i6v0u0cs";
-        s1.charset = "UTF-8";
-        s1.setAttribute("crossorigin", "*");
-        s0.parentNode.insertBefore(s1, s0);
-      })();
-    } else {
-      // Open the chat without user info if user is not logged in
-      window.open(
-        "https://tawk.to/chat/66d8974c50c10f7a00a404b0/1i6v0u0cs",
-        "_blank"
-      );
-    }
-  };
+  //     var Tawk_LoadStart = new Date();
+  //     (function () {
+  //       var s1 = document.createElement("script"),
+  //         s0 = document.getElementsByTagName("script")[0];
+  //       s1.async = true;
+  //       s1.src = "https://embed.tawk.to/66d8974c50c10f7a00a404b0/1i6v0u0cs";
+  //       s1.charset = "UTF-8";
+  //       s1.setAttribute("crossorigin", "*");
+  //       s0.parentNode.insertBefore(s1, s0);
+  //     })();
+  //   } else {
+  //     // Open the chat without user info if user is not logged in
+  //     window.open(
+  //       "https://tawk.to/chat/66d8974c50c10f7a00a404b0/1i6v0u0cs",
+  //       "_blank"
+  //     );
+  //   }
+  // };
 
   return (
     <div className="fixed bottom-0 left-0 w-full bg-bg-color3 px-5 py-1 z-50 flex tab:hidden items-start justify-between gap-2">
@@ -128,13 +128,13 @@ export default function FooterMenu({ closeModal }) {
         {/* Support */}
         <ListItem>
           <div className="">
-            <button
-              className="flex !flex-col justify-center !gap-0.5 !text-sm !text-white items-center text-center"
-              onClick={openTawkChat}
-            >
-              <BiSupport />
-              <span>Support</span>
-            </button>
+            <UILink
+              className="!flex-col justify-center !gap-0.5 !text-sm"
+              href="https://tawk.to/europa777"
+              target="_blank"
+              icon={<BiSupport />}
+              name={<span>Support</span>}
+            />
           </div>
         </ListItem>
       </List>

@@ -1,6 +1,7 @@
 "use client";
 
 import { useLoading } from "@/context/LoadingContext";
+import useApi from "@/helpers/apiRequest"; // Import your useApi hook
 import { useLocale, useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -12,27 +13,54 @@ import Modal from "./Modal";
 export const Bonus = ({ getBonusData }) => {
   const getData = getBonusData.data;
 
+  console.log("getData", getData);
+
   const { loading } = useLoading();
   const router = useRouter();
   const t = useTranslations("Common");
   const pro = useTranslations("Menubar");
   const locale = useLocale();
-  // const [promotions, setPromotions] = useState([]);
   const [selectedPromotion, setSelectedPromotion] = useState(null);
+  const { fetchData, setIsLoading, isLoading } = useApi();
 
-  // Uncomment the copyToClipboard function
   const copyToClipboard = (promoCode) => {
     navigator.clipboard.writeText(promoCode).then(() => {
       toast("Promo code copied to clipboard");
     });
   };
 
-  const handleClaimBonus = (promoCode) => {
-    copyToClipboard(promoCode);
-    // Pass the promo code to the PromoCodeComponent
-    setSelectedPromotion(promoCode);
+  const validatePromoCode = async (code) => {
+    setIsLoading(true);
+    try {
+      const { data, error } = await fetchData("/player/addPromoCode", "POST", {
+        code: code,
+      });
 
-    // Redirect to the deposit page
+      if (data?.success) {
+        toast.success(data.message);
+        await fetchPromoCodeDetails();
+
+        if (onPromoCodeApplied) {
+          onPromoCodeApplied();
+        }
+      } else if (data) {
+        console.log("data", data);
+        toast.error(data.message);
+      } else if (error) {
+        console.log("error", error);
+        toast.error(error.message);
+      }
+    } catch (error) {
+      // toast.error(error.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleClaimBonus = async (promoCode) => {
+    copyToClipboard(promoCode);
+    await validatePromoCode(promoCode);
+
     router.push(`/${locale}/player-dashboard/deposit?promo=${promoCode}`);
   };
 

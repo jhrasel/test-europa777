@@ -9,6 +9,7 @@ import { useFormik } from "formik";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 import toast from "react-hot-toast";
+import HavePromoCode from "./HavePromocode";
 import PromoCodeInput from "./PromoCodeInput";
 
 export const Flexepin = () => {
@@ -20,15 +21,6 @@ export const Flexepin = () => {
   const t = useTranslations("Common");
 
   const promoCodeT = useTranslations("promoCode");
-  const [havePromoCode, setHavePromoCode] = useState(false);
-
-  const handleHavePromoCode = () => {
-    setHavePromoCode(true);
-  };
-
-  const handleHavePromoCodeHide = () => {
-    setHavePromoCode(false);
-  };
 
   const onChange = (e) => {
     setIsAgreed(e.target.checked);
@@ -138,32 +130,11 @@ export const Flexepin = () => {
                 />
               </div>
 
-              <div className="w-full deposit-have-promo">
-                <div className="text-base text-text-color-primary flex items-center gap-1">
-                  {promoCodeT("title1")},
-                  <span
-                    className="text-bg-color1 font-medium cursor-pointer italic"
-                    onClick={handleHavePromoCode}
-                  >
-                    {promoCodeT("yes")}
-                  </span>
-                  <span
-                    className="text-bg-color1 font-medium cursor-pointer italic"
-                    onClick={handleHavePromoCodeHide}
-                  >
-                    / {promoCodeT("no")}
-                  </span>
-                </div>
-                {havePromoCode && (
-                  <div className="w-full">
-                    <PromoCodeInput
-                      fetchData={fetchData}
-                      isLoading={isLoading}
-                      className="!w-full"
-                    />
-                  </div>
-                )}
-              </div>
+              <PromoCodeInput
+                  fetchData={fetchData}
+                  isLoading={isLoading}
+                  className="!w-full"
+                />
             </div>
 
             <div className="flex items-center justify-center mt-3 gap-0.5">

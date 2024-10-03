@@ -1,8 +1,8 @@
-import { List, ListItem, P, UIInput, UILink } from "@/components/UI";
+import { GameCard, P, UIInput } from "@/components/UI";
 import { useLoading } from "@/context/LoadingContext";
 import useApi from "@/helpers/apiRequest";
+import { useBonusLock } from "@/helpers/useBonusLock"; // Import useBonusLock
 import { useLocale, useTranslations } from "next-intl";
-import Image from "next/image";
 import { useEffect, useState } from "react";
 
 export default function Favorites() {
@@ -12,6 +12,7 @@ export default function Favorites() {
   const [gameData, setGameData] = useState([]);
   const { loading } = useLoading();
   const locale = useLocale();
+  const { renderLink } = useBonusLock(); 
 
   useEffect(() => {
     const fetchGameData = async () => {
@@ -34,49 +35,59 @@ export default function Favorites() {
     game.game_name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
+  // Define handleFavoriteChange if needed
+  const handleFavoriteChange = (gameId, isFavorite) => {
+    console.log(
+      `Game ${gameId} is now ${isFavorite ? "favorited" : "unfavorited"}`
+    );
+    // Update favorite state or make an API call as needed
+  };
+
   return (
-    <div className="rounded-xl">
+    <div className="rounded-xl p-4">
       {/* Search input */}
       <UIInput
         placeholder={t("Search Games")}
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
+        className="mb-2"
       />
 
       <div className="mt-2">
-        <List className="max-h-[500px] overflow-y-auto px-2 pb-2 flex w-full items-center gap-2 flex-wrap mt-2">
-          {filteredGameData.length === 0 ? (
-            <P
-              name={`No provider found for "${searchQuery}"`}
-              className="mt-3"
-            />
-          ) : (
-            filteredGameData.map((game) => (
-              <ListItem key={game.id} className="w-[48%] tab:w-[32%]">
-                <UILink
-                  href={`/${locale}/play-game/${game.slug}`}
-                  className="w-full bg-bg-color3 p-5 hover:bg-bg-color2 rounded-lg !flex-col pb-2 capitalize"
-                  icon={
-                    <Image
-                      width={400}
-                      height={100}
-                      src={game.thumbnail || "/images/default-cart.jpg"}
-                      className="w-full h-24 rounded-lg object-contain mb-2"
-                      alt={game.game_name}
-                      quality={50}
-                    />
+        {filteredGameData.length === 0 ? (
+          <P
+            name={`No games found for "${searchQuery}"`}
+            className="mt-3 text-center col-span-6"
+          />
+        ) : (
+          <div className="grid grid-cols-2 tab:grid-cols-3 gap-3">
+            {filteredGameData.map((gameData) => {
+              const liveLink = renderLink(gameData);
+              const isLiveLinkObject = typeof liveLink === "object";
+
+              return (
+                <GameCard
+                  key={gameData.id}
+                  gameId={gameData.id}
+                  image={gameData.thumbnail || "/images/default-cart.jpg"}
+                  gameName={gameData.game_name}
+                  initialIsFavorite={false} // Update this if you have favorite games context
+                  onFavoriteChange={handleFavoriteChange}
+                  liveLink={!isLiveLinkObject ? liveLink : ""}
+                  liveLinkText={isLiveLinkObject ? liveLink.text : "Play"}
+                  depositLink={isLiveLinkObject ? liveLink.link : ""}
+                  demoLink={
+                    gameData.demo === 1
+                      ? `/${locale}/demo-game/${gameData.slug}`
+                      : ""
                   }
-                  name={
-                    <P
-                      name={game.game_name}
-                      className="!text-white pr-1 !text-md"
-                    />
-                  }
+                  activeCardId={null} // Update if needed
+                  setActiveCardId={() => {}} // Update if needed
                 />
-              </ListItem>
-            ))
-          )}
-        </List>
+              );
+            })}
+          </div>
+        )}
       </div>
     </div>
   );

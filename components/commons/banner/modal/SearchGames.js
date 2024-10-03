@@ -1,53 +1,47 @@
 "use client";
 
-import {
-  H4,
-  H6,
-  List,
-  ListItem,
-  P,
-  UIImage,
-  UIInput,
-  UILink,
-} from "@/components/UI";
+import { P, UIInput } from "@/components/UI";
+import { GameCard } from "@/components/UI/GameCard";
 import useApi from "@/helpers/apiRequest";
+import useAuth from "@/helpers/useAuth";
+import { useBonusLock } from "@/helpers/useBonusLock";
 import { useLocale, useTranslations } from "next-intl";
-
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
 export const SearchGames = ({ closeModal }) => {
   const { fetchData } = useApi();
+  const { isLoggedIn } = useAuth();
   const [filteredGames, setFilteredGames] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [showResults, setShowResults] = useState(false);
+  const [lockByBonus, setLockByBonus] = useState(null);
+  const [activeCardId, setActiveCardId] = useState(null);
   const t = useTranslations("HomePage");
   const locale = useLocale();
 
+  const { renderLink } = useBonusLock();
+
+  // Fetch games data
   useEffect(() => {
     let debounceTimer;
 
-    const fetchGames = async () => {
-      const { data, error } = await fetchData(
-        `/searchGames?search=${searchTerm}`,
-        "GET"
-      );
+    const fetchGames = async (query = "") => {
+      const apiEndpoint = query
+        ? `/searchGames?search=${query}`
+        : `/searchGames`;
+      const { data, error } = await fetchData(apiEndpoint, "GET");
 
       if (data && data.games && Array.isArray(data.games.data)) {
         setFilteredGames(data.games.data);
         setShowResults(true);
-        console.log("search games", data.games.data);
       } else if (error) {
         console.error("Error fetching games:", error);
         setFilteredGames([]);
         setShowResults(false);
-
-        // Display error notification
-        if (error.message) {
-          toast.error(error.message);
-        } else {
-          toast.error("An unexpected error occurred. Please try again.");
-        }
+        toast.error(
+          error.message || "An unexpected error occurred. Please try again."
+        );
       } else {
         console.error("Invalid response data:", data);
         setFilteredGames([]);
@@ -58,72 +52,78 @@ export const SearchGames = ({ closeModal }) => {
     if (searchTerm.trim() !== "") {
       clearTimeout(debounceTimer);
       debounceTimer = setTimeout(() => {
-        fetchGames();
+        fetchGames(searchTerm);
       }, 500);
     } else {
-      setFilteredGames([]);
-      setShowResults(false);
+      fetchGames();
     }
 
     return () => clearTimeout(debounceTimer);
   }, [fetchData, searchTerm]);
 
-  // Handle changes
+  // Define handleFavoriteChange
+  const handleFavoriteChange = (gameId, isFavorite) => {
+    console.log(
+      `Game ${gameId} is now ${isFavorite ? "favorited" : "unfavorited"}`
+    );
+    // Update favorite state or make an API call as needed
+  };
+
+  // Handle search input change
   const handleSearchInputChange = (e) => {
-    const newSearchTerm = e.target.value;
-    setSearchTerm(newSearchTerm);
+    setSearchTerm(e.target.value);
   };
 
   return (
-    <>
-      <div className="rounded-xl">
-        <UIInput
-          placeholder={t("Search Games")}
-          value={searchTerm}
-          onChange={handleSearchInputChange}
-        />
+    <div className="rounded-xl p-4">
+      <UIInput
+        placeholder={t("Search Games")}
+        value={searchTerm}
+        onChange={handleSearchInputChange}
+        className="mb-2"
+      />
 
-        <div className="mt-2">
-          <H4 name={t("Search Games")} className="py-1 !text-black" />
+      {/* <H4 name={t("Search Games")} className="py-1 !text-black" /> */}
 
-          {showResults && (
-            <List className="max-h-[550px] overflow-y-auto mt-2 px-2 pb-2">
-              {filteredGames.length === 0 ? (
-                <P
-                  name={`No games found for "${searchTerm}"`}
-                  className="mt-3"
-                />
-              ) : (
-                <List>
-                  {filteredGames.map((game) => (
-                    <ListItem key={game.id} className="mt-3">
-                      <UILink
-                        href={`/${locale}/play-game/${game.slug}`}
-                        className="w-full hover:bg-[#e5eaf0] rounded-lg"
-                        icon={
-                          <UIImage
-                            src={game.thumbnail || "/images/default-cart.jpg"}
-                            alt={game.game_name}
-                            className="!h-16 !w-16 rounded-lg object-cover"
-                          />
-                        }
-                        name={
-                          <H6
-                            name={game.game_name}
-                            className="!text-text-color-primary"
-                          />
-                        }
-                        onClick={() => closeModal()}
-                      />
-                    </ListItem>
-                  ))}
-                </List>
-              )}
-            </List>
-          )}
-        </div>
+      <div className="mt-2">
+        {showResults ? (
+          <div className="grid grid-cols-2 tab:grid-cols-3 gap-3">
+            {filteredGames.length === 0 ? (
+              <P
+                name={`No games found for "${searchTerm}"`}
+                className="mt-3 text-center col-span-6"
+              />
+            ) : (
+              filteredGames.map((gameData) => {
+                const liveLink = renderLink(gameData);
+                const isLiveLinkObject = typeof liveLink === "object";
+
+                return (
+                  <GameCard
+                    key={gameData.id}
+                    gameId={gameData.id}
+                    image={gameData.thumbnail || "/images/default-cart.jpg"}
+                    gameName={gameData.game_name}
+                    initialIsFavorite={false} // Update this if you have favorite games context
+                    onFavoriteChange={handleFavoriteChange}
+                    liveLink={!isLiveLinkObject ? liveLink : ""}
+                    liveLinkText={isLiveLinkObject ? liveLink.text : "Play"}
+                    depositLink={isLiveLinkObject ? liveLink.link : ""}
+                    demoLink={
+                      gameData.demo === 1
+                        ? `/${locale}/demo-game/${gameData.slug}`
+                        : ""
+                    }
+                    activeCardId={activeCardId}
+                    setActiveCardId={setActiveCardId}
+                  />
+                );
+              })
+            )}
+          </div>
+        ) : null}
       </div>
-    </>
+    </div>
   );
 };
 

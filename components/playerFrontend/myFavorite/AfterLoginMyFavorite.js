@@ -6,6 +6,7 @@ import { useLoading } from "@/context/LoadingContext";
 import CustomSkeleton from "@/helpers/CustomSkeleton";
 import useApi from "@/helpers/apiRequest";
 import useAuth from "@/helpers/useAuth";
+import { useBonusLock } from "@/helpers/useBonusLock";
 import { Empty } from "antd";
 import { useLocale, useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
@@ -23,6 +24,8 @@ export default function AfterLoginMyFavorite() {
   const [lockByBonus, setLockByBonus] = useState(null);
 
   const [activeCardId, setActiveCardId] = useState(null);
+
+  const { renderLink } = useBonusLock();
 
   // Define handleFavoriteChange
   const handleFavoriteChange = (gameId, isFavorite) => {
@@ -49,41 +52,6 @@ export default function AfterLoginMyFavorite() {
     };
     fetchGameData();
   }, [fetchData, favoriteGames]);
-
-  useEffect(() => {
-    if (isLoggedIn) {
-      const fetchLockByBonusData = async () => {
-        const { data, error } = await fetchData("/player/lockByBonus", "GET");
-        if (data) {
-          setLockByBonus(data.Player);
-        } else if (error) {
-          console.error("Error fetching lock by bonus:", error);
-        }
-      };
-
-      fetchLockByBonusData();
-    }
-  }, [isLoggedIn, fetchData]);
-
-  const renderLink = (gameData) => {
-    const haveDepositBonus =
-      lockByBonus?.promotion_type === "noDepositBonus" &&
-      gameData?.no_dep_bonus === 1;
-    const noDepositBonus =
-      lockByBonus?.promotion_type === "noDepositBonus" &&
-      gameData?.no_dep_bonus === 0;
-
-    if (haveDepositBonus) {
-      return `/${locale}/play-game/${gameData.slug}`;
-    } else if (noDepositBonus) {
-      return {
-        link: `/${locale}/player-dashboard/deposit`,
-        text: "LOCK IN BONUS",
-      };
-    } else {
-      return `/${locale}/play-game/${gameData.slug}`;
-    }
-  };
 
   return (
     <>

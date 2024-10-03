@@ -11,6 +11,7 @@ import { Address } from "./steps/Address";
 import { Verify } from "./steps/Verify";
 import { Result } from "./steps/Result";
 import { kycDataFormat } from "./KycDataFormat";
+import { VerifyType } from "./steps/VerifyType";
 
 export const KycContainer = ({ onCancel }) => {
   const [step, setStep] = useState(Step.INTRODUCTION);
@@ -36,6 +37,8 @@ export const KycContainer = ({ onCancel }) => {
         return <Verify setStep={setStep} data={data} setData={setData} />;
       case Step.RESULT:
         return <Result setStep={setStep} data={data} onCancel={onCancel} />;
+      case Step.VERIFY_TYPE:
+        return <VerifyType setStep={setStep} data={data} setData={setData} />;
       default:
         return <Introduction setStep={setStep} data={data} setData={setData} />;
     }

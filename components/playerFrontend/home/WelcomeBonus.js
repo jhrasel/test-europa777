@@ -6,6 +6,7 @@ import { WellcomeBonusData } from "@/data/WellcomeBonus";
 import CustomSkeleton from "@/helpers/CustomSkeleton";
 import { Carousel } from "antd";
 import { useLocale, useTranslations } from "next-intl";
+import { HiSpeakerphone } from "react-icons/hi";
 
 export const WelcomeBonus = () => {
   const { loading } = useLoading();
@@ -16,7 +17,7 @@ export const WelcomeBonus = () => {
       <div className="pt-5">
         <Container>
           <HeaderTitle
-            image="/images/home-page/icons/welcome-bonus.svg"
+            icon={<HiSpeakerphone />}
             title={t("Welcome Bonus")}
           />
 

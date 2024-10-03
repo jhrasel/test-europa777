@@ -1,16 +1,18 @@
 "use client";
+import LoadingPage from "@/components/Loading";
 import { Suspense } from "react";
-import { FadeLoader } from "react-spinners";
 import { LiveCasinoHomePage } from "../liveCasino/LiveCasino";
 import { AllProviders } from "./AllProviders";
 import { BonusPromotion } from "./BonusPromotion";
 import GameWinner from "./GameWinner";
 import { HotGames } from "./HotGames";
+import { NewGames } from "./NewGames";
 import { RecentPalyGame } from "./RecentPalyGame";
 import { TopGames } from "./TopGames";
 import { WelcomeBonus } from "./WelcomeBonus";
 
 export const Home = ({
+  getNewGamesData,
   getTopGamesData,
   getHotGamesData,
   getLiveCasinoData,
@@ -20,59 +22,35 @@ export const Home = ({
   // console.log("getTopGamesData", getTopGamesData);
   return (
     <>
-      <Suspense
-        fallback={
-          <h3 className="flex items-center gap-2 text-white">
-            <FadeLoader color="#FFF" />
-          </h3>
-        }
-      >
+      <Suspense fallback={<LoadingPage />}>
         <GameWinner getGameWinnerData={getGameWinnerData} />
       </Suspense>
 
-      <RecentPalyGame />
+      <Suspense fallback={<LoadingPage />}>
+        <RecentPalyGame />
+      </Suspense>
 
-      <Suspense
-        fallback={
-          <h3 className="flex items-center gap-2 text-white my-2">
-            <FadeLoader color="#FFF" />
-          </h3>
-        }
-      >
+      <Suspense fallback={<LoadingPage />}>
+        <NewGames getNewGamesData={getNewGamesData} />
+      </Suspense>
+
+      <Suspense fallback={<LoadingPage />}>
         <TopGames getTopGamesData={getTopGamesData} />
       </Suspense>
 
       <WelcomeBonus />
 
-      <Suspense
-        fallback={
-          <h3 className="flex items-center gap-2 text-white">
-            <FadeLoader color="#FFF" />
-          </h3>
-        }
-      >
+      <Suspense fallback={<LoadingPage />}>
         <LiveCasinoHomePage getLiveCasinoData={getLiveCasinoData} />
       </Suspense>
 
       <BonusPromotion />
 
-      <Suspense
-        fallback={
-          <h3 className="flex items-center gap-2 text-white">
-            <FadeLoader color="#FFF" />
-          </h3>
-        }
-      >
+      <Suspense fallback={<LoadingPage />}>
         <HotGames getHotGamesData={getHotGamesData} />
       </Suspense>
 
-      <Suspense
-        fallback={
-          <h3 className="flex items-center gap-2 text-white">
-            <FadeLoader color="#FFF" />
-          </h3>
-        }
-      >
+      <Suspense fallback={<LoadingPage />}>
         <AllProviders getAllGameProvidersData={getAllGameProvidersData} />
       </Suspense>
     </>

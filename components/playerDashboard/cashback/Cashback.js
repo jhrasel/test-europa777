@@ -151,7 +151,7 @@ export const CashbackDB = () => {
         </section>
       )}
 
-      <Cashback />
+      {/* <Cashback /> */}
     </>
   );
 };

@@ -1,11 +1,12 @@
 "use client";
 
+import { QuickDepositModal } from "@/components/playerDashboard/deposit/QuickDepositModal";
 import { useLoading } from "@/context/LoadingContext";
 import CustomSkeleton from "@/helpers/CustomSkeleton";
 import useAuth from "@/helpers/useAuth";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import TawkToChat from "./commons/chatting/Chatting";
+import NewTwak from "./commons/chatting/NewTwak";
 import Footer from "./commons/footer/Footer";
 import FooterMenu from "./commons/footerMenu/FooterMenu";
 import Navbar from "./commons/navbar/Navbar";
@@ -13,7 +14,6 @@ import Sidebar from "./commons/sidebar/Sidebar";
 import WeekPromotion from "./commons/weekPromotion/WeekPromotion";
 import SideWheel from "./playerFrontend/newWheelBonus/SideWheel";
 import GiftBox from "./scratchCard/GiftBox";
-import { QuickDepositModal } from "@/components/playerDashboard/deposit/QuickDepositModal";
 
 const Layout = ({ children, showFooter = true, remainingTime }) => {
   const route = usePathname();
@@ -76,15 +76,15 @@ const Layout = ({ children, showFooter = true, remainingTime }) => {
                 }`
           }`}
         >
-          <TawkToChat />
+          {/* <NewTwak /> */}
 
           {loading && <CustomSkeleton hasImage={true} hasText={true} />}
           {!loading && (
             <>
               {children}
-              <WeekPromotion />
               {isLoggedIn && (
                 <>
+                  <WeekPromotion />
                   <GiftBox />
                   <SideWheel />
                   <QuickDepositModal />
@@ -92,7 +92,7 @@ const Layout = ({ children, showFooter = true, remainingTime }) => {
               )}
               {shouldShowFooter && <Footer />}
               {shouldShowFooter && <FooterMenu />}
-              {shouldShowFooter && !isMobile && <TawkToChat />}
+              {shouldShowFooter && !isMobile && <NewTwak />}
             </>
           )}
         </main>

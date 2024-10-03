@@ -98,7 +98,7 @@ export const AccountsMenu = () => {
       id: crypto.randomUUID(),
       icon: <HiOutlineIdentification />,
       name: t("Verification"),
-      url: `/${locale}/player-dashboard/varification/`,
+      url: `/${locale}/player-dashboard/verification/`,
     },
     {
       id: crypto.randomUUID(),

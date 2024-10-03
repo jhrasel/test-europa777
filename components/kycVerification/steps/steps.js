@@ -7,4 +7,5 @@ export const Step = Object.freeze({
   ADDRESS: Symbol("ADDRESS"),
   VERIFY: Symbol("VERIFY"),
   RESULT: Symbol("RESULT"),
+  VERIFY_TYPE: Symbol("VERIFY_TYPE"),
 });

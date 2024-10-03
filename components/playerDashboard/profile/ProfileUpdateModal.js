@@ -100,9 +100,9 @@ export const ProfileUpdateModal = ({ openModal, handleModal }) => {
                   className="w-full p-2 rounded-md"
                 >
                   <option value="">Select Gender</option>
-                  <option value="male">Male</option>
-                  <option value="female">Female</option>
-                  <option value="others">Others</option>
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
+                  <option value="Others">Others</option>
                 </select>
               </div>
 

@@ -17,5 +17,6 @@ export const kycDataFormat = {
     request: null,
     response: null,
   },
-  response: null,
+  response: {},
+  auto: true,
 };

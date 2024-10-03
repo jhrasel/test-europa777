@@ -78,7 +78,7 @@ body {
 
 /* tab active */
 .ant-tabs-tab {
-  background: #fff !important;
+  background: #d1d1d1 !important;
   padding: 12px !important;
   border-radius: 10px;
   /* opacity: 0.5; */
@@ -86,7 +86,7 @@ body {
 }
 
 .ant-tabs-tab-active {
-  background: #c6c7c7 !important;
+  background: #fff !important;
   padding: 12px !important;
   border-radius: 10px;
   border: 0 !important;
@@ -588,10 +588,10 @@ input#phone {
 }
 
 :where(.css-dev-only-do-not-override-1gwfwyx).ant-modal-root .ant-modal-wrap {
-  z-index: 9999999999;
+  z-index: 99999999;
 }
 
-.deposit-have-promo .promo-p p{
+.deposit-have-promo .promo-p p {
   display: none;
 }
 
@@ -660,4 +660,12 @@ input#phone {
 .bonus-modal .ant-modal-close {
   color: #0055ff !important;
   border: 1px solid #0055ff !important;
+}
+
+.ant-empty-description {
+  color: #161421;
+}
+
+li.ant-pagination-options {
+  display: none !important;
 }

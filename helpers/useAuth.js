@@ -18,6 +18,14 @@ const useAuth = () => {
     setIsLoggedIn(true);
   };
 
+  const user = () => {
+    let user = Cookies.get("isLoggedIn");
+    if (user) {
+      return JSON.parse(user || {});
+    }
+    return {};
+  };
+
   const logout = () => {
     let route = `/${locale}/`;
 
@@ -36,7 +44,7 @@ const useAuth = () => {
     window.location.href = route;
   };
 
-  return { isLoggedIn, login, logout };
+  return { isLoggedIn, user, login, logout };
 };
 
 export default useAuth;

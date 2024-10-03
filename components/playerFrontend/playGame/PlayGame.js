@@ -3,6 +3,7 @@
 import { UILink } from "@/components/UI";
 import useApi from "@/helpers/apiRequest";
 import { useLocale } from "next-intl";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { AiOutlineFullscreen, AiOutlineFullscreenExit } from "react-icons/ai";
@@ -16,9 +17,17 @@ export const PlayGame = ({ slagId }) => {
   const [fullscreen, setFullscreen] = useState(false);
   const [fullscreenMobile, setFullscreenMobile] = useState(false);
   const locale = useLocale();
+  const router = useRouter();
 
   useEffect(() => {
     const fetchGameData = async () => {
+      const { data: kyc } = await fetchData(`/kyc/kycStatus`, "POST");
+
+      if (kyc && ["asked", "rejected", "submitted"].includes(kyc.kyc_status)) {
+        router.push(`/${locale}/player-dashboard/verification`);
+        return;
+      }
+
       const { data, error } = await fetchData(`/player/play/${slagId}`, "POST");
       if (data) {
         setGameData(data.data);

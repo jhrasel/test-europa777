@@ -11,7 +11,7 @@ import ShowBalance from "./ShowBalance";
 
 export const USDT = () => {
   const { fetchData, error, isLoading } = useApi();
-  const [selectedCurrency, setSelectedCurrency] = useState("USD");
+  const [selectedCurrency, setSelectedCurrency] = useState("USDT");
 
   // Ant Select
   const handleCurrencyChange = (selectedCurrency) => {
@@ -19,11 +19,12 @@ export const USDT = () => {
   };
 
   const currencyOptions = [
-    { value: "CAD", label: "CAD" },
-    { value: "USD", label: "USD" },
-    { value: "GBP", label: "GBP" },
-    { value: "EUR", label: "EUR" },
-    { value: "AUD", label: "AUD" },
+    // { value: "CAD", label: "CAD" },
+    // { value: "USD", label: "USD" },
+    // { value: "GBP", label: "GBP" },
+    { value: "USDT", label: "USDT" },
+    { value: "LTC", label: "LTC" },
+    { value: "BCH", label: "BCH" },
   ];
 
   // this modal close SignINForm
@@ -33,7 +34,7 @@ export const USDT = () => {
 
   const initialValues = {
     amount: "",
-    crypto_currency: "USD",
+    crypto_currency: "USDT",
     crypto_address: "",
     payment_method: "Crypto",
   };
@@ -84,7 +85,7 @@ export const USDT = () => {
             <UIImage
               src="/images/bank-img/usdt.png"
               alt="deposit"
-              className="!w-16 tab:!w-32 object-cover"
+              className="!w-16 tab:!w-24 !h-auto object-cover"
             />
             <H6
               name="Min 50.00"

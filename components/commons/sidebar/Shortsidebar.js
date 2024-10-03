@@ -120,6 +120,7 @@ export const Shortsidebar = ({ closeMobileSidebar }) => {
                 href={data.url}
                 icon={data.icon}
                 name={null}
+                target={data.external ? "_blank" : ""}
                 scroll={true}
                 className={`w-full px-5 py-2 rounded-lg justify-center !text-xl ${
                   router === data.url ? "bg-bg-color2" : "!text-white"

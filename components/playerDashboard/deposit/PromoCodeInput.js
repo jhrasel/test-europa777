@@ -12,8 +12,8 @@ const PromoCodeComponent = ({
   className,
   initialPromoCode,
   onPromoCodeChange,
+  onPromoCodeApplied, // New prop
 }) => {
-
   const searchParams = useSearchParams();
   const promo = searchParams.get("promo");
   const { fetchData, error, isLoading, setIsLoading } = useApi();
@@ -28,7 +28,6 @@ const PromoCodeComponent = ({
     setIsLoading(false);
     try {
       const response = await fetchData("/player/promoCodeDetails", "GET");
-      // console.log("promoCodeDetails", response.data.data);
       setPromoMessage(response.data.data);
     } catch (error) {
       toast.error("Failed to fetch promo code details");
@@ -43,6 +42,10 @@ const PromoCodeComponent = ({
     if (data?.success) {
       toast.success(data.message);
       await fetchPromoCodeDetails();
+
+      if (onPromoCodeApplied) {
+        onPromoCodeApplied();
+      }
     } else if (data) {
       toast.error(data.message);
     } else if (error) {
@@ -70,14 +73,18 @@ const PromoCodeComponent = ({
       setPromoMessage(null);
       toast.success(data.message);
       await fetchPromoCodeDetails();
+
+      // Optionally refresh free spin data when promo code is removed
+      if (onPromoCodeApplied) {
+        onPromoCodeApplied();
+      }
     } else if (data) {
       toast.error(data.message);
-    } else if (error) {
-      toast.error(error.message);
     }
   };
 
   useEffect(() => {
+    if (promo) handleAddPromoCode();
     fetchPromoCodeDetails();
   }, []);
 
@@ -114,13 +121,13 @@ const PromoCodeComponent = ({
         ) : (
           <>
             {promoMessage?.promo_code ? (
-              <submit
+              <button
                 type="submit"
                 className="rounded-full bg-blue-color text-white px-5 py-1.5 text-lg hover:bg-blue-600"
                 onClick={handleRemovePromoCode}
               >
                 {t("remove")}
-              </submit>
+              </button>
             ) : (
               <button
                 type="button"

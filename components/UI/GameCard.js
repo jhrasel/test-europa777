@@ -6,7 +6,7 @@ import useApi from "@/helpers/apiRequest";
 import useAuth from "@/helpers/useAuth";
 import toast from "react-hot-toast";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
-import SignIn from "../signIn/SignIn"; // Import your SignIn component here
+import SignIn from "../signIn/SignIn";
 import { UIImage } from "./Image";
 import { UILink, UILinkBG } from "./Link";
 import { H6 } from "./Tags";
@@ -23,6 +23,7 @@ export const GameCard = ({
   onFavoriteChange,
   activeCardId,
   setActiveCardId,
+  newGames = false,
 }) => {
   const demoLinkCss = "demoLinkCss";
 
@@ -50,14 +51,11 @@ export const GameCard = ({
     }
   };
 
-  // const [showBtn, setShowBtn] = useState(false);
-
-  // handleShowBtn
-  // const handleShowBtn = () => {
-  //   setShowBtn(!showBtn);
-  // };
-
   const handleShowBtn = () => {
+    if (!isLoggedIn) {
+      toast.error("Please log in to play games"); // Display an alert or toast if not logged in
+      return;
+    }
     setActiveCardId(gameId === activeCardId ? null : gameId);
   };
 
@@ -82,10 +80,17 @@ export const GameCard = ({
             />
           )}
 
-          {/* button */}
+          {/* new */}
+          {newGames && (
+            <div className="absolute top-1 left-1 z-90">
+              <H6
+                name="New"
+                className="bg-red-color !text-white py-1 px-2 !text-xs rounded-sm"
+              />
+            </div>
+          )}
 
-          {/* desktop button  */}
-
+          {/* Desktop button */}
           <div className="rounded-lg absolute top-0 left-0 w-full h-full bg-[#00000080] hidden tab:flex flex-col items-center justify-center px-5 py-2 invisible group-hover:visible">
             {isLoggedIn ? (
               depositLink ? (
@@ -115,7 +120,6 @@ export const GameCard = ({
               <UILink
                 scroll={true}
                 href={demoLink}
-                // target="_blank"
                 name={demoLink ? "Demo" : ""}
                 className={
                   demoLink
@@ -131,7 +135,7 @@ export const GameCard = ({
             )}
           </div>
 
-          {/* mobile button  */}
+          {/* Mobile button */}
           {isActive && (
             <div className="rounded-lg absolute top-0 left-0 w-full h-full bg-[#00000080] flex tab:hidden flex-col items-center justify-center px-5 py-2">
               {isLoggedIn ? (
@@ -162,7 +166,6 @@ export const GameCard = ({
                 <UILink
                   scroll={true}
                   href={demoLink}
-                  // target="_blank"
                   name={demoLink ? "Demo" : ""}
                   className={
                     demoLink

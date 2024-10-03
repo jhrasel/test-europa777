@@ -1,4 +1,5 @@
 import { Card, H4, P } from "@/components/UI";
+import useApi from "@/helpers/apiRequest";
 import { fetchDepositHistoryAPI } from "@/lib/fetchDepositAPI";
 import { Button, Empty, Modal, Pagination } from "antd";
 import { useTranslations } from "next-intl";
@@ -8,6 +9,7 @@ import { CiWarning } from "react-icons/ci";
 import { FadeLoader } from "react-spinners";
 
 export default function WithdrawHistory() {
+  const { fetchData } = useApi();
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
@@ -55,7 +57,7 @@ export default function WithdrawHistory() {
   };
 
   const handleCancelBonus = async () => {
-    const result = await fetchData("/player/cancelActiveBonus", "POST", {
+    const result = await fetchData(`/player/cancelWithdraw/${selectedBonusId}`, "POST", {
       bonusId: selectedBonusId,
     });
 
@@ -70,6 +72,7 @@ export default function WithdrawHistory() {
   };
 
   const showCancelModal = (bonusId) => {
+    console.log("bonusId", bonusId);
     setSelectedBonusId(bonusId);
     setIsCancelModalVisible(true);
   };
@@ -143,22 +146,20 @@ export default function WithdrawHistory() {
                       </td>
 
                       <td className={`${tableTdStyle}`}>
-                        {withdrawsData.status === "pending" ||
-                          withdrawsData.status === "submitted" ||
-                          (withdrawsData.status === "waiting" && (
-                            <div className="flex flex-col items-center gap-2">
-                              <Button
-                                onClick={() =>
-                                  showCancelModal(withdrawsData.id)
-                                }
-                                className="!bg-blue-color !text-white border !border-blue-color w-full"
-                              >
-                                Cancel
-                              </Button>
-                            </div>
-                          ))}
+                        {["pending", "submitted", "waiting"].includes(
+                          withdrawsData.status
+                        ) && (
+                          <div className="flex flex-col items-center gap-2">
+                            <Button
+                              onClick={() => showCancelModal(withdrawsData.id)}
+                              className="!bg-blue-color !text-white border !border-blue-color w-full"
+                            >
+                              Cancel
+                            </Button>
+                          </div>
+                        )}
 
-                        {withdrawsData.status === "cancelled" && ""}
+                        {withdrawsData.status === "cancelled" && null}
                       </td>
                     </tr>
                   ))}

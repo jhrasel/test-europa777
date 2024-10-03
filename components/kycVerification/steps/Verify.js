@@ -42,10 +42,6 @@ export const Verify = ({ setStep, data, setData }) => {
       null,
       { "Content-Type": "multipart/form-data" }
     );
-    if (errorRes || !result?.data) {
-      setMessage("Something went wrong, please try again.");
-      setError(true);
-    }
 
     const response = result?.data;
 

@@ -1,3 +1,5 @@
+
+import { ErrorMessage } from "@/components/UI";
 import Banner from "@/components/commons/banner/Banner";
 import { Home } from "@/components/playerFrontend";
 import {
@@ -5,6 +7,7 @@ import {
   fetchGameWinner,
   fetchHotGames,
   fetchLiveCasinoGames,
+  fetchNewGames,
   fetchTopGames,
 } from "@/lib/fetchHomeAPI";
 import { Suspense } from "react";
@@ -12,14 +15,15 @@ import { FadeLoader } from "react-spinners";
 
 const Page = async () => {
   try {
-    // Fetch all data in parallel
     const [
+      getNewGamesData,
       getTopGamesData,
       getHotGamesData,
       getLiveCasinoData,
       getGameWinnerData,
       getAllGameProvidersData,
     ] = await Promise.all([
+      fetchNewGames(),
       fetchTopGames(),
       fetchHotGames(),
       fetchLiveCasinoGames(),
@@ -27,7 +31,7 @@ const Page = async () => {
       fetchAllGameProviders(),
     ]);
 
-    return (
+    return (   
       <>
         <Suspense
           fallback={
@@ -40,6 +44,7 @@ const Page = async () => {
         </Suspense>
 
         <Home
+          getNewGamesData={getNewGamesData}
           getTopGamesData={getTopGamesData}
           getHotGamesData={getHotGamesData}
           getLiveCasinoData={getLiveCasinoData}
@@ -51,9 +56,7 @@ const Page = async () => {
   } catch (error) {
     console.error("Error fetching data:", error);
     return (
-      <h3 className="text-center text-white">
-        Error loading data. Please try again later.
-      </h3>
+      <ErrorMessage errorName="Error loading data. Please try again later." />
     );
   }
 };

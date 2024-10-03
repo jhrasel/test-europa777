@@ -131,7 +131,7 @@ export function AfterLogin() {
     //   label: (
     //     <div className="flex items-center gap-2 text-lg text-text-color-primary">
     //       <UILink
-    //         href={`/${locale}/player-dashboard/varification`}
+    //         href={`/${locale}/player-dashboard/verification`}
     //         icon={<HiOutlineIdentification />}
     //         name={t("Verification")}
     //         className="!text-text-color-primary !bg-none"

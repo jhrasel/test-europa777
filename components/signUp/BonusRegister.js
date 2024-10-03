@@ -1,6 +1,7 @@
 import useApi from "@/helpers/apiRequest";
 import Image from "next/image";
-import { useState } from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useCallback, useState } from "react";
 import toast from "react-hot-toast";
 import { AiOutlineClose } from "react-icons/ai";
 import bonusRegister from "../../public/images/Bonus-Registration-popup.png";
@@ -19,6 +20,24 @@ export default function BonusRegister({
   const { fetchData } = useApi();
   const [selectedOption, setSelectedOption] = useState("BONUS1");
   const [promoCode, setPromoCode] = useState("");
+
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  const createQueryString = useCallback(
+    (name, value) => {
+      const params = new URLSearchParams(searchParams.toString());
+      params.set(name, value);
+
+      return params.toString();
+    },
+    [searchParams]
+  );
+
+  const showModal = () => {
+    router.push(pathname + "?" + createQueryString("modal", "sign-in"));
+  };
 
   const handleOptionChange = (option) => {
     setSelectedOption(option);
@@ -58,7 +77,6 @@ export default function BonusRegister({
       // Pass the selected option and promo code to the parent or next page
       onSelect({ option: selectedOption, promo_code });
 
-      // Proceed to the next step
       goToStep2();
       setIsOpen(false);
     } else {
@@ -97,10 +115,7 @@ export default function BonusRegister({
 
             {/* login */}
             <div className="w-[90%] tab:w-[450px] absolute top-[100px] tab:top-[130px] left-1/2 -translate-x-1/2 z-10">
-              <div
-                onClick={() => setIsOpen(false)}
-                className="flex justify-center mt-1"
-              >
+              <div onClick={showModal} className="flex justify-center mt-1">
                 <h3 className="cursor-pointer text-bg-color1 flex items-center gap-2 text-base tab:text-lg">
                   Already have an account?
                   <span className="text-blue-color font-bold">Sign In</span>

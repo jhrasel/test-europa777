@@ -11,7 +11,7 @@ import { MasterCard } from "./MasterCard";
 import { VisaCard } from "./VisaCard";
 
 export const DepositData = (country) => {
-  console.log("country", country);
+  // console.log("country", country);
 
   const excludedCountries = [
     "Afghanistan",
@@ -163,7 +163,6 @@ export const DepositData = (country) => {
     ];
   } else if (!excludedCountries.includes(country)) {
     return [
-      // {
       {
         key: 1,
         label: (

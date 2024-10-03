@@ -3,7 +3,7 @@ import { useFavoriteGames } from "@/context/FavoriteGamesContext";
 import CustomSkeleton from "@/helpers/CustomSkeleton";
 import useApi from "@/helpers/apiRequest";
 import useAuth from "@/helpers/useAuth";
-import { fetchLockByBonus } from "@/lib/fetchLockByBonus";
+import { useBonusLock } from "@/helpers/useBonusLock";
 import { Empty } from "antd";
 import { useLocale } from "next-intl";
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -23,6 +23,8 @@ export default function ProviderGames({ slagId }) {
   const [lockByBonus, setLockByBonus] = useState(null);
 
   const [activeCardId, setActiveCardId] = useState(null);
+
+  const { renderLink } = useBonusLock();
 
   const lastGameElementRef = useCallback(
     (node) => {
@@ -65,22 +67,6 @@ export default function ProviderGames({ slagId }) {
     fetchGameData(page);
   }, [slagId, page]);
 
-  useEffect(() => {
-    const getLockData = async () => {
-      if (isLoggedIn) {
-        try {
-          const data = await fetchLockByBonus();
-          // console.log("fetchLockByBonus", data);
-          setLockByBonus(data.Player);
-        } catch (err) {
-          setError(err.message);
-        }
-      }
-    };
-
-    getLockData();
-  }, [isLoggedIn]);
-
   if (isLoading)
     return (
       <Container>
@@ -89,26 +75,6 @@ export default function ProviderGames({ slagId }) {
         </div>
       </Container>
     );
-
-  const renderLink = (gameData) => {
-    const haveDepositBonus =
-      lockByBonus?.promotion_type === "noDepositBonus" &&
-      gameData?.no_dep_bonus === 1;
-    const noDepositBonus =
-      lockByBonus?.promotion_type === "noDepositBonus" &&
-      gameData?.no_dep_bonus === 0;
-
-    if (haveDepositBonus) {
-      return `/${locale}/play-game/${gameData.slug}`;
-    } else if (noDepositBonus) {
-      return {
-        link: `/${locale}/player-dashboard/deposit`,
-        text: "LOCK IN BONUS",
-      };
-    } else {
-      return `/${locale}/play-game/${gameData.slug}`;
-    }
-  };
 
   return (
     <>

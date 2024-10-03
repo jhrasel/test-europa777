@@ -13,6 +13,18 @@ export const Address = ({ setStep, data, setData }) => {
   const [message, setMessage] = useState("");
 
   const handleOnChange = async (file) => {
+    if (!data.auto) {
+      setData({
+        ...data,
+        address: {
+          ...data.address,
+          request: file,
+        },
+      });
+      setStep(Step.VERIFY);
+      return;
+    }
+
     const formData = new FormData();
     formData.append("file", file);
 
@@ -98,7 +110,7 @@ export const Address = ({ setStep, data, setData }) => {
       <div className="flex justify-center">
         <p
           className="mt-2 cursor-pointer hover:text-slate-900 hover:underline"
-          onClick={() => setStep(Step.INTRODUCTION)}
+          onClick={() => setStep(Step.VERIFY_TYPE)}
         >
           Experiencing problem?
         </p>

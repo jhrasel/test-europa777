@@ -8,10 +8,8 @@ export default function LoadingPage() {
   }, []);
 
   return (
-    <div className="loading">
-      <h2>
-        <FadeLoader color="#FFF" />
-      </h2>
-    </div>
+    <h3 className="flex items-center gap-2 text-white">
+      <FadeLoader color="#FFF" />
+    </h3>
   );
 }

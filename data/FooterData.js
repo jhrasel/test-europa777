@@ -11,7 +11,8 @@ export const FooterAboutData = () => {
     },
     {
       name: t("Contact Us"),
-      url: `/${locale}/contact`,
+      url: `https://tawk.to/europa777`,
+      external: true,
     },
     {
       name: t("FAQ"),
@@ -63,7 +64,7 @@ export const FooterQuickLinksData = () => {
     },
     {
       name: t("Banking"),
-      url: "#",
+      url: `/${locale}/banking`,
     },
   ];
 };

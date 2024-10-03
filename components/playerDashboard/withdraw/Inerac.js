@@ -54,8 +54,8 @@ export const Inerac = () => {
         <div className="flex flex-col items-center gap-2">
           <UIImage
             src="/images/bank-img/interac.png"
-            alt='deposit'
-            className="!w-16 tab:!w-32 !h-auto object-cover"
+            alt="deposit"
+            className="!w-16 tab:!w-24 !h-auto object-cover"
           />
           <H6
             name="Min 50.00"

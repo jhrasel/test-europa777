@@ -3,15 +3,18 @@ import { Modal } from "antd";
 import { Card } from "@/components/UI/Card";
 import { UIButton } from "@/components/UI/Button";
 import { KycContainer } from "./KycContainer";
+import { useLocale } from "next-intl";
 
-export const KycVerification = () => {
+export const KycVerification = ({ status }) => {
   const [modal, setModal] = useState(false);
+  const locale = useLocale();
 
   const showModal = () => {
     setModal(true);
   };
   const onCancel = () => {
     setModal(false);
+    window.location.href = `/${locale}/player-dashboard/verification`;
   };
 
   return (
@@ -26,8 +29,9 @@ export const KycVerification = () => {
             onClick={showModal}
             className="bg-blue-color"
           />
-          <p className="text-sm font-thin text-slate-500 mt-4">
-            Identity verification will helps companies connect with costomers.
+          <p className="text-sm font-thin text-white mt-4">
+            Please complete your verification to ensure a seamless profile
+            experience.
           </p>
         </div>
       </Card>

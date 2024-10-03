@@ -131,7 +131,7 @@ export const Longsidebar = () => {
           </div>
 
           {/* Menubar */}
-          <List className="mt-8 px-2">
+          <List className="mt-5 px-2 overflow-y-auto ">
             {menuData?.map((data) => (
               <ListItem key={data.id} className="">
                 <UILink
@@ -139,6 +139,7 @@ export const Longsidebar = () => {
                   icon={data.icon}
                   name={data.name}
                   scroll={true}
+                  target={data.external ? "_blank" : ""}
                   className={`w-full px-5 py-2 rounded-lg justify-start ${
                     router === data.url ? "bg-bg-color2" : "!text-white"
                   }`}

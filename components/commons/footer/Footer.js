@@ -162,6 +162,7 @@ const Footer = () => {
                     <UILink
                       href={data.url}
                       name={data.name}
+                      target={data.external ? "_blank" : ""}
                       className="text-text-color-primary hover:text-blue-color"
                     />
                   </ListItem>
@@ -212,7 +213,7 @@ const Footer = () => {
             <P name="Contact us by" className="mt-2" />
             <div className="mt-2">
               <Link
-                href="https://tawk.to/chat/6306272254f06e12d8907c8c/1gb80ho5i"
+                href="https://tawk.to/europa777"
                 target="_blank"
                 className="text-white border-r border-white mr-3 pr-3 mob:text-sm"
               >

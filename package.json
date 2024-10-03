@@ -15,6 +15,8 @@
     "@innovatrics/dot-auto-capture-ui": "5.2.8",
     "@innovatrics/dot-document-auto-capture": "5.2.8",
     "@innovatrics/dot-magnifeye-liveness": "5.2.8",
+    "@innovatrics/dot-smile-liveness": "5.2.8",
+    "@next/third-parties": "^14.2.12",
     "@tawk.to/tawk-messenger-react": "^2.0.2",
     "antd": "^5.13.2",
     "axios": "^1.6.7",

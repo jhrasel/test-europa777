@@ -3,7 +3,7 @@ import { UIImage } from "./Image";
 import { UILink } from "./Link";
 import { H2 } from "./Tags";
 
-export const HeaderTitle = ({ image, title, href }) => {
+export const HeaderTitle = ({ image, icon, title, href }) => {
   const t = useTranslations("Common");
   return (
     <>
@@ -17,6 +17,8 @@ export const HeaderTitle = ({ image, title, href }) => {
               className="!w-[30px] laptop:!w-[35px] h-[30px] laptop:h-[35px]"
             />
           )}
+
+          {icon && <span className="text-white text-2xl tab:text-3xl">{icon}</span>}
 
           <H2 name={title} />
         </div>

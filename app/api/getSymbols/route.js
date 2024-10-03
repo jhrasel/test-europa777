@@ -1,5 +1,10 @@
-export async function GET(request) {
-  const url = request.url;
+export async function GET(req) {
+  const url = new URL(req.url); // Use URL constructor to parse the request URL
+  const canWinParam = url.searchParams.get("canWin"); // Extract 'canWin' from query parameters
+
+  // Convert the string 'canWin' into a boolean (check for 'true', otherwise it will be false)
+  const canWin = canWinParam === "true";
+
   try {
     const symbolsList = [
       0.25, 0.5, 0.75, 0.8, 1, 2, 3, 5, 10, 20, 50, 100, 200, 500, 1000,
@@ -17,7 +22,6 @@ export async function GET(request) {
       0.05, // 5.0
       0.05, // 10.0
       0.02, // 20.0
-      // 50 - 1000 will never win
       0.02, // 50.0
       0.02, // 100.0
       0.05, // 200.0
@@ -46,11 +50,12 @@ export async function GET(request) {
     while (symbols.length < displayedSymbols) {
       let symbol = getRandomSymbolIndex();
 
-      // 50 - 1000 will never win
+      // Limit symbols 50 - 1000 to only appear twice max
       if (symbol > 9 && count[symbol] === 2) {
         continue;
       }
 
+      // Prevent more than one winner
       if (winnerSymbol !== null && count[symbol] === 2) {
         continue;
       }
@@ -59,12 +64,15 @@ export async function GET(request) {
         count[symbol]++;
         symbols.push(symbol);
 
+        // When symbol reaches 2 occurrences, probabilistically prevent a 3rd match
         if (count[symbol] === 3) {
-          if (winnerSymbol === null) {
+          if (winnerSymbol === null && canWin) {
+            // 30% chance to allow a winner
             winnerSymbol = symbol;
           } else {
-            count[symbol]--; // Reset count to prevent another winner
-            symbols.pop(); // Remove the last added symbol
+            // Block the third occurrence to reduce winner probability
+            count[symbol]--;
+            symbols.pop(); // Remove the last added symbol to prevent 3rd match
           }
         }
       }

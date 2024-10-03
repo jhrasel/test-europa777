@@ -6,10 +6,11 @@ import { useFavoriteGames } from "@/context/FavoriteGamesContext";
 import { useLoading } from "@/context/LoadingContext";
 import useApi from "@/helpers/apiRequest";
 import useAuth from "@/helpers/useAuth";
-import { fetchLockByBonus } from "@/lib/fetchLockByBonus";
+import { useBonusLock } from "@/helpers/useBonusLock";
 import { Empty } from "antd";
 import { useLocale, useTranslations } from "next-intl";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { FaFire } from "react-icons/fa";
 
 export const HotGames = ({ getHotGamesData }) => {
   const getData = getHotGamesData.data;
@@ -25,6 +26,8 @@ export const HotGames = ({ getHotGamesData }) => {
 
   const [activeCardId, setActiveCardId] = useState(null);
 
+  const { renderLink } = useBonusLock();
+
   // Define handleFavoriteChange
   const handleFavoriteChange = (gameId, isFavorite) => {
     `Game ${gameId} is now ${isFavorite ? "favorited" : "unfavorited"}`;
@@ -32,49 +35,11 @@ export const HotGames = ({ getHotGamesData }) => {
     fetchGameData();
   };
 
-  useEffect(() => {
-    const getLockData = async () => {
-      if (isLoggedIn) {
-        try {
-          const data = await fetchLockByBonus();
-          // console.log("fetchLockByBonus", data.Player);
-          setLockByBonus(data.Player);
-        } catch (err) {}
-      }
-    };
-
-    getLockData();
-  }, [isLoggedIn]);
-
-  const renderLink = (gameData) => {
-    const haveDepositBonus =
-      lockByBonus?.promotion_type === "noDepositBonus" &&
-      gameData?.no_dep_bonus === 1;
-    const noDepositBonus =
-      lockByBonus?.promotion_type === "noDepositBonus" &&
-      gameData?.no_dep_bonus === 0;
-
-    if (haveDepositBonus) {
-      return `/${locale}/play-game/${gameData.slug}`;
-    } else if (noDepositBonus) {
-      return {
-        link: `/${locale}/player-dashboard/deposit`,
-        text: "LOCK IN BONUS",
-      };
-    } else {
-      return `/${locale}/play-game/${gameData.slug}`;
-    }
-  };
-
   return (
     <>
       <div className="pt-5">
         <Container>
-          <HeaderTitle
-            image="/images/home-page/icons/top-games.svg"
-            title={t("Hot Games")}
-            href="/slot"
-          />
+          <HeaderTitle icon={<FaFire />} title={t("Hot Games")} href="/slot" />
 
           <div className="grid grid-cols-2 tab:grid-cols-3 laptop:grid-cols-4 desktop:grid-cols-6 gap-2 tab:gap-5">
             {getData.length === 0 ? (
@@ -85,6 +50,7 @@ export const HotGames = ({ getHotGamesData }) => {
             ) : (
               getData.slice(0, 12).map((gameData) => {
                 const liveLink = renderLink(gameData);
+
                 const isLiveLinkObject = typeof liveLink === "object";
 
                 return (

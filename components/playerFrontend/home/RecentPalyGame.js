@@ -7,10 +7,9 @@ import { useLoading } from "@/context/LoadingContext";
 import CustomSkeleton from "@/helpers/CustomSkeleton";
 import useApi from "@/helpers/apiRequest";
 import useAuth from "@/helpers/useAuth";
-import { fetchRecentGameHistory } from "@/lib/fetchHomeAPI";
-import { fetchLockByBonus } from "@/lib/fetchLockByBonus";
+import { useBonusLock } from "@/helpers/useBonusLock";
 import { useLocale } from "next-intl";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 export const RecentPalyGame = () => {
   const { fetchData, isLoading } = useApi();
@@ -23,6 +22,8 @@ export const RecentPalyGame = () => {
 
   const [activeCardId, setActiveCardId] = useState(null);
 
+  const { renderLink } = useBonusLock();
+
   // Define handleFavoriteChange
   const handleFavoriteChange = (gameId, isFavorite) => {
     // Handle favorite change logic if needed
@@ -30,43 +31,6 @@ export const RecentPalyGame = () => {
 
     // Refsetch the top games data after a change in favorites
     fetchGameData();
-  };
-
-  useEffect(() => {
-    const getLockData = async () => {
-      if (isLoggedIn) {
-        try {
-          const getRecentHistory = await fetchRecentGameHistory();
-          setGameDatas(getRecentHistory.data.data);
-          const data = await fetchLockByBonus();
-          setLockByBonus(data.Player);
-        } catch (err) {
-          // setError(err.message);
-        }
-      }
-    };
-
-    getLockData();
-  }, [isLoggedIn]);
-
-  const renderLink = (gameData) => {
-    const haveDepositBonus =
-      lockByBonus?.promotion_type === "noDepositBonus" &&
-      gameData?.no_dep_bonus === 1;
-    const noDepositBonus =
-      lockByBonus?.promotion_type === "noDepositBonus" &&
-      gameData?.no_dep_bonus === 0;
-
-    if (haveDepositBonus) {
-      return `/${locale}/play-game/${gameData.slug}`;
-    } else if (noDepositBonus) {
-      return {
-        link: `/${locale}/player-dashboard/deposit`,
-        text: "LOCK IN BONUS",
-      };
-    } else {
-      return `/${locale}/play-game/${gameData.slug}`;
-    }
   };
 
   return (

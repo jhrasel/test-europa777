@@ -6,21 +6,21 @@ import { useFavoriteGames } from "@/context/FavoriteGamesContext";
 import { useLoading } from "@/context/LoadingContext";
 import useApi from "@/helpers/apiRequest";
 import useAuth from "@/helpers/useAuth";
-import { fetchLockByBonus } from "@/lib/fetchLockByBonus";
+import { useBonusLock } from "@/helpers/useBonusLock";
 import { Empty } from "antd";
 import { useLocale, useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { FaStar } from "react-icons/fa";
 
 export const TopGames = ({ getTopGamesData }) => {
-  // console.log("getTopGamesData", getTopGamesData);
-
   const getData = getTopGamesData.data;
 
   const { isLoggedIn } = useAuth();
   const { fetchData, isLoading } = useApi();
   const { favoriteGames } = useFavoriteGames();
+
   const router = useRouter();
   const { loading } = useLoading();
   const t = useTranslations("HomePage");
@@ -30,45 +30,12 @@ export const TopGames = ({ getTopGamesData }) => {
 
   const [activeCardId, setActiveCardId] = useState(null);
 
+  const { renderLink } = useBonusLock();
+
   // Define handleFavoriteChange
   const handleFavoriteChange = (gameId, isFavorite) => {
     `Game ${gameId} is now ${isFavorite ? "favorited" : "unfavorited"}`;
     fetchGameData();
-  };
-
-  useEffect(() => {
-    const getLockData = async () => {
-      if (isLoggedIn) {
-        try {
-          const data = await fetchLockByBonus();
-          setLockByBonus(data.Player);
-        } catch (err) {
-          // setError(err.message);
-        }
-      }
-    };
-
-    getLockData();
-  }, [isLoggedIn]);
-
-  const renderLink = (gameData) => {
-    const haveDepositBonus =
-      lockByBonus?.promotion_type === "noDepositBonus" &&
-      gameData?.no_dep_bonus === 1;
-    const noDepositBonus =
-      lockByBonus?.promotion_type === "noDepositBonus" &&
-      gameData?.no_dep_bonus === 0;
-
-    if (haveDepositBonus) {
-      return `/${locale}/play-game/${gameData.slug}`;
-    } else if (noDepositBonus) {
-      return {
-        link: `/${locale}/player-dashboard/deposit`,
-        text: "LOCK IN BONUS",
-      };
-    } else {
-      return `/${locale}/play-game/${gameData.slug}`;
-    }
   };
 
   return (
@@ -76,7 +43,7 @@ export const TopGames = ({ getTopGamesData }) => {
       <div className="pt-5">
         <Container>
           <HeaderTitle
-            image="/images/home-page/icons/top-games.svg"
+            icon={<FaStar />}
             title={t("Top Games")}
             href={`/${locale}/slot`}
           />

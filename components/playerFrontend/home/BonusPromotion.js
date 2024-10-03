@@ -12,6 +12,7 @@ import { BonusPromotionData } from "@/data/BonusPromotion";
 import CustomSkeleton from "@/helpers/CustomSkeleton";
 import { useTranslations } from "next-intl";
 import { Autoplay, Navigation } from "swiper/modules";
+import { BsGiftFill } from "react-icons/bs";
 
 export const BonusPromotion = () => {
   const { loading } = useLoading();
@@ -21,7 +22,7 @@ export const BonusPromotion = () => {
       <div className="pt-5" data-aos="fade-up">
         <Container>
           <HeaderTitle
-            image="/images/home-page/icons/bonus-promotion.svg"
+           icon={<BsGiftFill />}
             title={t("Bonus & Promotion")}
             href=""
           />
@@ -43,7 +44,7 @@ export const BonusPromotion = () => {
                   spaceBetween: 20,
                 },
                 1024: {
-                  slidesPerView: 4.2,
+                  slidesPerView: 4.8,
                   spaceBetween: 20,
                 },
               }}

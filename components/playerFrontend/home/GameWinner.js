@@ -7,6 +7,7 @@ import "swiper/css/pagination";
 
 // import required modules
 import { Autoplay } from "swiper/modules";
+import { IoMdTrophy } from "react-icons/io";
 
 export default function GameWinner({ getGameWinnerData }) {
   const getData = getGameWinnerData.latestWinners;
@@ -17,7 +18,7 @@ export default function GameWinner({ getGameWinnerData }) {
         <Container>
           <div className="">
             <div className="flex items-center gap-2 mb-5">
-              <GiPodiumWinner className="text-xl tab:text-3xl text-white" />
+              <IoMdTrophy className="text-xl tab:text-3xl text-white" />
               <H2 name="Latest Winner" />
             </div>
 

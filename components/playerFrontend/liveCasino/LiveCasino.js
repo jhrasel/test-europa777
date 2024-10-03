@@ -5,14 +5,16 @@ import { useFavoriteGames } from "@/context/FavoriteGamesContext";
 import { useLoading } from "@/context/LoadingContext";
 import useApi from "@/helpers/apiRequest";
 import useAuth from "@/helpers/useAuth";
-import { fetchLockByBonus } from "@/lib/fetchLockByBonus";
 import { Empty } from "antd";
 import { useLocale, useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 import { FadeLoader } from "react-spinners";
 
+import { throttle } from "lodash";
+
+import { useBonusLock } from "@/helpers/useBonusLock";
 import { fetchLiveCasinoGames } from "@/lib/fetchLiveCasinoAPI";
-import { debounce } from "lodash";
+import { CgCardHearts } from "react-icons/cg";
 
 export const LiveCasinoHomePage = ({ getLiveCasinoData }) => {
   const getData = getLiveCasinoData.data;
@@ -29,6 +31,8 @@ export const LiveCasinoHomePage = ({ getLiveCasinoData }) => {
 
   const [activeCardId, setActiveCardId] = useState(null);
 
+  const { renderLink } = useBonusLock();
+
   // Define handleFavoriteChange
   const handleFavoriteChange = (gameId, isFavorite) => {
     // Handle favorite change logic if needed
@@ -38,48 +42,12 @@ export const LiveCasinoHomePage = ({ getLiveCasinoData }) => {
     fetchGameData();
   };
 
-  useEffect(() => {
-    const getLockData = async () => {
-      if (isLoggedIn) {
-        try {
-          const data = await fetchLockByBonus();
-          // console.log("fetchLockByBonus", data);
-          setLockByBonus(data.Player);
-        } catch (err) {
-          // setError(err.message);
-        }
-      }
-    };
-
-    getLockData();
-  }, [isLoggedIn]);
-
-  const renderLink = (gameData) => {
-    const haveDepositBonus =
-      lockByBonus?.promotion_type === "noDepositBonus" &&
-      gameData?.no_dep_bonus === 1;
-    const noDepositBonus =
-      lockByBonus?.promotion_type === "noDepositBonus" &&
-      gameData?.no_dep_bonus === 0;
-
-    if (haveDepositBonus) {
-      return `/${locale}/play-game/${gameData.slug}`;
-    } else if (noDepositBonus) {
-      return {
-        link: `/${locale}/player-dashboard/deposit`,
-        text: "LOCK IN BONUS",
-      };
-    } else {
-      return `/${locale}/play-game/${gameData.slug}`;
-    }
-  };
-
   return (
     <>
       <div className="pt-5" data-aos="fade-up">
         <Container>
           <HeaderTitle
-            image="/images/home-page/icons/live-casino.svg"
+            icon={<CgCardHearts />}
             title={t("Live Casino")}
             href={`/${locale}/live-casino`}
           />
@@ -138,30 +106,22 @@ export const LiveCasino = ({ initialGamesData }) => {
   );
   const [isLoading, setIsLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
-  const [lockByBonus, setLockByBonus] = useState(null);
-  const [activeCardId, setActiveCardId] = useState(null);
 
   const { isLoggedIn } = useAuth();
   const { favoriteGames } = useFavoriteGames();
   const locale = useLocale();
+  const [lockByBonus, setLockByBonus] = useState(null);
+  const [activeCardId, setActiveCardId] = useState(null);
 
-  useEffect(() => {
-    const getLockData = async () => {
-      if (isLoggedIn) {
-        try {
-          const data = await fetchLockByBonus();
-          setLockByBonus(data.Player);
-        } catch (err) {
-          console.error(err);
-        }
-      }
-    };
+  const { renderLink } = useBonusLock();
 
-    getLockData();
-  }, [isLoggedIn]);
+  const handleFavoriteChange = (gameId, isFavorite) => {
+    console.log(
+      `Game ${gameId} is now ${isFavorite ? "favorited" : "unfavorited"}`
+    );
+  };
 
   const loadGamesByPage = async (page) => {
-    if (page > totalPages) return;
     setIsLoading(true);
     try {
       const newGamesData = await fetchLiveCasinoGames(page);
@@ -179,7 +139,7 @@ export const LiveCasino = ({ initialGamesData }) => {
   };
 
   useEffect(() => {
-    const handleScroll = debounce(() => {
+    const handleScroll = throttle(() => {
       if (
         window.innerHeight + document.documentElement.scrollTop >=
         document.documentElement.offsetHeight - 1500
@@ -188,31 +148,11 @@ export const LiveCasino = ({ initialGamesData }) => {
           loadGamesByPage(currentPage + 1);
         }
       }
-    }, 300);
+    }, 100);
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, [currentPage, hasMore, isLoading]);
-
-  const renderLink = (gameData) => {
-    const haveDepositBonus =
-      lockByBonus?.promotion_type === "noDepositBonus" &&
-      gameData?.no_dep_bonus === 1;
-    const noDepositBonus =
-      lockByBonus?.promotion_type === "noDepositBonus" &&
-      gameData?.no_dep_bonus === 0;
-
-    if (haveDepositBonus) {
-      return `/${locale}/play-game/${gameData.slug}`;
-    } else if (noDepositBonus) {
-      return {
-        link: `/${locale}/player-dashboard/deposit`,
-        text: "LOCK IN BONUS",
-      };
-    } else {
-      return `/${locale}/play-game/${gameData.slug}`;
-    }
-  };
 
   return (
     <>
@@ -231,13 +171,7 @@ export const LiveCasino = ({ initialGamesData }) => {
                     image={gameData.thumbnail || "/images/default-cart.jpg"}
                     gameName={gameData.game_name}
                     initialIsFavorite={favoriteGames.includes(gameData.id)}
-                    onFavoriteChange={(gameId, isFavorite) => {
-                      console.log(
-                        `Game ${gameId} is now ${
-                          isFavorite ? "favorited" : "unfavorited"
-                        }`
-                      );
-                    }}
+                    onFavoriteChange={handleFavoriteChange}
                     liveLink={!isLiveLinkObject ? liveLink : ""}
                     liveLinkText={isLiveLinkObject ? liveLink.text : "Play"}
                     depositLink={isLiveLinkObject ? liveLink.link : ""}

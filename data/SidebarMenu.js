@@ -70,7 +70,8 @@ export const SidebarMenuData = () => {
       id: crypto.randomUUID(),
       icon: <LuContact />,
       name: t("Contact"),
-      url: `/${locale}/contact/`,
+      url: `https://tawk.to/europa777`,
+      external: true,
     },
   ];
 };

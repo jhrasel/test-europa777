@@ -13,6 +13,23 @@ export const DocumentFront = ({ setStep, data, setData }) => {
   const [message, setMessage] = useState("");
 
   const handleDocumentPhotoTaken = async (imageData, content) => {
+    if (!data.auto) {
+      setData({
+        ...data,
+        document: {
+          ...data.document,
+          front: {
+            ...data.document.front,
+            request: imageData.image,
+          },
+        },
+      });
+      setTimeout(() => {
+        setStep(Step.DOCUMENT_BACK);
+      }, 1500);
+      return;
+    }
+
     const formData = new FormData();
     formData.append("photo", imageData.image);
 
@@ -109,7 +126,7 @@ export const DocumentFront = ({ setStep, data, setData }) => {
       <div className="flex justify-center">
         <p
           className="mt-2 cursor-pointer hover:text-slate-900 hover:underline"
-          onClick={() => setStep(Step.INTRODUCTION)}
+          onClick={() => setStep(Step.VERIFY_TYPE)}
         >
           Experiencing problem?
         </p>

@@ -1,9 +1,9 @@
 "use client";
 
+import { useTranslations } from "next-intl";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useCallback } from "react";
 import { UIButton } from "../UI";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useTranslations } from "next-intl";
 
 const SignUp = ({ className }) => {
   const router = useRouter();

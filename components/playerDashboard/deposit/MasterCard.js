@@ -21,15 +21,6 @@ export const MasterCard = ({ country }) => {
   const [needProfileUpdate, setNeedProfileUpdate] = useState(false);
 
   const promoCodeT = useTranslations("promoCode");
-  const [havePromoCode, setHavePromoCode] = useState(false);
-
-  const handleHavePromoCode = () => {
-    setHavePromoCode(true);
-  };
-
-  const handleHavePromoCodeHide = () => {
-    setHavePromoCode(false);
-  };
 
   const handleButtonClick = (amount) => {
     setDepositAmount(amount);
@@ -258,32 +249,11 @@ export const MasterCard = ({ country }) => {
                   </div>
                 </div>
 
-                <div className="w-full deposit-have-promo">
-                  <div className="text-base text-text-color-primary flex items-center gap-1">
-                    {promoCodeT("title1")},
-                    <span
-                      className="text-bg-color1 font-medium cursor-pointer italic"
-                      onClick={handleHavePromoCode}
-                    >
-                      {promoCodeT("yes")}
-                    </span>
-                    <span
-                      className="text-bg-color1 font-medium cursor-pointer italic"
-                      onClick={handleHavePromoCodeHide}
-                    >
-                      / {promoCodeT("no")}
-                    </span>
-                  </div>
-                  {havePromoCode && (
-                    <div className="w-full">
-                      <PromoCodeInput
-                        fetchData={fetchData}
-                        isLoading={isLoading}
-                        className="!w-full"
-                      />
-                    </div>
-                  )}
-                </div>
+                <PromoCodeInput
+                  fetchData={fetchData}
+                  isLoading={isLoading}
+                  className="!w-full"
+                />
               </div>
 
               {/* SubmitButton */}

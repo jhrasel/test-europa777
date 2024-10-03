@@ -5,7 +5,7 @@
 import { Container, GameCard } from "@/components/UI";
 import { useFavoriteGames } from "@/context/FavoriteGamesContext";
 import useAuth from "@/helpers/useAuth";
-import { fetchLockByBonus } from "@/lib/fetchLockByBonus";
+import { useBonusLock } from "@/helpers/useBonusLock";
 import { fetchSlotsGames } from "@/lib/fetchSlotsAPI";
 import { Empty } from "antd";
 import { throttle } from "lodash";
@@ -30,26 +30,13 @@ export const Slots = ({ initialGamesData }) => {
   const [lockByBonus, setLockByBonus] = useState(null);
   const [activeCardId, setActiveCardId] = useState(null);
 
+  const { renderLink } = useBonusLock();
+
   const handleFavoriteChange = (gameId, isFavorite) => {
     console.log(
       `Game ${gameId} is now ${isFavorite ? "favorited" : "unfavorited"}`
     );
   };
-
-  useEffect(() => {
-    const getLockData = async () => {
-      if (isLoggedIn) {
-        try {
-          const data = await fetchLockByBonus();
-          setLockByBonus(data.Player);
-        } catch (err) {
-          console.error(err);
-        }
-      }
-    };
-
-    getLockData();
-  }, [isLoggedIn]);
 
   const loadGamesByPage = async (page) => {
     setIsLoading(true);
@@ -83,26 +70,6 @@ export const Slots = ({ initialGamesData }) => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, [currentPage, hasMore, isLoading]);
-
-  const renderLink = (gameData) => {
-    const haveDepositBonus =
-      lockByBonus?.promotion_type === "noDepositBonus" &&
-      gameData?.no_dep_bonus === 1;
-    const noDepositBonus =
-      lockByBonus?.promotion_type === "noDepositBonus" &&
-      gameData?.no_dep_bonus === 0;
-
-    if (haveDepositBonus) {
-      return `/${locale}/play-game/${gameData.slug}`;
-    } else if (noDepositBonus) {
-      return {
-        link: `/${locale}/player-dashboard/deposit`,
-        text: "LOCK IN BONUS",
-      };
-    } else {
-      return `/${locale}/play-game/${gameData.slug}`;
-    }
-  };
 
   return (
     <>

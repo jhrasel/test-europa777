@@ -19,6 +19,7 @@ function AuthVerifyComponent() {
       if (data && data.email_verified_at) {
         setCookies("token", token);
         setCookies("isLoggedIn", true);
+        setCookies("user", JSON.stringify(data));
         setAuthenticated(true);
       } else if (error) {
         window.location.href = "/";

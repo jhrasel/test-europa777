@@ -5,9 +5,9 @@ import useApi from "@/helpers/apiRequest";
 import useAuth from "@/helpers/useAuth";
 import { useLocale, useTranslations } from "next-intl";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 export default function WeekPromotion() {
   const { fetchData, isLoading, setIsLoading } = useApi();
@@ -38,7 +38,7 @@ export default function WeekPromotion() {
     let timeout;
     const lastShown = localStorage.getItem("lastModalShown");
     const currentTime = new Date().getTime();
-    const twentyFourHours = 24 * 60 * 60 * 1000; 
+    const twentyFourHours = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
 
     if (
       isLoggedIn &&
@@ -55,20 +55,21 @@ export default function WeekPromotion() {
 
   useEffect(() => {
     const fetchUserData = async () => {
-      if (isLoggedIn) {
-        const { data, error } = await fetchData(
-          "/player/getDepositHistory",
-          "GET"
-        );
+      const { data, error } = await fetchData(
+        "/player/getDepositHistory",
+        "GET"
+      );
 
-        if (data && data?.deposits?.data) {
-          const count = data?.deposits?.data.filter(
+      if (data) {
+        let count = 0;
+        if (data?.deposits?.data) {
+          count = data?.deposits?.data.filter(
             (item) => item.status === "completed"
           ).length;
-          setTotalDeposit(count);
-        } else if (error) {
-          console.error(error.message);
         }
+        setTotalDeposit(count);
+      } else if (error) {
+        console.error(error.message);
       }
     };
 
@@ -98,7 +99,7 @@ export default function WeekPromotion() {
     closeModal();
   };
 
-  if (!totalDeposit) return null;
+  if (totalDeposit == null) return null;
 
   return (
     <>
@@ -108,9 +109,7 @@ export default function WeekPromotion() {
             showModal ? "block" : "hidden"
           }`}
         >
-          <div
-            className={`flex items-center justify-center p-3 tab:p-4 w-full`}
-          >
+          <div className="flex items-center justify-center p-3 tab:p-4 w-full">
             <div
               className="fixed inset-0 transition-opacity"
               aria-hidden="true"
@@ -164,7 +163,7 @@ export default function WeekPromotion() {
                         />
                       </div>
                       {/* right */}
-                      <div className="bg-white p-3 tab:p-5 rounded-r-lg col-span-2 h-full ">
+                      <div className="bg-white p-3 tab:p-5 rounded-r-lg col-span-2 h-full">
                         <H4
                           name={t("everyDayTitle")}
                           className="!text-base tab:!text-lg !text-bg-color1"
@@ -188,7 +187,7 @@ export default function WeekPromotion() {
                         />
                       </div>
                       {/* right */}
-                      <div className="bg-white p-3 tab:p-5 rounded-r-lg col-span-2 h-full ">
+                      <div className="bg-white p-3 tab:p-5 rounded-r-lg col-span-2 h-full">
                         <H4
                           name={t("everyHourTitle")}
                           className="!text-base tab:!text-lg !text-bg-color1"
@@ -212,7 +211,7 @@ export default function WeekPromotion() {
                         />
                       </div>
                       {/* right */}
-                      <div className="bg-white p-3 tab:p-5 rounded-r-lg col-span-2 h-full ">
+                      <div className="bg-white p-3 tab:p-5 rounded-r-lg col-span-2 h-full">
                         <H4
                           name={t("mondayTitle")}
                           className="!text-base tab:!text-lg !text-bg-color1"
@@ -237,7 +236,7 @@ export default function WeekPromotion() {
                         />
                       </div>
                       {/* right */}
-                      <div className="bg-white p-3 tab:p-5 rounded-r-lg col-span-2 h-full ">
+                      <div className="bg-white p-3 tab:p-5 rounded-r-lg col-span-2 h-full">
                         <H4
                           name={t("tuesdayTitle")}
                           className="!text-base tab:!text-lg !text-bg-color1"
@@ -262,7 +261,7 @@ export default function WeekPromotion() {
                         />
                       </div>
                       {/* right */}
-                      <div className="bg-white p-3 tab:p-5 rounded-r-lg col-span-2 h-full ">
+                      <div className="bg-white p-3 tab:p-5 rounded-r-lg col-span-2 h-full">
                         <H4
                           name={t("saturdaySundayTitle")}
                           className="!text-base tab:!text-lg !text-bg-color1"
@@ -287,7 +286,7 @@ export default function WeekPromotion() {
                         />
                       </div>
                       {/* right */}
-                      <div className="bg-white p-3 tab:p-5 rounded-r-lg col-span-2 h-full ">
+                      <div className="bg-white p-3 tab:p-5 rounded-r-lg col-span-2 h-full">
                         <H4
                           name={t("thursdayTitle")}
                           className="!text-base tab:!text-lg !text-bg-color1"
@@ -312,7 +311,7 @@ export default function WeekPromotion() {
                         />
                       </div>
                       {/* right */}
-                      <div className="bg-white p-3 tab:p-5 rounded-r-lg col-span-2 h-full ">
+                      <div className="bg-white p-3 tab:p-5 rounded-r-lg col-span-2 h-full">
                         <H4
                           name={t("fridayTitle")}
                           className="!text-base tab:!text-lg !text-bg-color1"
@@ -337,7 +336,7 @@ export default function WeekPromotion() {
                         />
                       </div>
                       {/* right */}
-                      <div className="bg-white p-3 tab:p-5 rounded-r-lg col-span-2 h-full ">
+                      <div className="bg-white p-3 tab:p-5 rounded-r-lg col-span-2 h-full">
                         <H4
                           name={t("saturdaySundayTitle")}
                           className="!text-base tab:!text-lg !text-bg-color1"

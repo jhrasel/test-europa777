@@ -7,10 +7,11 @@ import useBalance from "@/hook/useBalance";
 import { CopyOutlined } from "@ant-design/icons";
 import { Modal } from "antd";
 import { useFormik } from "formik";
+import { useTranslations } from "next-intl";
 import { useState } from "react";
 import toast from "react-hot-toast";
+import HavePromoCode from "./HavePromocode";
 import PromoCodeInput from "./PromoCodeInput";
-import { useTranslations } from "next-intl";
 
 export const BitcoinCash = () => {
   const [depositAmount, setDepositAmount] = useState(25);
@@ -21,15 +22,6 @@ export const BitcoinCash = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const promoCodeT = useTranslations("promoCode");
-  const [havePromoCode, setHavePromoCode] = useState(false);
-
-  const handleHavePromoCode = () => {
-    setHavePromoCode(true);
-  };
-
-  const handleHavePromoCodeHide = () => {
-    setHavePromoCode(false);
-  };
 
   const showModal = () => {
     setIsModalOpen(true);
@@ -77,13 +69,9 @@ export const BitcoinCash = () => {
     formik.resetForm();
     if (responseData?.success) {
       showToastSuccess(responseData.message);
-      if (responseData?.data?.pay_currency === "bch") {
-        // Show the modal when pay_currency is btc
+      if (responseData?.data?.currency_rate?.rate_to_currency === "BCH") {
+        // Show the modal when rate_to_currency is btc
         showModal();
-      } else if (responseData?.data?.redirectUrl) {
-        // Redirect to the specified URL
-        showToastSuccess("You are successfully redirecting to....");
-        window.location.href = responseData.data.redirectUrl;
       } else {
         // Show generic success message and reload the page after 2 seconds
         showToastSuccess(responseData.message);
@@ -175,33 +163,11 @@ export const BitcoinCash = () => {
                   />
                 </div>
 
-                <div className="w-full deposit-have-promo">
-                  <div className="text-base text-text-color-primary flex items-center gap-1">
-                    {promoCodeT("title1")},
-                    <span
-                      className="text-bg-color1 font-medium cursor-pointer italic"
-                      onClick={handleHavePromoCode}
-                    >
-                      {promoCodeT("yes")}
-                    </span>
-                    <span
-                      className="text-bg-color1 font-medium cursor-pointer italic"
-                      onClick={handleHavePromoCodeHide}
-                    >
-                      / {promoCodeT("no")}
-                    </span>
-                  </div>
-                  {havePromoCode && (
-                    <div className="w-full">
-                      <PromoCodeInput
-                        fetchData={fetchData}
-                        isLoading={isLoading}
-                        className="!w-full"
-                      />
-                    </div>
-                  )}
-                </div>
-
+                <PromoCodeInput
+                  fetchData={fetchData}
+                  isLoading={isLoading}
+                  className="!w-full"
+                />
               </div>
               {/* SubmitButton */}
               <SubmitButton
@@ -225,7 +191,7 @@ export const BitcoinCash = () => {
         <div className="p-5 bg-bg-color2 rounded-lg">
           <H4 name="Crypto Details" className="text-center mb-3" />
           <H3
-            name={`${showModalData.price_amount} ${showModalData.price_currency}`}
+            name={`${showModalData?.currency_rate?.rate_to} ${showModalData?.currency_rate?.rate_to_currency}`}
             className="!text-red-color text-center capitalize"
           />
           <P
@@ -237,7 +203,7 @@ export const BitcoinCash = () => {
             <div className="flex items-center gap-5">
               <H5 name="Amount to Pay :" />
               <H5
-                name={`${showModalData.pay_amount} ${showModalData.pay_currency}`}
+                name={`${showModalData?.currency_rate?.rate_to} ${showModalData?.currency_rate?.rate_to_currency}`}
                 className=" uppercase"
               />
             </div>
@@ -246,19 +212,19 @@ export const BitcoinCash = () => {
               <div className="mt-4">
                 <UIImage
                   src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' +
-                  qr_prefix + ':' + response.data.data.pay_address + '&amp;choe=UTF-8`}
+                  qr_prefix + ':' + response.data.data.address + '&amp;choe=UTF-8`}
                   alt="qr"
                   className="!w-28 !h-28 rounded-md"
                 />
                 <div className="flex gap-2 mt-2">
                   <P
-                    name={showModalData.pay_address}
+                    name={showModalData?.address}
                     className="line-clamp-1 w-[90%]"
                   />
                   <button
                     className="text-red-color focus:outline-none"
                     onClick={() => {
-                      navigator.clipboard.writeText(showModalData.pay_address);
+                      navigator.clipboard.writeText(showModalData?.address);
                       toast.success("Pay address copied to clipboard");
                     }}
                   >

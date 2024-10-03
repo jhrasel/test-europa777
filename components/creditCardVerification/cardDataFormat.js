@@ -3,5 +3,5 @@ export const cardDataFormat = {
     front: null,
     back: null,
   },
-  response: null,
+  response: {},
 };

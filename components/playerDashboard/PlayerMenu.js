@@ -25,8 +25,8 @@ export const PlayerMenu = () => {
                     href={data.url}
                     className={`px-3 tab:px-5 py-2 rounded-lg justify-start !text-sm tab:!text-base m-1 tab:mx-2 ${
                       router === data.url || isSubMenuActive(data.subMenu)
-                        ? "bg-bg-color2 !text-white"
-                        : "bg-white !text-bg-color2"
+                        ? "bg-white !text-bg-color2"
+                        : " bg-bg-color2 !text-white"
                     }`}
                     icon={data.icon}
                     name={data.name}

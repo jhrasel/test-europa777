@@ -8,7 +8,7 @@ export default function ForgetPassword() {
     <>
       <section className="mt-5">
         <Container>
-          <div className="p-5 w-[90%] tab:w-[500px] m-auto bg-white">
+          <div className="p-5 w-[90%] tab:w-[500px] m-auto bg-bg-color1 rounded-md">
             <div className="mb-4 bg-bg-color1 py-2 rounded-lg">
               <UIImage
                 src="/images/logo.png"
@@ -18,7 +18,7 @@ export default function ForgetPassword() {
             </div>
             <H2
               name={t("Reset Password")}
-              className="!text-bg-color1 text-center"
+              className="!text-white text-center"
             />
 
             {/* ForgetPassword */}

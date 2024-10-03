@@ -2,6 +2,7 @@ import Layout from "@/components/Layout";
 import { FavoriteGamesProvider } from "@/context/FavoriteGamesContext";
 import { LoadingProvider } from "@/context/LoadingContext";
 import { NextIntlClientProvider, useMessages } from "next-intl";
+import { GoogleAnalytics } from "@next/third-parties/google";
 import { Toaster } from "react-hot-toast";
 import "./globals.css";
 
@@ -34,6 +35,7 @@ export default function RootLayout({ children, params: { locale } }) {
           <Toaster position="top-right" />
         </NextIntlClientProvider>
       </body>
+      <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GTAGID} />
     </html>
   );
 }

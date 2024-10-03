@@ -1,12 +1,12 @@
 "use client";
 
 import useApi from "@/helpers/apiRequest";
+import useCookies from "@/helpers/useCookies";
 import { useFingerPrint } from "@/hook/useFingerPrint";
 import { registrationValidation } from "@/validations/Valodation";
 import { Checkbox, Select } from "antd";
 import countryList from "country-list";
 import { useFormik } from "formik";
-import useCookies from "@/helpers/useCookies";
 import { useLocale, useTranslations } from "next-intl";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
@@ -36,6 +36,7 @@ export const SignUpForm = ({
   const searchParams = useSearchParams();
 
   const [selectedCountry, setSelectedCountry] = useState(defaultCountry.name);
+
   const [selectedCurrency, setSelectedCurrency] = useState("USD");
   const { fetchData, error, isLoading } = useApi();
   const [phoneNumber, setPhoneNumber] = useState("");
@@ -93,12 +94,34 @@ export const SignUpForm = ({
     formik.setFieldValue("currency", selectedCurrency);
   };
 
-  const currencyOptions = [
-    { value: "CAD", label: "CAD" },
-    { value: "USD", label: "USD" },
-    { value: "EUR", label: "EUR" },
-    { value: "GBP", label: "GBP" },
-  ];
+  let currencyOptions;
+
+  if (selectedCountry === "Canada") {
+    currencyOptions = [{ value: "CAD", label: "CAD" }];
+
+    // Ensure selectedCurrency is valid for Canada
+    if (selectedCurrency !== "CAD") {
+      setSelectedCurrency("CAD");
+    }
+  } else {
+    currencyOptions = [
+      { value: "CAD", label: "CAD" },
+      { value: "USD", label: "USD" },
+      { value: "EUR", label: "EUR" },
+      { value: "GBP", label: "GBP" },
+    ];
+
+    if (!currencyOptions.some((option) => option.value === selectedCurrency)) {
+      setSelectedCurrency("USD");
+    }
+  }
+
+  // const currencyOptions = [
+  //   { value: "CAD", label: "CAD" },
+  //   { value: "USD", label: "USD" },
+  //   { value: "EUR", label: "EUR" },
+  //   { value: "GBP", label: "GBP" },
+  // ];
 
   const countryOptions = countries.map((country) => ({
     value: country.name,
@@ -181,16 +204,24 @@ export const SignUpForm = ({
     formik.setFieldValue("country", selectedCountry);
   }, []);
 
+  const socialLogin = () => {
+    const clickid = searchParams.get("clickid") || null;
+    const affid = searchParams.get("affid") || null;
+
+    const params = `fingerprint=${fingerprint}&promotion${selectedBonus.promo_code}&clickid=${clickid}&affid=${affid}`;
+    window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/api/login/google?${params}`;
+  };
+
   return (
     <>
       <div className="flex flex-col items-center justify-center gap-1 mb-1">
-        <a href={`${process.env.NEXT_PUBLIC_API_URL}/api/login/google`}>
+        <div onClick={socialLogin}>
           <img
             className="cursor-pointer"
             src="https://developers.google.com/static/identity/images/branding_guideline_sample_lt_rd_lg.svg"
           />
-        </a>
-        <P name="OR" cla />
+        </div>
+        <P name="OR" />
         {/* <span className="mt-2 font-semibold">Or</span> */}
       </div>
 
@@ -275,50 +306,50 @@ export const SignUpForm = ({
             )}
           </div>
 
-          {/* phone */}
-          <div className="relative">
-            {/* overlay */}
-            <div className="absolute left-0 top-0 bg-red-300 w-14 h-full z-10 rounded-lg opacity-0"></div>
-            <PhoneInput
-              id="phone"
-              placeholder="Enter phone number"
-              international
-              countryCallingCodeEditable={false}
-              defaultCountry={defaultPhoneCountry}
-              value={`${phoneNumber}`}
-              onChange={handlePhoneChange}
-              className="w-full text-md text-gray-800 !bg-[#f2f8ff] border border-[#d9d9d9] py-5 px-4 rounded-lg placeholder:text-sm tab:placeholder:text-xs"
+          {/* Currency */}
+          <div className="bg-[#f2f8ff] border border-[#d9d9d9] px-4 py-2 rounded-lg">
+            <label htmlFor="Currency" className="text-xs block">
+              {t("Currency")}
+            </label>
+            <Select
+              showSearch
+              placeholder="Select a currency"
+              value={selectedCurrency}
+              onChange={(selectedCurrency) => {
+                setSelectedCurrency(selectedCurrency);
+                handleCurrencyChange(selectedCurrency);
+              }}
+              style={{ width: "100%" }}
+              options={currencyOptions}
+              className="!bg-[#f2f8ff] text-xs"
             />
             {/* error */}
-            {formik.touched.phone && formik.errors.phone && (
-              <div className="text-xs text-red-600">{formik.errors.phone}</div>
+            {formik.touched.currency && formik.errors.currency && (
+              <ErrorMessage
+                errorName={formik.errors.currency}
+                className="!text-xs"
+              />
             )}
           </div>
         </div>
 
-        {/* Currency */}
-        <div className="bg-[#f2f8ff] border border-[#d9d9d9] px-4 py-2 rounded-lg">
-          <label htmlFor="Currency" className="text-xs block">
-            {t("Currency")}
-          </label>
-          <Select
-            showSearch
-            placeholder="Select a currency"
-            value={selectedCurrency}
-            onChange={(selectedCurrency) => {
-              setSelectedCurrency(selectedCurrency);
-              handleCurrencyChange(selectedCurrency);
-            }}
-            style={{ width: "100%" }}
-            options={currencyOptions}
-            className="!bg-[#f2f8ff] text-xs"
+        {/* phone */}
+        <div className="relative">
+          {/* overlay */}
+          <div className="absolute left-0 top-0 bg-red-300 w-14 h-full z-10 rounded-lg opacity-0"></div>
+          <PhoneInput
+            id="phone"
+            placeholder="Enter phone number"
+            international
+            countryCallingCodeEditable={false}
+            defaultCountry={defaultPhoneCountry}
+            value={`${phoneNumber}`}
+            onChange={handlePhoneChange}
+            className="w-full text-md text-gray-800 !bg-[#f2f8ff] border border-[#d9d9d9] py-5 px-4 rounded-lg placeholder:text-sm tab:placeholder:text-xs"
           />
           {/* error */}
-          {formik.touched.currency && formik.errors.currency && (
-            <ErrorMessage
-              errorName={formik.errors.currency}
-              className="!text-xs"
-            />
+          {formik.touched.phone && formik.errors.phone && (
+            <div className="text-xs text-red-600">{formik.errors.phone}</div>
           )}
         </div>
 
@@ -348,7 +379,7 @@ export const SignUpForm = ({
         </div> */}
 
         {/* capcha */}
-        <div className="">
+        <div className="capcha">
           <ReCAPTCHA
             sitekey="6LdYaWcpAAAAAEPCH8Bfn5z_9SjTkvCh7Np3NuDB" // Replace with your reCAPTCHA Site Key
             onChange={handleRecaptchaChange}
