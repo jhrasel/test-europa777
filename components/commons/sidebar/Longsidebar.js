@@ -8,6 +8,7 @@ import { useLocale, useTranslations } from "next-intl";
 import { usePathname } from "next/navigation";
 import { BsCashCoin } from "react-icons/bs";
 import { CgProfile } from "react-icons/cg";
+import { FaHeart } from "react-icons/fa";
 import { RiLogoutCircleRLine } from "react-icons/ri";
 import { AmountDropdown } from "../navbar/AmountDropdown";
 import { AfterLogin } from "./AfterLogin";
@@ -134,16 +135,28 @@ export const Longsidebar = () => {
           <List className="mt-5 px-2 overflow-y-auto ">
             {menuData?.map((data) => (
               <ListItem key={data.id} className="">
-                <UILink
-                  href={data.url}
-                  icon={data.icon}
-                  name={data.name}
-                  scroll={true}
-                  target={data.external ? "_blank" : ""}
-                  className={`w-full px-5 py-2 rounded-lg justify-start ${
-                    router === data.url ? "bg-bg-color2" : "!text-white"
-                  }`}
-                />
+                {data.showSignUp ? (
+                  <div className="flex items-center w-full px-5 py-2 rounded-lg gap-3 !text-white relative">
+                    {data.icon}
+                    {data.name}
+
+                    {/* overlay */}
+                    <div className="absolute top-0 left-0 h-full w-full opacity-0">
+                      <SignUp />
+                    </div>
+                  </div>
+                ) : (
+                  <UILink
+                    href={data.url}
+                    icon={data.icon}
+                    name={data.name}
+                    scroll={true}
+                    target={data.external ? "_blank" : ""}
+                    className={`w-full px-5 py-2 rounded-lg justify-start ${
+                      router === data.url ? "bg-bg-color2" : "!text-white"
+                    }`}
+                  />
+                )}
               </ListItem>
             ))}
           </List>

@@ -161,7 +161,7 @@ export default function GiftBox() {
             <Lottie
               animationData={giftBoxAnimation}
               loop={true}
-              className="!w-10 tab:!w-14 !h-10 tab:!h-14"
+              className="!w-10 tab:!w-12 !h-10 tab:!h-12"
             />
             <div className="">
               <H6 name="Free" className="!text-white" />

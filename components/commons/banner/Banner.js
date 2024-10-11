@@ -1,13 +1,13 @@
 "use client";
 
-import { Carousel } from "antd";
 import { Container, UIImage } from "@/components/UI";
 import SignUp from "@/components/signUp/SignUp";
 import { useLoading } from "@/context/LoadingContext";
 import { BannerImageDesktop, BannerImageMobile } from "@/data/BannerImage";
 import CustomSkeleton from "@/helpers/CustomSkeleton";
-import GameName from "./GameName";
+import { Carousel } from "antd";
 import { Fragment } from "react";
+import GameName from "./GameName";
 
 const Banner = () => {
   const { loading } = useLoading();
@@ -28,11 +28,11 @@ const Banner = () => {
                   {!loading && (
                     <>
                       <UIImage
-                        src={`${data.images}?t=${timestamp}`} // Append timestamp to image URL
+                        src={`${data.images}?t=${timestamp}`}
                         width="1000"
-                        height="500"
+                        height="480"
                         alt="banner"
-                        className="w-full tab:h-full object-cover rounded-3xl"
+                        className="w-full tab:h-[480px] object-cover rounded-3xl"
                         quality={40}
                         priority={false}
                         placeholder="blur"

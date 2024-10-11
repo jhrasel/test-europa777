@@ -10,7 +10,6 @@ import { useFormik } from "formik";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 import toast from "react-hot-toast";
-import HavePromoCode from "./HavePromocode";
 import PromoCodeInput from "./PromoCodeInput";
 
 export const BitcoinCash = () => {
@@ -216,7 +215,19 @@ export const BitcoinCash = () => {
                   alt="qr"
                   className="!w-28 !h-28 rounded-md"
                 />
-                <div className="flex gap-2 mt-2">
+                <div className="flex flex-col text-left gap-2 mt-2">
+                  <P name={showModalData?.address} className=" !text-white" />
+                  <button
+                    className="text-white bg-blue-color py-2 px-5 rounded"
+                    onClick={() => {
+                      navigator.clipboard.writeText(showModalData?.address);
+                      toast.success("Pay address copied to clipboard");
+                    }}
+                  >
+                    Copy Address <CopyOutlined />
+                  </button>
+                </div>
+                {/* <div className="flex gap-2 mt-2">
                   <P
                     name={showModalData?.address}
                     className="line-clamp-1 w-[90%]"
@@ -230,7 +241,7 @@ export const BitcoinCash = () => {
                   >
                     <CopyOutlined />
                   </button>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>

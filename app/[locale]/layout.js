@@ -1,8 +1,8 @@
 import Layout from "@/components/Layout";
 import { FavoriteGamesProvider } from "@/context/FavoriteGamesContext";
 import { LoadingProvider } from "@/context/LoadingContext";
-import { NextIntlClientProvider, useMessages } from "next-intl";
 import { GoogleAnalytics } from "@next/third-parties/google";
+import { NextIntlClientProvider, useMessages } from "next-intl";
 import { Toaster } from "react-hot-toast";
 import "./globals.css";
 

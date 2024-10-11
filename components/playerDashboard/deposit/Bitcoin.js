@@ -183,16 +183,16 @@ export const Bitcoin = () => {
                   size={150}
                   className="!w-28 !h-28 rounded-md"
                 />
-                <div className="flex gap-2 mt-2">
+                <div className="flex flex-col text-left gap-2 mt-2">
                   <P name={showModalData?.address} className=" !text-white" />
                   <button
-                    className="text-red-color focus:outline-none"
+                    className="text-white bg-blue-color py-2 px-5 rounded"
                     onClick={() => {
                       navigator.clipboard.writeText(showModalData?.address);
                       toast.success("Pay address copied to clipboard");
                     }}
                   >
-                    <CopyOutlined />
+                    Copy Address <CopyOutlined />
                   </button>
                 </div>
               </div>

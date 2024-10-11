@@ -1,3 +1,4 @@
+import SignUp from "@/components/signUp/SignUp";
 import useAuth from "@/helpers/useAuth";
 import Slots from "@/svgs/Slots";
 import { useLocale, useTranslations } from "next-intl";
@@ -40,8 +41,9 @@ export const SidebarMenuData = () => {
     {
       id: crypto.randomUUID(),
       icon: <FaHeart />,
-      name: t("My Favorite"),
-      url: `/${locale}/my-favorite/`,
+      name: isLoggedIn ? t("My Favorite") : t("My Favorite"),
+      url: isLoggedIn ? `/${locale}/my-favorite/` : "#",
+      showSignUp: !isLoggedIn,
     },
     {
       id: crypto.randomUUID(),

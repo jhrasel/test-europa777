@@ -5,7 +5,6 @@ import { useLoading } from "@/context/LoadingContext";
 import useApi from "@/helpers/apiRequest";
 import useAuth from "@/helpers/useAuth";
 import toast from "react-hot-toast";
-import { FaHeart, FaRegHeart } from "react-icons/fa";
 import SignIn from "../signIn/SignIn";
 import { UIImage } from "./Image";
 import { UILink, UILinkBG } from "./Link";
@@ -75,7 +74,7 @@ export const GameCard = ({
               width={200}
               height={200}
               quality={60}
-              className="rounded-lg !w-full !h-[175px] tab:!h-[180px] group-hover:blur-sm"
+              className="rounded-lg !w-full !h-[175px] tab:!h-[200px] group-hover:blur-sm"
               alt="Game-img"
             />
           )}
@@ -183,7 +182,7 @@ export const GameCard = ({
           )}
         </div>
 
-        {isLoggedIn ? (
+        {/* {isLoggedIn ? (
           <div className="flex items-center justify-between px-3 py-4 gap-2">
             <H6 name={gameName} className="text-white" />
             <div className="cursor-pointer" onClick={handleFavoriteToggle}>
@@ -198,7 +197,7 @@ export const GameCard = ({
           <div className="flex items-center justify-between px-3 py-4 gap-2 line-clamp-2">
             <H6 name={gameName} className="text-white" />
           </div>
-        )}
+        )} */}
       </div>
     </>
   );

@@ -1,4 +1,5 @@
 import { H3, List, ListItem, UIImage, UILink, UILinkBG } from "@/components/UI";
+import SignUp from "@/components/signUp/SignUp";
 import { SidebarMenuData } from "@/data/SidebarMenu";
 import useAuth from "@/helpers/useAuth";
 import useBalance from "@/hook/useBalance";
@@ -116,16 +117,26 @@ export const Shortsidebar = ({ closeMobileSidebar }) => {
         <List className="mt-4 px-2">
           {menuData?.map((data) => (
             <ListItem key={data.id} className="">
-              <UILink
-                href={data.url}
-                icon={data.icon}
-                name={null}
-                target={data.external ? "_blank" : ""}
-                scroll={true}
-                className={`w-full px-5 py-2 rounded-lg justify-center !text-xl ${
-                  router === data.url ? "bg-bg-color2" : "!text-white"
-                }`}
-              />
+              {data.showSignUp ? (
+                <div className="flex items-center w-full px-5 py-2 rounded-lg gap-3 !text-white relative">
+                  {data.icon}
+                  {/* overlay */}
+                  <div className="absolute top-0 left-0 h-full w-full opacity-0">
+                    <SignUp />
+                  </div>
+                </div>
+              ) : (
+                <UILink
+                  href={data.url}
+                  icon={data.icon}
+                  name={null}
+                  target={data.external ? "_blank" : ""}
+                  scroll={true}
+                  className={`w-full px-5 py-2 rounded-lg justify-center !text-xl ${
+                    router === data.url ? "bg-bg-color2" : "!text-white"
+                  }`}
+                />
+              )}
             </ListItem>
           ))}
         </List>

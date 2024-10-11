@@ -1,6 +1,6 @@
 "use client";
 
-import { Container, HeaderTitle, UILinkBG } from "@/components/UI";
+import { Container, HeaderTitle } from "@/components/UI";
 import { GameCard } from "@/components/UI/GameCard";
 import { useFavoriteGames } from "@/context/FavoriteGamesContext";
 import { useLoading } from "@/context/LoadingContext";
@@ -9,8 +9,16 @@ import useAuth from "@/helpers/useAuth";
 import { useBonusLock } from "@/helpers/useBonusLock";
 import { Empty } from "antd";
 import { useLocale, useTranslations } from "next-intl";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { RiGamepadFill } from "react-icons/ri";
+
+// Import Swiper React components
+
+// Import Swiper styles
+import "swiper/css";
+import "swiper/css/navigation";
+
+// import required modules
 
 export const NewGames = ({ getNewGamesData }) => {
   const getData = getNewGamesData.data;
@@ -28,6 +36,8 @@ export const NewGames = ({ getNewGamesData }) => {
 
   const { renderLink } = useBonusLock();
 
+  const swiperRef = useRef(null);
+
   // Define handleFavoriteChange
   const handleFavoriteChange = (gameId, isFavorite) => {
     `Game ${gameId} is now ${isFavorite ? "favorited" : "unfavorited"}`;
@@ -42,7 +52,7 @@ export const NewGames = ({ getNewGamesData }) => {
           <HeaderTitle
             icon={<RiGamepadFill />}
             title={t("newGames")}
-            href="/slot"
+            href={`/${locale}/slot`}
           />
 
           <div className="grid grid-cols-2 tab:grid-cols-3 laptop:grid-cols-4 desktop:grid-cols-6 gap-2 tab:gap-5">
@@ -54,14 +64,12 @@ export const NewGames = ({ getNewGamesData }) => {
             ) : (
               getData.slice(0, 12).map((gameData) => {
                 const liveLink = renderLink(gameData);
-
                 const isLiveLinkObject = typeof liveLink === "object";
 
                 return (
                   <GameCard
                     key={gameData.id}
                     gameId={gameData.id}
-                    newGames={true}
                     image={gameData.thumbnail || "/images/default-cart.jpg"}
                     gameName={gameData.game_name}
                     initialIsFavorite={favoriteGames.includes(gameData.id)}
@@ -82,9 +90,9 @@ export const NewGames = ({ getNewGamesData }) => {
             )}
           </div>
 
-          <div className="mt-5 text-center">
+          {/* <div className="mt-5 text-center">
             <UILinkBG href={`/${locale}/slot`} name={com("Load More")} />
-          </div>
+          </div> */}
         </Container>
       </div>
     </>

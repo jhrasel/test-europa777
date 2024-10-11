@@ -113,10 +113,10 @@ export const Bonus = ({ getBonusData }) => {
                       <IoMdCopy />
                     </button>
                   </div>
-                  <H6
+                  {/* <H6
                     name={`Expire code ${data.end_at}`}
                     className="!text-white"
-                  />
+                  /> */}
                   <P name={data?.description} className="line-clamp-2" />
 
                   <div className="grid grid-cols-1 tab:grid-cols-2 gap-5 mt-5 tab:w-[90%] laptop:w-[80%] m-auto">
@@ -159,10 +159,10 @@ export const Bonus = ({ getBonusData }) => {
             </button>
           </div>
 
-          <H5
+          {/* <H5
             name={`Expire code ${selectedPromotion?.end_at}`}
             className="!text-white"
-          />
+          /> */}
 
           <H5 name={selectedPromotion?.description} />
         </div>

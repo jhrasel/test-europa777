@@ -196,7 +196,7 @@ export const Contact = () => {
 
               <div className="w-full">
                 <ReCAPTCHA
-                  sitekey="6LdYaWcpAAAAAEPCH8Bfn5z_9SjTkvCh7Np3NuDB" // Replace with your reCAPTCHA Site Key
+                  sitekey="6LdYaWcpAAAAAEPCH8Bfn5z_9SjTkvCh7Np3NuDB" 
                   onChange={handleRecaptchaChange}
                 />
                 {recaptchaError && (

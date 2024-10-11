@@ -10,6 +10,7 @@ import { CgProfile } from "react-icons/cg";
 import { RiLogoutCircleRLine } from "react-icons/ri";
 import { AmountDropdown } from "../navbar/AmountDropdown";
 import VipLevel from "./VipLevel";
+import SignUp from "@/components/signUp/SignUp";
 
 export const Mobilesidebar = ({ closeMobileSidebar }) => {
   const router = usePathname();
@@ -111,7 +112,11 @@ export const Mobilesidebar = ({ closeMobileSidebar }) => {
               "w-[48%] flex-row-reverse justify-between py-0 px-2 rounded-md !bg-gradient-to-r from-[#161421] to-[#cc0000] !font-bold !leading-[18px] !gap-1"
             }
             icon={
-              <UIImage src="/images/sidebar-btn/vip.svg" alt="vip" className="!h-12" />
+              <UIImage
+                src="/images/sidebar-btn/vip.svg"
+                alt="vip"
+                className="!h-12"
+              />
             }
             name={menubar("VIP")}
             onClick={handleMenuItemClick}
@@ -122,7 +127,11 @@ export const Mobilesidebar = ({ closeMobileSidebar }) => {
               "w-[48%] flex-row-reverse justify-between py-0 px-2 rounded-md !bg-gradient-to-r from-[#161421] to-[#70c600] !font-bold !leading-[18px] !gap-1"
             }
             icon={
-              <UIImage src="/images/sidebar-btn/bonus.svg" alt="bonus" className="!h-12" />
+              <UIImage
+                src="/images/sidebar-btn/bonus.svg"
+                alt="bonus"
+                className="!h-12"
+              />
             }
             name={menubar("Bonus")}
             onClick={handleMenuItemClick}
@@ -133,17 +142,29 @@ export const Mobilesidebar = ({ closeMobileSidebar }) => {
         <List className="mt-5 px-2 overflow-y-auto ">
           {menuData?.map((data) => (
             <ListItem key={data.id} className="">
-              <UILink
-                href={data.url}
-                icon={data.icon}
-                name={data.name}
-                scroll={true}
-                target={data.external ? "_blank" : ""}
-                className={`w-full px-5 py-2 rounded-lg justify-start ${
-                  router === data.url ? "bg-bg-color2" : "!text-white"
-                }`}
-                onClick={handleMenuItemClick}
-              />
+              {data.showSignUp ? (
+                <div className="flex items-center w-full px-5 py-2 rounded-lg gap-3 !text-white relative">
+                  {data.icon}
+                  {data.name}
+
+                  {/* overlay */}
+                  <div className="absolute top-0 left-0 h-full w-full opacity-0">
+                    <SignUp />
+                  </div>
+                </div>
+              ) : (
+                <UILink
+                  href={data.url}
+                  icon={data.icon}
+                  name={data.name}
+                  scroll={true}
+                  target={data.external ? "_blank" : ""}
+                  className={`w-full px-5 py-2 rounded-lg justify-start ${
+                    router === data.url ? "bg-bg-color2" : "!text-white"
+                  }`}
+                  onClick={handleMenuItemClick}
+                />
+              )}
             </ListItem>
           ))}
         </List>

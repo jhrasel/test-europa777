@@ -16,10 +16,7 @@ export const WelcomeBonus = () => {
     <>
       <div className="pt-5">
         <Container>
-          <HeaderTitle
-            icon={<HiSpeakerphone />}
-            title={t("Welcome Bonus")}
-          />
+          <HeaderTitle icon={<HiSpeakerphone />} title={t("Welcome Bonus")} />
 
           <div className="hidden tab:grid grid-cols-4 gap-2 tab:gap-5">
             {loading &&

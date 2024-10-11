@@ -137,7 +137,7 @@ export const UserInfo = () => {
                 name="phone"
                 placeholder="Phone"
                 value={formik.values.phone}
-                // onChange={formik.handleChange}
+                onChange={formik.handleChange}
               />
             </div>
 

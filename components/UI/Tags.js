@@ -17,7 +17,7 @@ export const H2 = ({ name, className, ...props }) => {
   return (
     <>
       <h2
-        className={`text-xl tab:text-2xl laptop:text-2.5xl text-white font-bold ${className}`}
+        className={`text-lg tab:text-2xl laptop:text-2.5xl text-white font-bold ${className}`}
         {...props}
       >
         {name}

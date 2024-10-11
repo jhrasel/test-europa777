@@ -39,8 +39,7 @@ export default function SelfExclusion() {
   const handlePassChange = (responseData) => {
     formik.resetForm();
     toast.success("User Self Exclude Updated Successfully");
-  };
-
+  };                                                                   
   // submit Form
   const handleSubmit = async (values) => {
     const { data, error } = await fetchData(

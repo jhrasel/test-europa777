@@ -24,6 +24,6 @@ export const BannerImageMobile = [
     images: "/images/banner/banner3_mobile.webp",
   },
   {
-    images: "/images/banner/Banner4_mobile.webp",
+    images: "/images/banner/banner4_mobile.webp",
   },
 ];

@@ -11,7 +11,6 @@ import { useTranslations } from "next-intl";
 import QRCode from "qrcode.react";
 import { useState } from "react";
 import toast from "react-hot-toast";
-import HavePromoCode from "./HavePromocode";
 import PromoCodeInput from "./PromoCodeInput";
 
 export const LightCoin = () => {
@@ -202,16 +201,16 @@ export const LightCoin = () => {
                   src="https://chart.googleapis.com/chart?chs=150x150&amp;cht=qr&amp;chl="
                   className="!w-28 !h-28 rounded-md"
                 /> */}
-                <div className="flex gap-2 mt-2">
-                  <P name={showModalData?.address} />
+                <div className="flex flex-col text-left gap-2 mt-2">
+                  <P name={showModalData?.address} className=" !text-white" />
                   <button
-                    className="text-red-color focus:outline-none"
+                    className="text-white bg-blue-color py-2 px-5 rounded"
                     onClick={() => {
                       navigator.clipboard.writeText(showModalData?.address);
                       toast.success("Pay address copied to clipboard");
                     }}
                   >
-                    <CopyOutlined />
+                    Copy Address <CopyOutlined />
                   </button>
                 </div>
               </div>

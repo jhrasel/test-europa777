@@ -192,7 +192,7 @@ export const LiveCasino = ({ initialGamesData }) => {
               />
             )}
           </div>
-          {isLoading && (
+          {isLoading && ( 
             <div className="text-center my-5 flex items-center justify-center gap-2">
               <FadeLoader color="#FFF" />
             </div>

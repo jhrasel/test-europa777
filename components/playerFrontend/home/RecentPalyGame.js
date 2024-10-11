@@ -9,7 +9,7 @@ import useApi from "@/helpers/apiRequest";
 import useAuth from "@/helpers/useAuth";
 import { useBonusLock } from "@/helpers/useBonusLock";
 import { useLocale } from "next-intl";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export const RecentPalyGame = () => {
   const { fetchData, isLoading } = useApi();
@@ -32,6 +32,19 @@ export const RecentPalyGame = () => {
     // Refsetch the top games data after a change in favorites
     fetchGameData();
   };
+
+  useEffect(() => {
+    const fetchGameData = async () => {
+      try {
+        const response = await fetchData("/player/getRecentGameHistory", "GET");
+        // console.log("getRecentGameHistory", response.data.data);
+        setGameDatas(response.data.data.data);
+      } catch (error) {
+        console.error("Error fetching top games:", error);
+      }
+    };
+    fetchGameData();
+  }, [fetchData, favoriteGames]);
 
   return (
     <>

@@ -1,7 +1,9 @@
 /*font-family: 'Ubuntu', sans-serif;*/
 /* @import url("https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap"); */
 
-@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
+/* @import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"); */
+
+@import url("https://fonts.googleapis.com/css2?family=Play:wght@400;700&display=swap");
 
 @tailwind base;
 @tailwind components;
@@ -15,11 +17,13 @@ body {
 
 * {
   /* font-family: "Ubuntu", sans-serif !important; */
-  font-family: "Montserrat", sans-serif !important;
+  /* font-family: "Montserrat", sans-serif !important; */
+  font-family: "Play", sans-serif;
 }
 
 body {
   background: #1b1928;
+  /* background: #12131a; */
   overflow-x: hidden;
 }
 
